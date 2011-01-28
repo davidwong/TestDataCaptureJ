@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setter-config>
+
+<!-- These are testing for the Spring sample JPetstore only -->
+<!-- ****************************************************** -->
+
+	<setter class="org.springframework.beans.support.PagedListHolder">
+		<field>
+			<field-name>refreshDate</field-name>
+			<alternative>ignore</alternative>
+		</field>
+		<field>
+			<field-name>newPageSet</field-name>
+			<alternative>ignore</alternative>
+		</field>
+	</setter>
+		
+</setter-config>

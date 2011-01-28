@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?oxygen RNGSchema="http://www.oasis-open.org/docbook/xml/5.0/rng/docbookxi.rng" type="xml"?>
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+
+	<info>
+		<title>TestDataCaptureJ Documentation</title>
+		<releaseinfo>version 0.9</releaseinfo>
+		<authorgroup>
+			<author>
+				<personname>David Wong</personname>
+			</author>
+		</authorgroup>
+		<copyright>
+			<year>2010</year>
+			<holder>David Wong</holder>
+		</copyright>
+		
+	</info>
+	
+	<section>
+		<title>Overview</title>
+		
+		<para>The purpose of this tool is to capture test data for unit testing in Java applications. It does this by intercepting method calls
+			in the application and logging the contents of objects that you want to use for unit testing. The format of the logged data is in a format
+			that can be readily used as test input for tests in JUnit or TestNG, for example.</para>
+		<programlisting>// Generated 12:52:08,031 
+// org.springframework.samples.jpetstore.domain.Order.initOrder
+public org.springframework.samples.jpetstore.domain.Account createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder() {
+
+org.springframework.samples.jpetstore.domain.Account account0 = new org.springframework.samples.jpetstore.domain.Account();
+account0.setUsername("j2ee");
+account0.setPassword(null);
+account0.setEmail("yourname@yourdomain.com");
+account0.setFirstName("ABC");
+account0.setLastName("XYX");
+account0.setStatus("OK");
+account0.setAddress1("901 San Antonio Road");
+account0.setAddress2("MS UCUP02-206");
+account0.setCity("Palo Alto");
+account0.setState("CA");
+account0.setZip("94303");
+account0.setCountry("USA");
+account0.setPhone("555-555-5555");
+account0.setFavouriteCategoryId("DOGS");
+account0.setLanguagePreference("english");
+account0.setListOption(true);
+account0.setBannerOption(true);
+account0.setBannerName("&lt;image src=\"../images/banner_dogs.gif\">");
+
+return account0;
+}
+.
+.
+.</programlisting>
+		<para>Unlike other test data generation utilities, the primary purpose of this tool is:</para>
+		
+		<itemizedlist>
+			<listitem>
+				<para>to be used in a Java development environment</para>
+			</listitem>
+			
+			<listitem>
+				<para>to capture complex non-persistent data</para>
+			</listitem>
+			
+			<listitem>
+				<para>to capture 'real' data for unit testing as opposed to mock data you make up
+					yourself</para>
+			</listitem>
+		</itemizedlist>
+		
+		<para>You need to have some basic knowledge of AspectJ, especially regarding pointcuts.</para>
+	</section>
+	
+		<section>
+			<title>Motivation</title>
+			
+			<para>The original purpose for creating this tool was to capture data to be used in unit testing
+				from an enterprise web application that I was working on. The data I was
+				after was the contents of a shopping basket in the checkout process.</para>
+			<para>Some of ways I could have tried to do this were:</para>
+			
+			<itemizedlist>
+				<listitem>
+					<para>to create the data manually as mock objects. However this would have required too much
+						work because:</para>
+						<itemizedlist>
+							<listitem><para>The basket items were not simple items but were more complex combinations of items. Some
+								objects contained object graphs which included some fairly large
+								objects (about 40 fields in one class).</para></listitem>
+							<listitem><para>I needed many different items in various combinations for many test scenarios.</para>
+							</listitem>
+						</itemizedlist>
+				</listitem>
+
+				<listitem>
+					<para>to create the data from the database. However this would have not have worked because:</para>
+					<itemizedlist>
+						<listitem><para>The basket items were not persistent and did not exist in the database in that form, that is they only existed in the
+							user web session.</para></listitem>
+						<listitem><para>A shared development database was being used by the developers on the project, and the data would be changed at
+							regular intervals with a database refresh from the production system. That meant that selenium tests would go out of
+							date because items that were used in the tests would no longer be available after the database refresh.</para>
+						</listitem>
+					</itemizedlist>
+				</listitem>
+
+			</itemizedlist>
+			
+			<para>Using the TestDataCaptureJ tool, I was able to capture the data used in the selenium tests
+				and use them in JUnit tests that could be re-run without depending on the state of
+				the development database.</para>
+			
+		</section>
+
+</article>

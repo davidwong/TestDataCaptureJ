@@ -1,0 +1,72 @@
+TODO list
+
+Codebase:
+---------
+
+- how to handle logging fields without setters, or setters that don't follow javabean naming convention
+options:
+1. don't generate logging for those fields
+2. generate as comment, so at least have value in the log for manual editing
+3. generate reflection code to set field directly
+
+- how to handle non default field assignments
+e.g. 'Map map = Collections.synchronizedMap(new HashMap())' instead of 'Map map = new Map()'
+'List list = Arrays.asList(..)' instead of 'List list = new ArrayList()'
+(possibly some configurable filtering, e.g. for a particular field in a particular class - have
+a properties file for doing substitutions and configure in xml files)
+
+- log formatting code is mixed up with the logging code (to make the logged output more readable), should
+try to refactor it out and maybe do any formatting as a post-processing step or even not bother and let
+eclipse or another tool do the formatting afterwards
+
+- don't log directly but store each object log in collection:
+to handle for instance constructor that sets fields and other non-standard options
+
+- check that a parameterized constructor that is configured in xml files actually exists in the class
+
+- add error/warning messages to ObjectInfo, with option to display as comments
+
+- fix field name numbering so each class has it's own index (using map to store indices), at the moment
+the index is on the type (e.g. object or collection or array or map)
+
+- all class names in the log are fully qualified, the logging may be more readable if import statements
+were generated (e.g. each class name is stored in a Set, and then import statements are generated
+at the end)
+
+- eliminate need for a dummy pointcut in aop.xml when we only want either a parameter or a return value, but
+not both
+
+- make the algorithm that generates methods names in the log configurable 
+e.g. public au.com.dw.testdatacapturej.mock.explanation.Customer createParam1Customer_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomer() {
+
+
+Unit Tests:
+----------
+
+- FIX BROKEN TESTS!!!
+
+- many of the unit tests are very brittle because they compare the logged output against specific
+text
+i.e.
+Can break if the format of the logging changes (e.g. spacing and new lines, comments added, order
+of elements in collections, etc)
+Can break if configuration in xml files or property files change
+options to fix:
+1. strip out formatting (new line breaks) before comparison
+2. being able to query the configuration to decide what the result should look like, e.g. whether
+comments are present or if setters are generated for null fields
+
+- probably need more detailed comments about what the tests are doing and the purpose of the mock
+test objects and also about configuring the test aspects
+
+
+Documentation:
+-------------
+
+- finish the tutorial page
+
+- finish page with explanation of how it works
+
+- finish customization page about how to configure for different output
+
+- need comments for the configuration xml files

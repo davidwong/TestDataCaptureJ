@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?oxygen RNGSchema="http://www.oasis-open.org/docbook/xml/5.0/rng/docbookxi.rng" type="xml"?>
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+  <title>Customization</title>
+  <section>
+   <title>Custom Configuration</title>  
+    
+  <para>As has been explained earlier, the TestDataCaptureJ tool expects that the objects that it
+      logs to follow certain JavaBean conventions:<itemizedlist>
+        <listitem>
+          <para>Data objects have a no-argument constructor.</para>
+        </listitem>
+        <listitem>
+          <para>Fields of data objects have setter methods that follow the standard naming
+            convention.</para>
+        </listitem>
+      </itemizedlist></para>
+    <para>Ideally too the constructor for the data objects should not have side effects that affect
+      the state of the object.</para>
+    <para>While most classes that are used as data holders that I've come across do tend to follow
+      these conventions, sometimes the classes you want to capture do not, so the TestDataCaptureJ
+      tool allows for some custom configuration to handle some of the more common exceptions.</para>
+    
+  <itemizedlist>
+    <listitem>
+      <para>Setting field values in the constructor instead of using setter methods.</para>
+    </listitem>
+    
+    <listitem>
+      <para>Fields in data objects that do not have setter methods defined.</para>
+    </listitem>
+  </itemizedlist>
+  </section>
+  
+  <section>
+  <title>Code Examples</title>
+    <para>To demonstrate some of the features of the TestDataCaptureJ tool, here are some examples
+      of code and the logging that would be produced from them. The code and logging for the
+      examples for the explanation page are found in:<itemizedlist>
+        <listitem>
+          <para><filename>'au/com/dw/testdatacapturej/explanation/'</filename></para>
+        </listitem>
+        <listitem>
+          <para><filename>'au/com/dw/testdatacapturej/mock/explanation/'</filename></para>
+        </listitem>
+      </itemizedlist></para>
+    <para>TODO: add log examples</para>
+    
+  </section>
+
+  <section>
+    <title>Setting fields in the constructor</title>
+
+    <para>Sometimes the class either has an options to set some or all of the field values in the
+      constructor, and sometimes this is required. In other words, the constructor is used to set
+      field values either instead of, or in addition to using setter methods to set the field
+      values.</para>
+    <para>Here is an example of a class with an additional utility constructor that can be used to
+      initialized the fields, in addition to having the default no-argument constructor and setter
+      methods for the fields.</para>
+
+    <para><filename>'au/com/dw/testdatacapturej/mock/explanation/CustomerMultipleConstructors.java'</filename>:</para>
+    
+    <programlisting>package au.com.dw.testdatacapturej.mock.explanation;
+
+public class CustomerMultipleConstructors {
+	private String firstName;
+	private String surName;
+	
+	public CustomerMultipleConstructors() {
+
+	}
+	
+	public CustomerMultipleConstructors(String firstName, String surName) {
+		super();
+		this.firstName = firstName;
+		this.surName = surName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getSurName() {
+		return surName;
+	}
+	public void setSurName(String surName) {
+		this.surName = surName;
+	}
+	
+}</programlisting>
+    
+    <para>In this case the TestDataCaptureJ tool can be run without any custom configuration, so
+      that it uses the no-argument constructor and the setter method for the fields.</para>
+    
+    <programlisting>// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerMultipleConstructors
+public au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors createParam1CustomerMultipleConstructors_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerMultipleConstructors() {
+
+au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors customerMultipleConstructors0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors();
+customerMultipleConstructors0.setFirstName("John");
+customerMultipleConstructors0.setSurName("Smith");
+
+return customerMultipleConstructors0;
+}</programlisting>
+    <para>However with some custom configuration we could generate code that uses the other
+      constructor that initializes the fields. <programlisting>1. // au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerMultipleConstructors
+2. public au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors createParam1CustomerMultipleConstructors_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerMultipleConstructors() {
+
+3. au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors customerMultipleConstructors0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors("John", "Smith");
+
+4. return customerMultipleConstructors0;
+5. }</programlisting>
+      <itemizedlist>
+        <listitem>
+          <para>Notice that the utility constructor is used instead of the no-argument constructor,
+            passing the value of the fields as parameters to the constructor (line 3).</para>
+        </listitem>
+        <listitem>
+          <para>Notice that the setter methods for the fields have not been generated, even though
+            they exist in the class.</para>
+        </listitem>
+      </itemizedlist></para>
+    <para>The next section will explain how this was done.</para>
+    
+  </section>
+
+  <section>
+    <title>Constructor Configuration</title>
+    
+    <para>In the conf directory of the TestDataCaptureJ project there are some configuration files,
+      some of which are used for custom configuration for constructors.</para>
+    
+    <para>Fragment of <filename>'conf/test-constructor-config.xml'</filename>:</para>
+    
+    <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;constructor-config>
+.
+.
+.
+	&lt;constructor class="au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors">
+		&lt;argument>
+			&lt;field-name>firstName&lt;/field-name>
+		&lt;/argument>
+		&lt;argument>
+			&lt;field-name>surName&lt;/field-name>
+		&lt;/argument>
+	&lt;/constructor>
+			
+&lt;/constructor-config>
+</programlisting>
+    
+    <para>This xml configuration is for the class mock.explanation.CustomerMultipleConstructors and
+      defines the field values that you want to pass as parameters to the constructor. If this
+      configuration is used, then the TestDataCaptureJ tool will generate constructor code that uses
+      a parameterized constructor instead of the no-argument constructor. As well the setter methods
+      for the fields would not be generated.</para>
+    
+    <para>Of course it is up to you to
+      ensure that a constructor with parameters of the appropriate types actually exist in the class
+      and is configured properly.</para>
+    <para>To ensure that this constructor configuration is used, make sure that the configuration
+      file is included when the TestDataCaptureJ tool is run. There is a properties file that lists
+      the configuration files that are to be used when the TestDataCaptureJ tool is run.</para>
+    <para>Fragment of <filename>'conf/configuration.properties'</filename>:</para>
+    
+    <programlisting>.
+.
+.
+# config files for constructor configuration
+
+constructor.config.files=constructor-config.xml, test-constructor-config.xml
+.
+.
+.
+</programlisting>
+    <para>In the example using mock.explanation.CustomerMultipleConstructors in the previous
+      section, using this configuration produced that logging that generated the parameterized
+      constructor.<programlisting>au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors customerMultipleConstructors0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors("John", "Smith");
+</programlisting></para>
+    <para>If the constructor configuration was not used, i.e. either the configuration for the
+      mock.explanation.CustomerMultipleConstructors did not exist or the test-constructor-config.xml
+      file was not included in the list in the properties file, then the TestDataCaptureJ tool would
+      just use the no-argument constructor instead and generate the setter methods for the fields -
+      which is the default handling for the tool.</para>
+    <programlisting>au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors customerMultipleConstructors0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors();
+customerMultipleConstructors0.setFirstName("John");
+customerMultipleConstructors0.setSurName("Smith");
+</programlisting>
+    
+  </section>
+  
+  <section>
+    <title>Immutable Classes</title>
+    
+    <para>Sometimes a developer will want to create an immutable class where the fields cannont be
+      changed once the object has been constructed and initialized. A common idiom to do this is to
+      have only the parameterized constructor that initializes all the fields, and not to have any
+      setter methods for the fields - i.e. the object becomes read-only after construction.</para>
+    
+    <para><filename>'au/com/dw/testdatacapturej/mock/explanation/CustomerImmutable.java'</filename>:</para>
+    
+    <programlisting>package au.com.dw.testdatacapturej.mock.explanation;
+
+public class CustomerImmutable {
+	private final String firstName;
+	private final String surName;
+	
+	public CustomerImmutable(String firstName, String surName) {
+		super();
+		this.firstName = firstName;
+		this.surName = surName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+	public String getSurName() {
+		return surName;
+	}
+	
+}</programlisting>
+    <para>In cases like this, in order for TestDataCaptureJ to work there needs to be a custom
+      constructor configuration defined and included for this class. Else it will just generate code
+      for a no-argument constructor and setter methods that do not exist in the class.</para>
+    
+    <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;constructor-config>
+.
+.
+.
+	&lt;constructor class="au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable">
+		&lt;argument>
+			&lt;field-name>firstName&lt;/field-name>
+		&lt;/argument>
+		&lt;argument>
+			&lt;field-name>surName&lt;/field-name>
+		&lt;/argument>
+	&lt;/constructor>
+			
+&lt;/constructor-config></programlisting>
+    
+  </section>
+  
+  <section>
+    <title>Setter Configuration</title>
+    
+    <para>Sometimes a class will no have setter methods for some of its fields. The reasons for this
+      can be various:</para>
+    <itemizedlist>
+      <listitem>
+        <para>The field is meant to be read-only after it has been initialized, as in the case of
+          immutable objects.</para>
+      </listitem>
+      <listitem>
+        <para>The field is meant is not meant to hold state for the object, e.g. it is for a
+          transient field, a calculated value or a temporary value, etc.</para>
+      </listitem>
+    </itemizedlist>
+    
+    <para><filename>'au/com/dw/testdatacapturej/mock/explanation/CustomerFullName.java'</filename>:</para>
+    
+    <programlisting>package au.com.dw.testdatacapturej.mock.explanation;
+
+public class CustomerFullName {
+	private String firstName;
+	private String surName;
+	private String fullName;
+	
+	public CustomerFullName(String firstName, String surName) {
+		super();
+		this.firstName = firstName;
+		this.surName = surName;
+		
+		this.fullName = surName + ", " + firstName;
+	}
+	
+	public CustomerFullName() {
+
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getSurName() {
+		return surName;
+	}
+	public void setSurName(String surName) {
+		this.surName = surName;
+	}
+	public String getFullName() {
+		return fullName;
+	}
+	
+}
+</programlisting>
+    <para>In this rather contrived example, we do not want TestDataCaptureJ to generate a setter
+      method for the fullName field since the class does not have any setter method.</para>
+    <para>There is a custom configuration for setters that will configure TestDataCaptureJ not to
+      generate setter methods for certain fields in data objects.</para>
+    <para>Fragment of <filename>'conf/test-setter-config.xml'</filename>:</para>
+    <para>There is a custom configuration for setters that will configure TestDataCaptureJ not to
+      generate setter methods for certain fields in data objects.</para>
+    <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;setter-config>
+    .
+    .
+    .
+    &lt;setter class="au.com.dw.testdatacapturej.mock.explanation.CustomerFullName">
+		&lt;field>
+			&lt;field-name>fullName&lt;/field-name>
+			&lt;alternative>ignore&lt;/alternative>
+		&lt;/field>
+	&lt;/setter>
+		
+&lt;/setter-config>
+    </programlisting>
+    <para>This xml configuration is for the class mock.explanation.CustomerFullName and defines the
+      field values that you do not want setter methods to be generated for. If this configuration is
+      used, then the TestDataCaptureJ tool will generate not generate a setter method for the
+      fullName field. </para>
+    <para>Of course just like constructor configuration, the setter configuration file needs to be
+      included in the properties file when the TestDataCaptureJ tool is run.</para>
+    <para>Fragment of <filename>'conf/configuration.properties'</filename>:</para>
+    <programlisting>.
+.
+.
+# config files for setter method configuration
+
+setter.config.files=setter-config.xml, test-setter-config.xml
+.
+.
+.
+</programlisting>
+
+    
+  </section>
+</article>

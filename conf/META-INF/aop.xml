@@ -1,0 +1,35 @@
+<aspectj>
+<aspects>
+	<aspect name="au.com.dw.testdatacapturej.aspect.Trace"/>
+	<aspect name="au.com.dw.testdatacapturej.aspect.TraceAdaptor"/>
+	
+<!-- For normal au.com.dw.testing -->
+	<concrete-aspect name="au.com.dw.testdatacapturej.aspect.TestSpringPetStoreTrace"
+                            extends="au.com.dw.testdatacapturej.aspect.TraceAdaptor">
+             <pointcut name="loggedParamOperations" expression="execution(* org.springframework.samples.jpetstore.*.Order.initOrder(..))"/>
+             <pointcut name="loggedReturnOperations" expression="execution(* dummy.noSuchMethod(..))"/>
+    </concrete-aspect>
+    
+    <!-- For web testing 
+     <concrete-aspect name="trace.testgen.TestGenXmlRecursiveTrace"
+                            extends="trace.testgen.TestGenConfigurableBaseTraceAdaptor">
+             <pointcut name="loggedOperations" expression="execution(* trace.web.*.TraceTest.doTest(..))"/>
+    </concrete-aspect> 
+    --> 
+</aspects>
+
+<!-- Weave for debugging
+<weaver options="-verbose -showWeaveInfo -debug">
+-->
+
+<!-- Normal weave -->
+<weaver>
+
+<!-- For web testing to reduce heap usage, else may get OutOfMemoryError -->
+<!-- 
+  <include within="trace..*" />
+-->
+
+</weaver>
+</aspectj>
+

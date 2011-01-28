@@ -1,0 +1,35 @@
+TestDataCaptureJ
+
+A Java development tool for capturing test data when a Java application is run, to use in unit testing.
+
+
+Description:
+------------
+
+When running a Java (web) application, uses AOP to log the contents of parameters or return values of
+methods in the running application that you want to test. The contents of these objects are logged in
+a format that can be used to create mock objects that can be used in unit testing (i.e. with JUnit, TestNG, etc).
+
+
+See the 'doc' folder for further documentation.
+
+The TODO list is currently in the TODO file.
+
+Due to major refactoring, some of the unit tests have been broken (sorry), this is in the TODO list!
+
+
+Copyright and Licensing:
+------------------------
+
+Copyright (c) 2009,2011 David Wong
+
+This program is fully open source and free of charge for usage.
+
+Licensed under the AGPL agreement, see the LICENCE file.
+
+
+Contact:
+--------
+
+David Wong
+developer@davidwong.com.au

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setter-config>
+
+<!-- These are all for unit testing only -->
+<!-- *********************************** -->
+
+<!-- 
+  The following classes are deliberately missing so that they can be used for negative au.com.dw.testing.
+  mock.classcheck.Setter_UnconfiguredSimple
+  mock.classcheck.Setter_UnconfiguredObject
+  mock.classcheck.Setter_UnconfiguredCollection
+  mock.classcheck.Setter_UnconfiguredArray
+  mock.classcheck.Setter_UnconfiguredMap
+  mock.classcheck.Setter_UnconfiguredObjectArray
+ -->
+ 
+	<setter class="mock.classcheck.Setter_Simple">
+		<field>
+			<field-name>setterField</field-name>
+			<alternative>ignore</alternative>
+		</field>
+	</setter>
+		
+	<setter class="mock.classcheck.Setter_Object">
+		<field>
+			<field-name>setterField</field-name>
+			<alternative>ignore</alternative>
+		</field>
+	</setter>
+	
+	<setter class="mock.classcheck.Setter_Collection">
+		<field>
+			<field-name>setterField</field-name>
+			<alternative>ignore</alternative>
+		</field>
+	</setter>
+
+	<setter class="mock.classcheck.Setter_Array">
+		<field>
+			<field-name>setterField</field-name>
+			<alternative>ignore</alternative>
+		</field>
+	</setter>
+	
+	<setter class="mock.classcheck.Setter_Map">
+		<field>
+			<field-name>setterField</field-name>
+			<alternative>ignore</alternative>
+		</field>
+	</setter>
+
+<!-- Examples for documentation -->
+
+    <setter class="mock.explanation.CustomerFullName">
+		<field>
+			<field-name>fullName</field-name>
+			<alternative>ignore</alternative>
+		</field>
+	</setter>
+			
+</setter-config>

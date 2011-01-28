@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<setter-config>
+
+	<setter class="java.util.Date">
+		<field>
+			<field-name>cdate</field-name>
+			<alternative>ignore</alternative>
+		</field>
+	</setter>
+		
+</setter-config>

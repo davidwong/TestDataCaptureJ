@@ -1,0 +1,19 @@
+<aspectj>
+<aspects>
+	<aspect name="au.com.dw.testdatacapturej.aspect.Trace"/>
+	<aspect name="au.com.dw.testdatacapturej.aspect.TraceAdaptor"/>
+	
+	<!-- For use in the JPetStore tutorial -->
+	
+	<concrete-aspect name="au.com.dw.testdatacapturej.aspect.TestSpringPetStoreTrace"
+                            extends="au.com.dw.testdatacapturej.aspect.TraceAdaptor">
+             <pointcut name="loggedParamOperations" expression="execution(* org.springframework.samples.jpetstore.*.Order.initOrder(..))"/>
+             <pointcut name="loggedReturnOperations" expression="execution(* dummy.noSuchMethod(..))"/>
+    </concrete-aspect>
+
+</aspects>
+
+<weaver/>
+
+</aspectj>
+

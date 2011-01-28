@@ -1,0 +1,113 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Application Setup</title><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" title="Application Setup"><div class="titlepage"><div><div><h2 class="title"><a name="d0e2"></a>Application Setup</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#d0e5">Prerequisite software</a></span></dt><dt><span class="section"><a href="#d0e53">Install and Setup Eclipse</a></span></dt><dt><span class="section"><a href="#d0e71">Setup a Test Web Application</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e176">Setup for Tomcat 6.x</a></span></dt><dt><span class="section"><a href="#d0e246">Setup for JBoss 4.x</a></span></dt></dl></dd></dl></div><div class="section" title="Prerequisite software"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e5"></a>Prerequisite software</h2></div></div></div><p>The following prerequisite software is required, has only been tested in a Windows environment.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Eclipse IDE 3.4+
+          <a class="link" href="http://www.eclipse.org" target="_top">http://www.eclipse.org</a></p></li><li class="listitem"><p>AJDT, the AspectJ plugin for Eclipse
+          <a class="link" href="http://www.eclipse.org/ajdt" target="_top">http://www.eclipse.org/ajdt</a></p></li><li class="listitem"><p>AspectJ (i.e. 1.6.8 or 1.6.9, the version that matches the AspectJ version from the ADJT plugin that you are using)
+          <a class="link" href="http://www.eclipse.org/aspectj" target="_top">http://www.eclipse.org/aspectj</a></p></li><li class="listitem"><p>Dependency utility jars: </p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem"><p>Apache commons-collections</p></li><li class="listitem"><p>Apache commons-configuration</p></li><li class="listitem"><p>Apache commons-lang</p></li><li class="listitem"><p>Apache commons-logging</p></li><li class="listitem"><p>Log4j</p></li></ul></div></li><li class="listitem"><p>Apache Tomcat 6.x or JBoss AS 4.x for testing in a web application or for trying the
+          tutorial example.</p></li></ul></div><p>
+      To go through the tutorial you will also need the Spring JPetStore sample application. <a class="link" href="https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/" target="_top">https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/</a>
+    </p></div><div class="section" title="Install and Setup Eclipse"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e53"></a>Install and Setup Eclipse</h2></div></div></div><p>Note that the project is distributed as source code within an Eclipse IDE project.
+      TestDataCaptureJ requires the Eclipse IDE for the build once it has been configured for the
+      application you want to test. Currently there is no build script for it.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Install the Eclipse IDE, this usually just involves unzipping the downloaded file to a location of your choosing.</p></li><li class="listitem"><p>Install the ADJT plugin into Eclipse.</p></li><li class="listitem"><p>Get the TestDataCaptureJ project, either from version control (using Git) or download
+          testdatacapturej-xxx.zip and unzip it.</p></li><li class="listitem"><p>Import TestDataCaptureJ into the Eclipse IDE as an existing project.</p></li></ul></div></div><div class="section" title="Setup a Test Web Application"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e71"></a>Setup a Test Web Application</h2></div></div></div><p>Currently has only been tested running web applications on Tomcat 6.x and JBoss AS 4.x so
+      you will need to run your test application, i.e. the application that you want to capture test
+      data on, on one of these app servers.</p><p class="remark"><i><span class="remark">Please note that I am a developer, not a server admin expert, so while I've illustrated
+      how to configure the server - it's not necessary the best way to do it.</span></i></p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Install the app server, if required.</p></li><li class="listitem"><p>Deploy your test web application to the app server and ensure that it runs properly,
+          especially at the point that you want to capture the test data, e.g. at the end of the
+          checkout process for a shopping application. Then stop the app server so that it can be
+          configure and setup for TestDataCaptureJ.</p></li><li class="listitem"><p>Configure the project to intercept the application at the point where you want to
+          capture the test data. You will need access to the source code or the API for the test
+          application to determine the best place for this. Also you will need to know about how to
+          configure AspectJ pointcuts, refer the the AspectJ documentation for this.</p><p>Edit <code class="filename">conf/META-INF/aop.xml</code> in the TestDataCaptureJ project in
+          Eclipse by adding a &lt;concrete-aspect&gt; tag to the xml file nested inside the
+          &lt;aspects&gt; tag. Following the template in the listing below, you need to:</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem"><p>create a valid dummy class name  for the 'name' attribute</p></li><li class="listitem"><p>create an AspectJ pointcut expression for the 'pointcut' element named
+                'loggedParamOperations', if the object you want to capture is a parameter of a
+                method</p></li><li class="listitem"><p>create an AspectJ pointcut expression for the 'pointcut' element named
+                'loggedReturnOperations', if the object you want to capture is a return value of a
+                method</p></li></ul></div><p>Fragment of <code class="filename">'conf/META-INF/aop.xml'</code>:</p><pre class="programlisting">&lt;aspectj&gt;
+&lt;aspects&gt;
+	&lt;aspect name="au.dom.dw.testdatacapturej.aspect.Trace"/&gt;
+	&lt;aspect name="au.dom.dw.testdatacapturej.aspect.TraceAdaptor"/&gt;
+.	
+.
+.
+    &lt;!-- Template for your own tests --&gt;
+	&lt;concrete-aspect name="au.dom.dw.testdatacapturej.aspect.<span class="bold"><strong><span class="italic">[Insert dummy class name]</span></strong></span>"
+                            extends="au.dom.dw.testdatacapturej.aspect.TraceAdaptor"&gt;
+             &lt;pointcut name="loggedParamOperations" expression="execution(<span class="bold"><strong><span class="italic">[Insert AspectJ pointcut expression]</span></strong></span>)"/&gt;
+             &lt;pointcut name="loggedReturnOperations" expression="execution(<span class="bold"><strong><span class="italic">[Insert AspectJ pointcut expression]</span></strong></span>)"/&gt;
+    &lt;/concrete-aspect&gt;
+.
+.
+.
+    
+&lt;/aspects&gt;
+.
+.
+.
+&lt;/aspectj&gt;</pre><p>Have a look at the tutorial for an example.</p></li><li class="listitem"><p>Configure the file <code class="filename">conf/log4j.xml</code> to set the name and location
+          of the generated log file that you want. This log file should contain the test data you're
+          after.</p><p>Fragment of <code class="filename">'conf/log4j.xml'</code>:</p><pre class="programlisting">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE log4j:configuration SYSTEM "log4j.dtd"&gt;
+
+&lt;!-- ===================================================================== --&gt;
+&lt;!--                                                                       --&gt;
+&lt;!--  Log4j Configuration                                                  --&gt;
+&lt;!--                                                                       --&gt;
+&lt;!-- ===================================================================== --&gt;
+
+&lt;log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false"&gt;
+.
+.
+.
+        
+    &lt;appender name="au.com.dw.testdatacapturej-file"
+		class="org.apache.log4j.FileAppender"&gt;
+		&lt;param name="file" value="<span class="bold"><strong><span class="italic">[Insert logging location and file name]</span></strong></span>" /&gt;
+		&lt;param name="threshold" value="info" /&gt;
+		&lt;param name="immediateFlush" value="true" /&gt;
+		&lt;param name="append" value="false" /&gt;
+		&lt;layout class="org.apache.log4j.PatternLayout"&gt;
+			&lt;param name="ConversionPattern" value="// Generated %d{ABSOLUTE} %n%m%n" /&gt;
+		&lt;/layout&gt;
+	&lt;/appender&gt;
+.
+.
+.</pre><p>The changes involve editing the &lt;appender&gt; tag named
+          'au.com.dw.testdatacapturej-file'. Just change the value for the &lt;param&gt; tag for 'file'
+          to a valid path on your local machine. For example if it is setup in Tomcat to
+          '${catalina.home}/logs/Test.java' so that the generated file will appear in the 'logs'
+          directory in your Tomcat installation. Have a look at the tutorial for an example.</p></li><li class="listitem"><p>Create the a jar file by exporting the TestDataCaptureJ project as a jar file with
+          AspectJ support in Eclipse. You can call this jar file whatever you want, but for this
+          documentation we'll just call in 'capture-xxx.jar' where 'xxx' is some sort of identifier
+          or date.</p><p>Right click on the TestDataCaptureJ project in the package explorer window in Eclipse,
+          and select 'Export ...' from the context menu.<span class="inlinemediaobject"><img src="images/generate_jar-project.jpg"></span></p><div class="figure"><a name="d0e151"></a><p class="title"><b>Figure&nbsp;1.&nbsp;generate_jar-menu.jpg</b></p><div class="figure-contents"><div class="mediaobject"><img src="images/generate_jar-menu.jpg" alt="generate_jar-menu.jpg"></div></div></div><br class="figure-break"><p>From the Export dialog, select the 'JAR file with AspectJ support' option.<span class="inlinemediaobject"><img src="images/generate_jar-export-dialog.jpg"></span></p><p>Go through the export wizard using your own name and location for the generated
+          capture jar file.<span class="inlinemediaobject"><img src="images/generate_jar-export-1.jpg"></span><span class="inlinemediaobject"><img src="images/generate_jar-export-2.jpg"></span><span class="inlinemediaobject"><img src="images/generate_jar-export-3.jpg"></span></p></li><li class="listitem"><p>Configure the app server to handle AspectJ load time weaving and copy the
+          capture jar file you have generated, the AspectJ runtime jars, the log4j.xml file and the
+          necessary dependencies to the app server. This step is specific to the app server you are
+          using, see below.</p></li></ul></div><div class="section" title="Setup for Tomcat 6.x"><div class="titlepage"><div><div><h3 class="title"><a name="d0e176"></a>Setup for Tomcat 6.x</h3></div></div></div><p>Note: {TOMCAT_HOME} refers to the location where you have installed Tomcat.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Copy the <code class="filename">conf/log4j.xml</code>  file and the log4j-xxx.jar file to
+              {TOMCAT_HOME}/lib, since we require Log4J to do the actual logging of the captured
+              test data.</p></li><li class="listitem"><p>Copy the AspectJ runtime jars needed for load time weaving to {TOMCAT_HOME}/lib.
+              These are aspectjrt.jar and aspectjweaver.jar.<span class="inlinemediaobject"><img src="images/tomcat-lib.jpg"></span></p></li><li class="listitem"><p>Create a shared library directory in Tomcat at {TOMCAT_HOME}/shared/lib.</p></li><li class="listitem"><p>Copy the dependency jars to the shared library directory at
+              {TOMCAT_HOME}/shared/lib. These are:</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem"><p>commons-collections-xxx.jar</p></li><li class="listitem"><p>commons-configuration-xxx.jar</p></li><li class="listitem"><p>commons-lang-xxx.jar</p></li><li class="listitem"><p>commons-logging.jar</p></li></ul></div></li><li class="listitem"><p>Copy the capture jar that you have generated to {TOMCAT_HOME}/shared/lib.
+                <em><span class="remark">Hint: you can just export the jar directly to this location when you
+                generate it without having to do this step.<span class="inlinemediaobject"><img src="images/tomcat-shared-lib.jpg"></span></span></em></p></li><li class="listitem"><p>Make the changes to catalina.bat in {TOMCAT_HOME}/bin so that the AspectJ
+              load-time weaving will be done. </p><p>
+              <em><span class="remark">Hint: It is a good idea to make a backup of catalina.bat in your Tomcat
+                installation before making changes to it.</span></em>
+            </p><p>Fragment of <code class="filename">'bin/catalina.bat'</code> :</p><pre class="programlisting">.
+.
+.
+set ASPECTJ_WEAVING=-javaagent:%CATALINA_BASE%\lib\aspectjweaver.jar -Xmx1024m
+set JAVA_OPTS=%JAVA_OPTS% %ASPECTJ_WEAVING%
+.
+.
+.</pre><p>The changes involve adding the ASPECTJ_WEAVING variable to the file, and then
+              adding that variable to be included in the JAVA_OPTS variable. There is a section in
+                <code class="filename">'bin/catalina.bat'</code> where the JAVA_OPTS variable is set, so a
+              good place to add our changes is at the end of this section. Note that the
+              ASPECTJ_WEAVING variable must point to the location where you have copied
+              aspectjweaver.jar to your Tomcat installation.</p><p>An example of an edited file can be found in the TestGen project at
+                <code class="filename">tutorial/tomcat/bin/catalina.bat</code>, n. Note this this example
+              file is from an installation of Tomcat 6.0.26, so may vary slightly from your copy of
+              catalina.bat if you have installed a different version of Tomcat.</p></li></ul></div></div><div class="section" title="Setup for JBoss 4.x"><div class="titlepage"><div><div><h3 class="title"><a name="d0e246"></a>Setup for JBoss 4.x</h3></div></div></div><p>TODO</p></div></div></div></body></html>

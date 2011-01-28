@@ -1,0 +1,1 @@
+DocBook images go here in this folder

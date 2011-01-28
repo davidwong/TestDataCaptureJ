@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?oxygen RNGSchema="http://www.oasis-open.org/docbook/xml/5.0/rng/docbookxi.rng" type="xml"?>
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+  <title>Running the Application and Testing</title>
+
+  <section>
+    <title>Run the Test Application to Capture Test Data</title>
+
+  <itemizedlist>
+    <listitem>
+      <para>Start the app server, check the log or console output to make sure it starts without
+          errors. There should also be some extra logging to indicate that the AspectJ load time
+          weaving has occurred.</para>
+    </listitem>
+    
+    <listitem>
+      <para>Run the test application past the point at which you want to capture the test data. This means that the
+      code at which you setup the AspectJ pointcut in aop.xml should have run.</para>
+    </listitem>
+    
+    <listitem>
+      <para>Check the location that you configured in log4j.xml to see that the log file you configured was created
+      and contains some content. The content should be some java code with methods creating java objects.</para>
+      
+      <programlisting>// Generated 12:52:08,031 
+// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomer
+public mock.explanation.Customer createParam1Customer_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomer() {
+
+mock.explanation.Customer customer0 = new mock.explanation.Customer();
+customer0.setFirstName("John");
+customer0.setSurName("Smith");
+
+return customer0;
+}</programlisting>
+    </listitem>
+    
+  </itemizedlist>
+       
+  </section>
+
+  <section>
+    <title>Creating the Unit Test</title>
+
+    <para>It is assumed that you have already setup the test application as a Java project in whatever development
+    environment that you build and test it with. If not, then you will need to do so, e.g. setup the test application
+    as a Java project using it's source code or with the test application jars that you want to test, as well as their
+    dependencies. Basically this project needs to be setup so that you can run some unit tests against the test application
+    code that you generated the test data for.</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>Setup you unit testing framework in the test application project, e.g. JUnit, TestNG, etc.</para>
+    </listitem>
+    
+    <listitem>
+      <para>Create a dummy java class file that only has an empty class.</para>
+      
+      <programlisting>package mock.explanation;
+
+public class CreateTestCustomerClass {
+
+}</programlisting>
+    </listitem>
+    
+    <listitem>
+      <para>Copy and paste the java code from the generated log file into the dummy class
+          file.</para>
+      
+      <programlisting>package mock.explanation;
+
+public class CreateTestCustomerClass {
+
+  public mock.explanation.Customer createParam1Customer_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomer() {
+  
+  mock.explanation.Customer customer0 = new mock.explanation.Customer();
+  customer0.setFirstName("John");
+  customer0.setSurName("Smith");
+  
+  return customer0;
+  }
+
+}</programlisting>
+    </listitem>
+ 
+     <listitem>
+       <para>Try to compile the dummy class, and if it doesn't compile then you may need to do some manual edits to the code.</para>
+       <para>This may involve<itemizedlist>
+            <listitem>
+              <para>changing the code to conform to the test application source code</para>
+            </listitem>
+            <listitem>
+              <para>commenting out parts of the code that don't compile if they are not relevant to
+                your testing</para>
+            </listitem>
+          </itemizedlist></para>
+        <para>Alternatively there are some configurations you can do to handle some common problems.
+          Have a look at the tutorial for some examples of this.</para>
+       
+    </listitem>
+    
+     <listitem>
+       <para>Create a unit testcase using the dummy class that will now contain code that creates the test data objects
+       that you want to test. Then run your testcase.</para>
+       
+       <programlisting>public class CustomerTest extends TestCase {
+	
+	public void testGeneratedCustomer()
+	{
+		CreateTestCustomerClass testObjectCreator = new CreateTestCustomerClass();
+		Customer customer = testObjectCreator.createParam1Customer_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomer();
+		
+		assertTrue("John".equals(customer.getFirstName()));
+		assertTrue("Smith".equals(customer.getSurName()));
+	}
+
+}</programlisting>
+    </listitem>
+  </itemizedlist>
+  <para>Of course, for this very simple example using TestDataCaptureJ is overkill, but imagine if the generated test data was hundreds of lines of code ...</para>
+
+</section>
+
+</article>

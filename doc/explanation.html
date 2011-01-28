@@ -1,0 +1,307 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Explanation</title><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" title="Explanation"><div class="titlepage"><div><div><h2 class="title"><a name="d0e2"></a>Explanation</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#d0e5">How does it work?</a></span></dt><dt><span class="section"><a href="#d0e27">Code Examples</a></span></dt><dt><span class="section"><a href="#d0e43">Simple fields</a></span></dt><dt><span class="section"><a href="#d0e76">Field types</a></span></dt><dt><span class="section"><a href="#d0e111">Complex fields</a></span></dt><dt><span class="section"><a href="#d0e156">Collection fields</a></span></dt><dt><span class="section"><a href="#d0e207">Array Fields</a></span></dt><dt><span class="section"><a href="#d0e212">Map Fields</a></span></dt></dl></div><div class="section" title="How does it work?"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e5"></a>How does it work?</h2></div></div></div><p>One of the most common uses of AspectJ is to enable tracing or logging in program code in an
+      AOP way, that is, the logging code is separate from the program code. Also where you want to
+      do the tracing can be changed just by the pointcut that you use to intercept the code and to
+      insert the logging. If you are unfamiliar with AspectJ, please read the AspectJ documentation
+      or the excellent book [AspectJ in Action]. </p><p>Basically TestDataCaptureJ tool is just a fancy version of an AspectJ tracing program (and
+      in fact grew out of a tracing tool). We define a pointcut which will intercept the program
+      code at a point where the object that contains the test data we require is available - this
+      means the object is a parameter or return value of some method in the program code. Having
+      intercepted that data object we then log its contents to a file.</p><p>Where TestDataCaptureJ differs from some other tracing programs is this:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Instead of just logging the data values, the fields of the data object are logged in a
+          format that can be used as java code.</p></li><li class="listitem"><p>It uses recursion to log the whole graph of objects starting with the data object that
+          is intercepted, i.e. if the data object contains fields that are complex objects,
+          collections, arrays or maps, then they are also recursively logged.</p></li><li class="listitem"><p>The logging doesn't happen immediately at the point of interception. Instead the
+          recursive process uses reflection to store the metadata required in an intermediate
+          object, then the logging is done from the information stored in the intermediate
+          object.</p></li><li class="listitem"><p>Uses load-time weaving to insert the logging code.</p></li></ul></div></div><div class="section" title="Code Examples"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e27"></a>Code Examples</h2></div></div></div><p>To demonstrate some of the features of the TestDataCaptureJ tool, here are some examples of
+      code and the logging that would be produced from them. The code and logging for the examples
+      for the explanation page are found in:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p><code class="filename">'au/com/dw/testdatacapturej/explanation/'</code></p></li><li class="listitem"><p><code class="filename">'au/com/dw/testdatacapturej/mock/explanation/'</code></p></li></ul></div><p>TODO: add log examples</p></div><div class="section" title="Simple fields"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e43"></a>Simple fields</h2></div></div></div><p>The first example class just contains simple fields.</p><p><code class="filename">'au/com/dw/testdatacapturej/mock/explanation/Customer.java'</code>:</p><pre class="programlisting">package au.com.dw.testdatacapturej.mock.explanation;
+
+public class Customer {
+	private String firstName;
+	private String surName;
+	
+	public Customer() {
+	
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getSurName() {
+		return surName;
+	}
+	public void setSurName(String surName) {
+		this.surName = surName;
+	}
+	
+	}</pre><p>The TestDataCaptureJ tool should generate the following log if the Customer object
+      containing some data was intercepted.</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomer
+public au.com.dw.testdatacapturej.mock.explanation.Customer createParam1Customer_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomer() {
+
+au.com.dw.testdatacapturej.mock.explanation.Customer customer0 = new au.com.dw.testdatacapturej.mock.explanation.Customer();
+customer0.setFirstName("John");
+customer0.setSurName("Smith");
+
+return customer0;
+}</pre><p>We can examine the logging to see what the TestDataCaptureJ tool has generated for this
+      class (I've just manually added some line numbers to the logging): </p><pre class="programlisting">1. // au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomer
+2. public au.com.dw.testdatacapturej.mock.explanation.Customer createParam1Customer_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomer() {
+
+3. au.com.dw.testdatacapturej.mock.explanation.Customer customer0 = new au.com.dw.testdatacapturej.mock.explanation.Customer();
+4. customer0.setFirstName("John");
+5. customer0.setSurName("Smith");
+
+6. return customer0;
+7. }</pre><p>
+      </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>It has generated a comment line that just shows the name of the method that was
+            intercepted (line 1).</p></li><li class="listitem"><p>It has generated a java method to contains the logging of the fields in the Customer
+            object (lines 2, 6 and 7). The name of the method is created based on the intercepted
+            method name, the type of the data object and the parameter position (or just a return
+            value).</p></li><li class="listitem"><p>It has generated a java line to invoke the constructor on the data object to create
+            an instance of the object (line 3). Here we can see why the TestDataCaptureJ tool
+            requires that the data object and its fields should have default no-argument
+            constructors.</p></li><li class="listitem"><p>After capturing the value of the fields in the data object, it has generated a java
+            line to invoke a setter method for each field (lines 4 and 5). Here we can see why the
+            TestDataCaptureJ tool requires the the fields of the data object has setter methods that
+            follow the standard naming convention.</p></li></ul></div></div><div class="section" title="Field types"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e76"></a>Field types</h2></div></div></div><p>This example show how the values of the different built-in types are handled.</p><p><code class="filename">'au/com/dw/testdatacapturej/mock/explanation/Account.java'</code>:</p><pre class="programlisting">package au.com.dw.testdatacapturej.mock.explanation;
+
+public class Account {
+	private String name;
+	private Character type;
+	private Integer number;
+	private long customerNumber;
+	private boolean isActive;
+	private double amount;
+	private Float interestRate;
+	
+	public Account() {
+		super();
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Character getType() {
+		return type;
+	}
+	public void setType(Character type) {
+		this.type = type;
+	}
+	public Integer getNumber() {
+		return number;
+	}
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+	public long getCustomerNumber() {
+		return customerNumber;
+	}
+	public void setCustomerNumber(long customerNumber) {
+		this.customerNumber = customerNumber;
+	}
+	public boolean isActive() {
+		return isActive;
+	}
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+	public double getAmount() {
+		return amount;
+	}
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+	public Float getInterestRate() {
+		return interestRate;
+	}
+	public void setInterestRate(Float interestRate) {
+		this.interestRate = interestRate;
+	}
+	
+}</pre><p>The TestDataCaptureJ tool should generate the following log if the Account object
+      containing some data was intercepted.</p><pre class="programlisting">public au.com.dw.testdatacapturej.mock.explanation.Account createReturnAccount_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointReturnForAccount() {
+
+au.com.dw.testdatacapturej.mock.explanation.Account account0 = new au.com.dw.testdatacapturej.mock.explanation.Account();
+account0.setName("Savings Account");
+account0.setType('A');
+account0.setNumber(123);
+account0.setCustomerNumber(1234567890L);
+account0.setIsActive(true);
+account0.setAmount(1000.5d);
+account0.setInterestRate(0.1f);
+
+return account0;
+}</pre><p>Notice that in the generated setter methods the values are formatted in a way that is
+      appropriate for its type: </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Strings are surrounded by double quotes ["], so the value [Savings Account] becomes
+            ["Savings Account"].</p></li><li class="listitem"><p>Characters are surround by single quotes ['].</p></li><li class="listitem"><p>Longs are suffixed by [L], so the value [1234567890] becomes [1234567890L].</p></li><li class="listitem"><p>Doubles are suffixed by [d].</p></li><li class="listitem"><p>Floats are suffixed by [f].</p></li></ul></div><p>Note that is should not matter if the fields were primitive types or their wrapper classes,
+      i.e. Integer or int, Character or char, etc.</p></div><div class="section" title="Complex fields"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e111"></a>Complex fields</h2></div></div></div><p>This is an example of a class where the field is another complex class, i.e. not just a
+      primitive value. Here the CustomerAddress class contains a field which is of the Address
+      class.</p><p><code class="filename">'au/com/dw/testdatacapturej/mock/explanation/Address.java'</code>:</p><pre class="programlisting">package au.com.dw.testdatacapturej.mock.explanation;
+
+public class Address {
+	private int houseNumber;
+	private String street;
+	private String city;
+	
+	public Address() {
+
+	}
+
+	public int getHouseNumber() {
+		return houseNumber;
+	}
+
+	public void setHouseNumber(int houseNumber) {
+		this.houseNumber = houseNumber;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+		
+}</pre><p><code class="filename">'au/com/dw/testdatacapturej/mock/explanation/CustomerAddress.java'</code>:</p><pre class="programlisting">package au.com.dw.testdatacapturej.mock.explanation;
+
+public class CustomerAddress {
+	private Address address;
+
+	public CustomerAddress() {
+		
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+	
+}</pre><p>The TestDataCaptureJ tool should generate the following log if the CustomerAddress object
+      containing some data was intercepted.</p><pre class="programlisting">public au.com.dw.testdatacapturej.mock.explanation.CustomerAddress createReturnCustomerAddress_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointReturnForCustomerAddress() {
+
+au.com.dw.testdatacapturej.mock.explanation.CustomerAddress customerAddress0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerAddress();
+
+au.com.dw.testdatacapturej.mock.explanation.Address address1 = new au.com.dw.testdatacapturej.mock.explanation.Address();
+address1.setHouseNumber(1);
+address1.setStreet("Home Street");
+address1.setCity("Sydney");
+customerAddress0.setAddress(address1);
+
+return customerAddress0;
+}</pre><p>We can examine the logging to see what the TestDataCaptureJ tool has generated for this
+      class (I've just manually added some line numbers to the logging): </p><pre class="programlisting">1. public au.com.dw.testdatacapturej.mock.explanation.CustomerAddress createReturnCustomerAddress_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointReturnForCustomerAddress() {
+
+2. au.com.dw.testdatacapturej.mock.explanation.CustomerAddress customerAddress0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerAddress();
+
+3. au.com.dw.testdatacapturej.mock.explanation.Address address1 = new au.com.dw.testdatacapturej.mock.explanation.Address();
+4. address1.setHouseNumber(1);
+5. address1.setStreet("Home Street");
+6. address1.setCity("Sydney");
+7. customerAddress0.setAddress(address1);
+
+8. return customerAddress0;
+9. }</pre><p>
+      </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>It has generated a java method to contains the logging of the fields in the
+            CustomerAddress object (lines 1, 8 and 9).</p></li><li class="listitem"><p>It has generated a java line to invoke the constructor on the data object that was
+            intercepted (CustomerAddress) to create an instance of the object (line 2).</p></li><li class="listitem"><p>It has generated a java line to invoke the constructor on the field object (Address)
+            to create an instance of the object (line 3).</p></li><li class="listitem"><p>It has generated a java line to invoke a setter method for each field in the field
+            object (Address) (lines 4, 5 and 6).</p></li><li class="listitem"><p>It has generated a java line to invoke a setter method for each field in the data
+            object (CustomerAddress) (line 7). This assigns the field object (Address) to the data
+            object (CustomerAddress).</p></li><li class="listitem"><p>Notice that the field names generated are suffixed by a number (customerAddress0 in
+            line 2 and address1 in line 3). In order to prevent duplicate field names in the
+            generated code, there is a counter that adds an incremented number to the field name to
+            each type of complex field - Object, Collection, Array or Map. For instance if the
+            CustomerAddress class has 3 Address fields then the generated field names would be:
+            customerAddress0, address1, address2, address3.</p></li></ul></div></div><div class="section" title="Collection fields"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e156"></a>Collection fields</h2></div></div></div><p>This is an example of a class where the field is a Collection. The collection can contain
+      simple values or complex objects.</p><p><code class="filename">'au/com/dw/testdatacapturej/mock/explanation/CustomerAddressesInCollection.java'</code>:</p><pre class="programlisting">package au.com.dw.testdatacapturej.mock.explanation;
+
+import java.util.Collection;
+
+public class CustomerAddressesInCollection {
+	private Collection&lt;?&gt; addresses;
+
+	public CustomerAddressesInCollection() {
+		
+	}
+
+	public Collection&lt;?&gt; getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(Collection&lt;?&gt; addresses) {
+		this.addresses = addresses;
+	}
+	
+}</pre><p>The TestDataCaptureJ tool should generate the following log if the
+      CustomerAddressesInCollection object containing some data was intercepted.</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInCollection
+public au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInCollection createParam1CustomerAddressesInCollection_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomerAddressesInCollection() {
+
+au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInCollection customerAddressesInCollection0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInCollection();
+
+java.util.ArrayList arrayList0 = new java.util.ArrayList();
+
+au.com.dw.testdatacapturej.mock.explanation.Address address1 = new au.com.dw.testdatacapturej.mock.explanation.Address();
+address1.setHouseNumber(1);
+address1.setStreet("Home Street");
+address1.setCity("Sydney");
+arrayList0.add(address1);
+arrayList0.add("Test value");
+
+customerAddressesInCollection0.setAddresses(arrayList0);
+
+return customerAddressesInCollection0;
+}</pre><p>We can examine the logging to see what the TestDataCaptureJ tool has generated for this
+      class (I've just manually added some line numbers to the logging): </p><pre class="programlisting">1.  // au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInCollection
+2.  public au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInCollection createParam1CustomerAddressesInCollection_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomerAddressesInCollection() {
+
+3.  au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInCollection customerAddressesInCollection0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInCollection();
+
+4.  java.util.ArrayList arrayList0 = new java.util.ArrayList();
+
+5.  au.com.dw.testdatacapturej.mock.explanation.Address address1 = new au.com.dw.testdatacapturej.mock.explanation.Address();
+6.  address1.setHouseNumber(1);
+7.  address1.setStreet("Home Street");
+8.  address1.setCity("Sydney");
+9.  arrayList0.add(address1);
+10. arrayList0.add("Test value");
+
+11. customerAddressesInCollection0.setAddresses(arrayList0);
+
+12. return customerAddressesInCollection0;
+13. }</pre><p>
+      </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>It has generated a comment line that just shows the name of the method that was
+            intercepted (line 1).</p></li><li class="listitem"><p>It has generated a java method to contains the logging of the fields in the
+            CustomerAddressesInCollection object (lines 2, 12 and 13).</p></li><li class="listitem"><p>It has generated a java line to invoke the constructor on the data object that was
+            intercepted (CustomerAddressesInCollection) to create an instance of the object (line
+            3).</p></li><li class="listitem"><p>It has generated a java line to invoke the constructor on the Collection field
+            object to create an instance of the collection (line 4).</p></li><li class="listitem"><p>It has generated a java line to invoke the constructor on a complex object that is
+            an element of the collection (line 5).</p></li><li class="listitem"><p>It has generated a java line to invoke a setter method for each field in the complex
+            object stored in the collection (Address) (lines 6, 7 and 8).</p></li><li class="listitem"><p>It has generated a java line to add the complex object (Address) to the collection
+            (line 9).</p></li><li class="listitem"><p>It has generated a java line to add a simple value to the collection (line 10). I
+            guess logically could have added another address instead, but wanted to demonstrate
+            adding a simple value to the collection.</p></li><li class="listitem"><p>It has generated a java line to invoke a setter method for the Collection field in
+            the data object (CustomerAddressesInCollection) (line 11). This assigns the field object
+            (Collection) to the data object (CustomerAddressesInCollection).</p></li><li class="listitem"><p>Once again notice that the field names generated are suffixed by a number
+            (arrayList0 in line 4). If the CustomerAddressesInCollection class has 3 Collection
+            fields instead of 1, then the generated field names would be: arrayList0, arrayList1,
+            arrayList2.</p></li></ul></div></div><div class="section" title="Array Fields"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e207"></a>Array Fields</h2></div></div></div><p>TODO</p></div><div class="section" title="Map Fields"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e212"></a>Map Fields</h2></div></div></div><p>TODO</p></div></div></body></html>
