@@ -113,4 +113,9 @@ return account0;
 			
 		</section>
 
+	<section>
+		<title>Next:</title>
+		<para><link xlink:href="setup.html">Instructions on installation and setup</link></para>
+	</section>
+	
 </article>

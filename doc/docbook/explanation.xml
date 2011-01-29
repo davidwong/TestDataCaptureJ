@@ -504,4 +504,10 @@ return customerAddressesInCollection0;
     <title>Map Fields</title>
     <para>TODO</para>
   </section>
+  
+  <section>
+    <title>Next:</title>
+    <para><link xlink:href="customization.html">How to customize the logging</link></para>
+  </section>
+  
 </article>

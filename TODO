@@ -15,6 +15,10 @@ e.g. 'Map map = Collections.synchronizedMap(new HashMap())' instead of 'Map map 
 (possibly some configurable filtering, e.g. for a particular field in a particular class - have
 a properties file for doing substitutions and configure in xml files)
 
+- replace log4j with logback, would be good to be able to change logging config on the fly without restarting
+the server using jmx (i.e. change the log file name for different test scenarios rather than all the test data for the
+different scenarios being dumped into one file)
+
 - log formatting code is mixed up with the logging code (to make the logged output more readable), should
 try to refactor it out and maybe do any formatting as a post-processing step or even not bother and let
 eclipse or another tool do the formatting afterwards

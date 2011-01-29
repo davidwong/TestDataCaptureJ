@@ -337,6 +337,11 @@ setter.config.files=setter-config.xml, test-setter-config.xml
 .
 </programlisting>
 
-    
   </section>
+  
+  <section>
+    <title>Next:</title>
+    <para><link xlink:href="tutorial.html">Tutorial</link></para>
+  </section>
+  
 </article>
