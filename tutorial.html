@@ -1,0 +1,226 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>Tutorial</title><meta name="generator" content="DocBook XSL-NS Stylesheets V1.75.2"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" title="Tutorial"><div class="titlepage"><div><div><h2 class="title"><a name="d0e2"></a>Tutorial</h2></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#d0e5">Setup the Tutorial Application</a></span></dt><dt><span class="section"><a href="#d0e62">Setup TestDataCaptureJ for the Tutorial</a></span></dt><dt><span class="section"><a href="#d0e193">The Tutorial Application - 1st Run</a></span></dt><dt><span class="section"><a href="#d0e290">The Tutorial Application - 2nd Run</a></span></dt><dt><span class="section"><a href="#d0e361">The Tutorial Application - 3rd Run</a></span></dt></dl></div><div class="section" title="Setup the Tutorial Application"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e5"></a>Setup the Tutorial Application</h2></div></div></div><p>This tutorial will use the TestDataCaptureJ tool on a web application to demonstrate its
+      usage, using the JPetStore sample application from the Spring Framework 2.x . It will be done
+      in 3 stages to show some of the tool configuration options, as well as some of the limitations
+      of the tool. The instructions are for following the tutorial in a windows environment.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Install and setup the TestDataCaptureJ tool in the Eclipse IDE as per the setup
+          instructions.</p></li><li class="listitem"><p>Install and setup Tomcat 6.x as the app server, in the tutorial instructions
+          {TOMCAT_HOME} will refer to the location where Tomcat is installed. It is assumed that you
+          will already have a compatible version of Java installed on your server machine and have
+          the appropriate environment setup for it, e.g. JAVA_HOME.</p></li><li class="listitem"><p>Get a copy of the Spring JPetStore sample application, it should be included in the
+          Spring Framework 2.x download <a class="link" href="http://www.springsource.org/download" target="_top">http://www.springsource.org/download</a>.</p></li><li class="listitem"><p>Alternatively if you have a version of the Spring Framework that does not include the
+          JPetStore sample, you can use Subversion to export a copy from the Spring Framework
+          version control repository.  Note that you have to put the JPetStore folder under the
+          samples folder of a Spring Framework 2.x distribution for the build files to work.</p><p><a class="link" href="https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/" target="_top">https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/</a></p><pre class="programlisting">D:\&gt;svn export https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/ D:\tutorial\spring-framework-2.5.6.SEC01\samples\jpetstore
+A    D:\tutorial\jpetstore
+A    D:\tutorial\jpetstore\build.bat
+.
+.
+.
+A    D:\tutorial\jpetstore\warfile.bat
+Exported revision 17168.</pre></li><li class="listitem"><p>Install whatever build tools are required to build the JPetStore application war file,
+          e.g. Ant. Follow the instructions in the readme.txt file for the JPetStore project as they
+          may vary depending on the version of the JPetStore sample that was downloaded.</p></li><li class="listitem"><p>Build the JPetStore application war file, following the instructions in the readme.txt
+          file for the JPetStore project.</p></li><li class="listitem"><p>Deploy the JPetStore to the Tomcat server, just need to copy the war file in the
+          target directory to the webapps directory in Tomcat. Before deploying the war file, rename
+          it to 'jpetstore.war' to make it easier to manage if it is called something more
+          complicated.</p></li><li class="listitem"><p>Setup and start the JPetStore database of your choice in the db directory, the HSQLDB
+          instance is probably the easiest one to use. Once again follow the instructions in the
+          readme.txt file for the JPetStore project.</p><pre class="programlisting">D:\tutorial\spring-framework-2.5.6.SEC01\samples\jpetstore\db\hsqldb&gt;server.bat
+.
+.
+.
+[Server@54c4ad]: Database [index=0, id=0, db=file:D:\tutorial\jpetstore\db
+\hsqldb\jpetstore, alias=] opened sucessfully in 2438 ms.
+[Server@54c4ad]: Startup sequence completed in 4047 ms.
+[Server@54c4ad]: 2010-08-12 09:45:54.250 HSQLDB server 1.8.0 is online
+[Server@54c4ad]: To close normally, connect and execute SHUTDOWN SQL
+[Server@54c4ad]: From command line, use [Ctrl]+[C] to abort abruptly</pre></li><li class="listitem"><p>Start the Tomcat server and check the console log to ensure that it starts up
+          successfully.</p></li><li class="listitem"><p>Run the JPetStore app, go through the process of buying some pets and going through
+          the checkout process to make sure it runs successfully.<a class="link" href="http://localhost:8080/jpetstore/" target="_top">http://localhost:8080/jpetstore/</a></p><p>       
+        <span class="inlinemediaobject"><img src="images/tutorial_jpetstore-url.jpg"></span>
+        </p></li><li class="listitem"><p>Stop the Tomcat server.</p></li></ul></div></div><div class="section" title="Setup TestDataCaptureJ for the Tutorial"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e62"></a>Setup TestDataCaptureJ for the Tutorial</h2></div></div></div><p>Now we need to setup the TestDataCaptureJ tool for the JPetStore application.</p><p>The tutorial will try to capture the data for the shopping cart containing the pets that
+      have been added to the cart, so that the data can be re-used as input to unit test cases that
+      test the creation of an order from the shopping cart items.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>In the file <code class="filename">org.springframework.samples.jpetstore.domain.Order.java</code> there is a method that creates an order from the contents of
+          the shopping cart. The initOrder() method has the cart as one of its parameters, and this
+          would be a good place to capture the cart data as it should contain all the necessary
+          information that we need as this stage of the checkout process.</p></li><li class="listitem"><p>Edit <code class="filename">conf/META-INF/aop.xml</code> in the TestDataCaptureJ project in
+          Eclipse to setup the AspectJ pointcut to intercept the parameters of initOrder()
+          method.</p><p>Fragment of <code class="filename">'conf/META-INF/aop.xml'</code>:</p><pre class="programlisting">&lt;aspectj&gt;
+&lt;aspects&gt;
+	&lt;aspect name="au.dom.dw.testdatacapturej.aspect.Trace"/&gt;
+	&lt;aspect name="au.dom.dw.testdatacapturej.aspect.TraceAdaptor"/&gt;
+.	
+.
+.
+    &lt;!-- For use in the JPetStore tutorial --&gt;
+	&lt;concrete-aspect name="au.dom.dw.testdatacapturej.aspect.TestSpringPetStoreTrace"
+                            extends="au.dom.dw.testdatacapturej.aspect.TraceAdaptor"&gt;
+             &lt;pointcut name="loggedParamOperations" expression="execution(* org.springframework.samples.jpetstore.*.Order.initOrder(..))"/&gt;
+             &lt;pointcut name="loggedReturnOperations" expression="execution(* dummy.noSuchMethod(..))"/&gt;
+    &lt;/concrete-aspect&gt;
+    
+&lt;/aspects&gt;
+.
+.
+.
+&lt;/aspectj&gt;</pre><p>The changes involve adding a &lt;concrete-aspect&gt; tag to the xml file nested inside the
+          &lt;aspects&gt; tag.</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem"><p>The 'name' attribute can be any valid java class name you choose, here we have
+                used 'au.dom.dw.testdatacapturej.aspect.TestSpringPetStoreTrace'.</p></li><li class="listitem"><p>The 'extends attribute must be 'au.dom.dw.testdatacapturej.aspect.TraceAdaptor'
+                since we want our aspect to inherit from that class.</p></li><li class="listitem"><p>There are 2 pointcuts that need to be defined, since
+                  <code class="classname">au.dom.dw.testdatacapturej.aspect.TraceAdaptor</code> has 2
+                abstract pointcuts that must be implemented in order to create a concrete aspect
+                class. One pointcut is for intercepting data objects that are parameters for a
+                method, and the other is for intercepting pointcuts that are return values of a
+                method.</p></li><li class="listitem"><p>The &lt;pointcut&gt; tag for 'loggedParamOperations' will have a pointcut
+                expression for the initOrder() method in
+                  <code class="filename">org.springframework.samples.jpetstore.domain.Order.java</code> that
+                we want to intercept. Because the pointcut will be used in a before advice, it will
+                capture the parameters for initOrder().</p><p>This pointcut was decided upon after looking through the JPetStore source code
+                to find a point where the shopping cart in the checkout process would contain all
+                the data that was required, and would be available as either a parameter or a return
+                value of some method.</p></li><li class="listitem"><p>The &lt;pointcut&gt; tag for 'loggedReturnOperations' is not used since we want to
+                intercept a parameter in this tutorial rather than a return value. Since the tag
+                needs to be defined to make the aspect class concrete, just choose a dummy pointcut
+                expression that points to a method that doesn't exist.</p></li></ul></div><p>An example of an edited file can be found in the TestDataCaptureJ project at
+            <code class="filename">tutorial/conf/META-INF/aop.xml</code>.</p></li><li class="listitem"><p>Configure the <code class="filename">conf/log4j.xml</code> file for the name and location of the generated file that we
+          want.</p><p>Fragment of <code class="filename">'conf/log4j.xml'</code>:</p><pre class="programlisting">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE log4j:configuration SYSTEM "log4j.dtd"&gt;
+
+&lt;!-- ===================================================================== --&gt;
+&lt;!--                                                                       --&gt;
+&lt;!--  Log4j Configuration                                                  --&gt;
+&lt;!--                                                                       --&gt;
+&lt;!-- ===================================================================== --&gt;
+
+&lt;log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false"&gt;
+.
+.
+.
+        
+    &lt;appender name="au.com.dw.testdatacapturej-file"
+		class="org.apache.log4j.FileAppender"&gt;
+		&lt;param name="file" value="${catalina.home}/logs/TutorialTest1.java" /&gt;
+		&lt;param name="threshold" value="info" /&gt;
+		&lt;param name="immediateFlush" value="true" /&gt;
+		&lt;param name="append" value="false" /&gt;
+		&lt;layout class="org.apache.log4j.PatternLayout"&gt;
+			&lt;param name="ConversionPattern" value="// Generated %d{ABSOLUTE} %n%m%n" /&gt;
+		&lt;/layout&gt;
+	&lt;/appender&gt;
+.
+.
+.</pre><p>The changes involve editing the &lt;appender&gt; tag named
+          'au.com.dw.testdatacapturej-file'. Just change the value for the &lt;param&gt; tag for 'file'
+          to a valid path on your local machine. In this example it has been set to
+          '${catalina.home}/logs/TutorialTest.java' so that the generated file will appear in the
+          'logs' directory in your Tomcat installation.</p><p>An example of an edited file can be found in the TestDataCaptureJ project at
+            <code class="filename">tutorial/conf/log4j.xml</code>.</p></li><li class="listitem"><p>Copy the log4j.xml file and the log4j-xxx.jar file to {TOMCAT_HOME}/lib, since we
+          require Log4J to do the actual logging of the test data.</p></li><li class="listitem"><p>Copy the AspectJ runtime jars needed for load time weaving to {TOMCAT_HOME}/lib. These
+          are aspectjrt.jar and aspectjweaver.jar.</p></li><li class="listitem"><p>Create a shared library directory in Tomcat at {TOMCAT_HOME}/shared/lib.</p></li><li class="listitem"><p>Copy the dependency jars to the shared library directory at {TOMCAT_HOME}/shared/lib.
+          These are:</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem"><p>commons-collections-xxx.jar</p></li><li class="listitem"><p>commons-configuration-xxx.jar</p></li><li class="listitem"><p>commons-lang-xxx.jar</p></li><li class="listitem"><p>commons-logging.jar</p></li></ul></div></li><li class="listitem"><p>In the TestDataCaptureJ project in Eclipse, export the project as a jar with AspectJ
+          support to {TOMCAT_HOME}/shared/lib.</p><p>IMAGES HERE</p></li><li class="listitem"><p>Make the changes to catalina.bat in {TOMCAT_HOME}/bin so that the AspectJ load-time
+          weaving will be done.</p><p><em><span class="remark">It is a good idea to make a backup of catalina.bat in your Tomcat installation before making changes to it.</span></em></p><p>Fragment of <code class="filename">'bin/catalina.bat'</code> :</p><pre class="programlisting">.
+.
+.
+set ASPECTJ_WEAVING=-javaagent:%CATALINA_BASE%\lib\aspectjweaver.jar -Xmx1024m
+set JAVA_OPTS=%JAVA_OPTS% %ASPECTJ_WEAVING%
+.
+.
+.</pre><p>The changes involve adding the ASPECTJ_WEAVING variable to the file, and then adding
+          that variable to be included in the JAVA_OPTS variable. There is a section in
+            <code class="filename">'bin/catalina.bat'</code> where the JAVA_OPTS variable is set, so a good
+          place to add our changes is at the end of this section. Note that the ASPECTJ_WEAVING
+          variable must point to the location where you have copied aspectjweaver.jar to your Tomcat
+          installation.</p><p>An example of an edited file can be found in the TestDataCaptureJ project at
+            <code class="filename">tutorial/tomcat/bin/catalina.bat</code>, n. Note this this example file is
+          from an installation of Tomcat 6.0.26, so may vary slightly from your copy of catalina.bat
+          if you have installed a different version of Tomcat.</p></li></ul></div></div><div class="section" title="The Tutorial Application - 1st Run"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e193"></a>The Tutorial Application - 1st Run</h2></div></div></div><p>Start the app server, check the log or console output to make sure it starts without
+      errors. Then run the JPetStore application, what we want to do is to buy some pets and then go
+      through the checkout process.</p><div class="figure"><a name="d0e198"></a><p class="title"><b>Figure&nbsp;1.&nbsp;tutorial_jpetstore-basket.jpg</b></p><div class="figure-contents"><div class="mediaobject"><img src="images/tutorial_jpetstore-basket.jpg" alt="tutorial_jpetstore-basket.jpg"></div></div></div><br class="figure-break"><p>At the login page just use the default application values.</p><div class="figure"><a name="d0e206"></a><p class="title"><b>Figure&nbsp;2.&nbsp;tutorial_jpetstore-login.jpg</b></p><div class="figure-contents"><div class="mediaobject"><img src="images/tutorial_jpetstore-login.jpg" alt="tutorial_jpetstore-login.jpg"></div></div></div><br class="figure-break"><p>At the stage where the order is submitted and created during the checkout, the point at
+      which we have setup to capture the test data at Order.initOrder(..) should have been
+      run.</p><div class="figure"><a name="d0e214"></a><p class="title"><b>Figure&nbsp;3.&nbsp;tutorial_jpetstore-order-submitted.jpg</b></p><div class="figure-contents"><div class="mediaobject"><img src="images/tutorial_jpetstore-order-submitted.jpg" alt="tutorial_jpetstore-order-submitted.jpg"></div></div></div><br class="figure-break"><p>Now check that the log file for the test data has been created and contains the java code
+      to re-create the Cart object.</p><p>This is a sample from <code class="filename">'tutorial/logs/TutorialTest1.java'</code> :</p><pre class="programlisting">// Generated 12:52:08,031 
+// org.springframework.samples.jpetstore.domain.Order.initOrder
+public org.springframework.samples.jpetstore.domain.Account createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder() {
+
+org.springframework.samples.jpetstore.domain.Account account0 = new org.springframework.samples.jpetstore.domain.Account();
+account0.setUsername("j2ee");
+account0.setPassword(null);
+account0.setEmail("yourname@yourdomain.com");
+account0.setFirstName("ABC");
+account0.setLastName("XYX");
+account0.setStatus("OK");
+account0.setAddress1("901 San Antonio Road");
+account0.setAddress2("MS UCUP02-206");
+account0.setCity("Palo Alto");
+account0.setState("CA");
+account0.setZip("94303");
+account0.setCountry("USA");
+account0.setPhone("555-555-5555");
+account0.setFavouriteCategoryId("DOGS");
+account0.setLanguagePreference("english");
+account0.setListOption(true);
+account0.setBannerOption(true);
+account0.setBannerName("&lt;image src=\"../images/banner_dogs.gif\"&gt;");
+
+return account0;
+}
+
+.
+.
+.</pre><p>Now we can try out the code that we have generated. The tutorial will use Eclipse to run
+      unit tests on the JPetStore application, which will require the Maven plugin for Eclipse to
+      have been installed.</p><p>You can also run unit tests with Maven instead, but that will require editing the pom.xml
+      file to configure the test goal and include the test files. This is left as an exercise for
+      the reader if you do not want to use Eclipse.</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Import the JPetStore project as an existing java project into Eclipse.</p></li><li class="listitem"><p>Create a directory to store the unit test files at LOCATION, and configure the build
+            path for the JPetStore project to include the test directory as a source folder.</p></li><li class="listitem"><p>Create a dummy class file, containing an empty class, at the correct location in the
+            test directory.</p></li><li class="listitem"><p>Copy and paste the contents of the log file, NAME, containing the generated code
+            into the dummy class.</p><p>CODE HERE</p></li><li class="listitem"><p>When Eclipse tries to build the code for the dummy file (or if you have autobuild
+            configured for the project), then you will see that it will not compile and has some
+            errors.</p></li><li class="listitem"><p>The first error will occur at this line:</p><p>CODE HERE</p><p>If we look at the JPetStore source, we can see the problem in Cart.java in the xxx
+            is created using a wrapper method instead of new().</p><p>CODE HERE</p><p>This is one of the limitations of the TestGen tool, currently there is no way around
+            this so we will have to do a manual edit in the dummy class file to correct this.</p><p>CODE HERE</p></li><li class="listitem"><p>The next error is at this line:</p><p>CODE HERE</p><p>We will fix this later, so for now just comment out the code so that the dummy class
+            will compile.</p></li><li class="listitem"><p>The last error occurs here:</p><p>CODE HERE</p><p>This will also be fixed later, so once again comment out the error lines. Now the
+            dumy class should compile properly.</p></li><li class="listitem"><p>Create a unit test that uses the dummy class to test the data that was generated.
+            This is TutorialTest.java at LOCATION.</p><p>CODE HERE</p><p>We are using JUnit 4.x for the unit testing as that comes with Eclipse, but you can
+            also use TestNG if you have the TestNG plugin installed in Eclipse.</p></li><li class="listitem"><p>Run the unit test, NAME.</p><p>Although the test case should run using the generated code, we have had to comment
+            out some lines that did not compile for various reasons. Now we can try to fix some of
+            these issues.</p></li></ul></div></div><div class="section" title="The Tutorial Application - 2nd Run"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e290"></a>The Tutorial Application - 2nd Run</h2></div></div></div><p>The second error we encountered was with the java.util.Date field. If we look at the
+      source or the API for java.util.Date, then we can see that the reason the error was caused
+      problems are:</p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>The fields NAMES do not have setter methods, and the NAME field is actually meant to
+          be transient. Therefore the generated setter methods for these fields do not actually
+          exist.</p><p>CODE HERE</p></li><li class="listitem"><p>The no-argument constructor for java.util.Date will actually set the internal state to
+          the current date and time at which the object was created, instead of the time in the NAME
+          field.</p></li></ul></div><p>To get around these problems we need to do some configuration for the TestDataCaptureJ
+      tool.</p><p>EXPLANATION HERE</p><p>Now we can run the tutorial application again with the updated configuration.
+      </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Stop the Tomcat server if it is still running.</p></li><li class="listitem"><p>Export the TestDataCaptureJ project as a jar with AspectJ support to
+            {TOMCAT_HOME}/shared/lib, over-writing the jar exported before from the previous
+            run.</p></li><li class="listitem"><p>Start the Tomcat server.</p></li><li class="listitem"><p>Run the JPetStore as before, buying some pets and then going through the checkout
+            process.</p></li><li class="listitem"><p>Create another dummy class file, containing an empty class, at the correct location
+            in the test directory.</p></li><li class="listitem"><p>Copy and paste the contents of the log file, NAME, containing the generated code
+            into the new dummy class.</p></li><li class="listitem"><p>Once again the dummy file will not compile properly, so we will need to do some
+            manual editing again.</p></li><li class="listitem"><p>The first error will occur at this line:</p><p>CODE HERE</p><p>This is the error we have encountered before for the NAME field, so do the manual
+            edit as before.</p><p>CODE HERE</p></li><li class="listitem"><p>The last error occurs here:</p><p>CODE HERE</p><p>This is also the same problem that we have encountered before, and will be fixed
+            later so just comment it out as before</p><p>CODE HERE</p></li><li class="listitem"><p>The dummy class should now compile properly, notice that the previous error we had
+            with the java.util.Date field doesn't exist. The configuration for TestGen has fixed
+            this problem so that the java.util.Date object is created properly:</p><p>CODE HERE</p></li><li class="listitem"><p>Edit your unit test case to use the new dummy file and run it.</p><p>Now we will try to fix the error with NAME.</p></li></ul></div><p>
+    </p></div><div class="section" title="The Tutorial Application - 3rd Run"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e361"></a>The Tutorial Application - 3rd Run</h2></div></div></div><p>The second error we encountered was with the NAME field. If we look at the JPetStore
+      source, then we can see that the problem is that the NAME field in the NAME class does not
+      have a setter method.</p><p>In this case, we need to examine the source code to see if we actual need this field for
+      our unit testing. It seems that the NAME class contains some field which are not required for
+      creating an order, but are purely for the web navigation.</p><p>CODE HERE AND MORE EXPLANATION</p><p>Hence we can do some configuration for TestGen so that a setter method is not generated
+      for the NAME field.</p><p>EXPLANATION HERE</p><p>Now we can run the tutorial application again with the updated configuration. </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>Stop the Tomcat server if it is still running.</p></li><li class="listitem"><p>Export the TestDataCaptureJ project as a jar with AspectJ support to
+            {TOMCAT_HOME}/shared/lib.</p></li><li class="listitem"><p>Start the Tomcat server.</p></li><li class="listitem"><p>Run the JPetStore as before, buying some pets and then going through the checkout
+            process.</p></li><li class="listitem"><p>Create another dummy class file, containing an empty class, at the correct location
+            in the test directory.</p></li><li class="listitem"><p>Copy and paste the contents of the log file, NAME, containing the generated code
+            into the new dummy class.</p></li><li class="listitem"><p>Once again the dummy file will not compile properly, so we will need to do some
+            manual editing again.</p></li><li class="listitem"><p>The first error will occur at this line:</p><p>CODE HERE</p><p>This is the error we have encountered before for the NAME field, so do the manual
+            edit as before.</p><p>CODE HERE</p></li><li class="listitem"><p>The dummy class should now compile properly, notice that the previous error we had
+            with the NAME field doesn't exist. The configuration for TestGen has fixed this problem
+            so that the setter method for the NAME field has not been generated.</p><p>CODE HERE</p></li><li class="listitem"><p>Edit your unit test case to use the new dummy file and run it.</p><p>Unfortunately there is currently no workaround with the error with the NAME field,
+            so it will require some manual editing each time the test data is generated. However if
+            you need to generated lots of test data going through the checkout process with
+            different combinations of pets in the shopping cart, at least TestGen has done most of
+            the work for you.</p></li></ul></div><p>
+    </p></div></div></body></html>
