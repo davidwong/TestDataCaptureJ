@@ -1,6 +1,0 @@
-This project is now deprecated.
-
-It has been tagged and exported into Git, except for:
-- src-exclude
-- some of the readme txt files
-- maven build files
