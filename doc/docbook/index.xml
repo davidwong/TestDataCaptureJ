@@ -52,6 +52,9 @@ return account0;
 .
 .
 .</programlisting>
+		<para>The generated logging could then be pasted into a Java class, and the generated methods
+			invoked to recreate the object containing the data you want to test. That test object
+			could then be used in unit tests for JUnit, TestNG, etc.</para>
 		<para>Unlike other test data generation utilities, the primary purpose of this tool is:</para>
 		
 		<itemizedlist>
@@ -69,8 +72,16 @@ return account0;
 			</listitem>
 		</itemizedlist>
 		
-		<para>You need to have some basic knowledge of AspectJ, especially regarding pointcuts.</para>
+		<para>Note that this tool is meant to used to recreate test objects that are basically data
+			holders and follow the JavaBean naming conventions for field access. Also you need to
+			have some basic knowledge of AspectJ, especially regarding pointcuts, to use it.</para>
 	</section>
+	
+	 <section>
+	 	<title>Project and Download</title>
+	 	<para>The TestDataCaptureJ project is available for download as an Eclipse project at <link xlink:href="http://github.com/davidwong/TestDataCaptureJ">Github</link>. Please see
+	 		the <link xlink:href="setup.html">installation instructions</link> for the requirements.</para>
+	 </section>
 	
 		<section>
 			<title>Motivation</title>
@@ -116,6 +127,21 @@ return account0;
 	<section>
 		<title>Next:</title>
 		<para><link xlink:href="setup.html">Instructions on installation and setup</link></para>
+		
+		<para>Or you can skip ahead to other topics:<itemizedlist>
+			<listitem>
+				<para><link xlink:href="run.html">Instructions on running TestDataCaptureJ in an application after installation and setup has been done</link></para>
+			</listitem>
+			<listitem>
+				<para><link xlink:href="explanation.html">Explanation of how the test data is logged</link></para>
+			</listitem>
+			<listitem>
+				<para><link xlink:href="customization.html">How to customize the generated logging for unusual cases</link></para>
+			</listitem>
+			<listitem>
+				<para><link xlink:href="tutorial.html">Tutorial using a Spring sample</link></para>
+			</listitem>
+			</itemizedlist></para>
 	</section>
 	
 </article>

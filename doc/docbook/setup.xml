@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?oxygen RNGSchema="http://www.oasis-open.org/docbook/xml/5.0/rng/docbookxi.rng" type="xml"?>
 <article xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
-  <title>Installation and Application Setup</title>
+  <title>TestDataCaptureJ: Installation and Application Setup</title>
 
   <section>
     <title>Prerequisite software</title>
@@ -20,8 +20,9 @@
       </listitem>
       
       <listitem>
-        <para>AspectJ (i.e. 1.6.8 or 1.6.9, the version that matches the AspectJ version from the ADJT plugin that you are using)
-          <link xlink:href="http://www.eclipse.org/aspectj">http://www.eclipse.org/aspectj</link></para>
+        <para>AspectJ (i.e. the version that matches the AspectJ version from the ADJT plugin that
+          you are using) <link xlink:href="http://www.eclipse.org/aspectj"
+            >http://www.eclipse.org/aspectj</link></para>
       </listitem>
       
       <listitem>
