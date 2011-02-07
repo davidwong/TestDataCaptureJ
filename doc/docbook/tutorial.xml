@@ -240,7 +240,7 @@ Exported revision 17168.</programlisting>
       <listitem>
         <para>In the TestDataCaptureJ project in Eclipse, export the project as a jar with AspectJ
           support to {TOMCAT_HOME}/shared/lib.</para>
-        <para>IMAGES HERE</para>
+        <remark>See the <link xlink:href="setup.html">setup page</link> for details on doing this step.</remark>
       </listitem>
       <listitem>
         <para>Make the changes to catalina.bat in {TOMCAT_HOME}/bin so that the AspectJ load-time
@@ -335,54 +335,180 @@ return account0;
 .
 .
 .</programlisting>
-    <para>Now we can try out the code that we have generated. The tutorial will use Eclipse to run
-      unit tests on the JPetStore application, which will require the Maven plugin for Eclipse to
-      have been installed.</para>
-    <para>You can also run unit tests with Maven instead, but that will require editing the pom.xml
-      file to configure the test goal and include the test files. This is left as an exercise for
-      the reader if you do not want to use Eclipse.<itemizedlist>
+    <para>Now we can try out the code that we have generated to check that it has captured the data
+      we want to test, and that we can run unit tests against that data. This involves writing some
+      classes that will incorporate the generated log and some unit tests to test the objects
+      created from that log.</para>
+    <para>For the purposes of this tutorial this will be done in the Eclipse IDE since it makes it
+      easier to illustrate. However this is not really necessary as you just need to edit the build
+      scripts for the JPetStore project (e.g pom.xml for Maven or build.xml for Ant) so that the
+      unit test files can be run. The changes would need to include the unit test framework jar(s)
+      in the classpath (i.e. using JUnit, TestNG), include the unit test files to be compiled and
+      add some way to run the unit tests from the build script (e.g. as a Maven goal or Ant target).
+      This is left as an exercise for the reader if you do not want to use Eclipse.<itemizedlist>
         <listitem>
           <para>Import the JPetStore project as an existing java project into Eclipse.</para>
         </listitem>
         <listitem>
-          <para>Create a directory to store the unit test files at LOCATION, and configure the build
-            path for the JPetStore project to include the test directory as a source folder.</para>
+          <para>Configure the build path for the project so that<itemizedlist>
+              <listitem>
+                <para>the JPetStore source files are in a Java Source Folder for the project</para>
+              </listitem>
+              <listitem>
+                <para>the dependency jars for the JPetStore project are included in the Libraries
+                  for the Java Project, and are hence in the classpath</para>
+              </listitem>
+            </itemizedlist></para>
         </listitem>
         <listitem>
-          <para>Create a dummy class file, containing an empty class, at the correct location in the
-            test directory.</para>
+          <para>Create a directory to store the unit test files, and configure the build path for
+            the JPetStore project to include the test directory as a source folder.</para>
         </listitem>
         <listitem>
-          <para>Copy and paste the contents of the log file, NAME, containing the generated code
-            into the dummy class.</para>
-          <para>CODE HERE</para>
+          <para>Edit the configuration file <filename>'conf/configuration.properties'</filename> so
+            that there are no custom configuration files used:</para>
+          <para>As an example see
+              <filename>'tutorial/conf/step.1.configuration.properties'</filename> :</para>
+          <programlisting># config files for constructor configuration
+
+constructor.config.files=
+
+# config files for setter method configuration
+
+setter.config.files=</programlisting>
+          <para>This ensures that the TestDataCaptureJ tool will run without any custom
+            configurations for the generated logs.</para>
+          <remark>See the <link xlink:href="customization.html">customization page</link> for details of the custom configurations that are available.</remark>
         </listitem>
         <listitem>
-          <para>When Eclipse tries to build the code for the dummy file (or if you have autobuild
-            configured for the project), then you will see that it will not compile and has some
-            errors.</para>
+          <para>Create a class file, containing an empty class, under the test directory.</para>
+          <para>As an example see
+              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Empty.java'</filename>
+            :</para>
+          <programlisting>package au.com.dw.testdatacapturej.tutorial;
+
+public class CreateTestObject_Empty {
+	
+}</programlisting>
         </listitem>
         <listitem>
-          <para>The first error will occur at this line:</para>
-          <para>CODE HERE</para>
-          <para>If we look at the JPetStore source, we can see the problem in Cart.java in the xxx
-            is created using a wrapper method instead of new().</para>
-          <para>CODE HERE</para>
-          <para>This is one of the limitations of the TestGen tool, currently there is no way around
-            this so we will have to do a manual edit in the dummy class file to correct this.</para>
-          <para>CODE HERE</para>
+          <para>Copy and paste the contents of the log file, containing the generated code, into the
+            empty class - this is the class that will (eventually) be used to create the test
+            object. For the tutorial we are copying the contents of 'TutorialTest1.java' into the
+            empty class.</para>
+          <para>As an example see
+              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Step1.java'</filename>
+            :</para>
+          <programlisting>package au.com.dw.testdatacapturej.tutorial;
+
+public class CreateTestObject_Step1 {
+	
+// Generated 18:09:20,250 
+// org.springframework.samples.jpetstore.domain.Order.initOrder
+public org.springframework.samples.jpetstore.domain.Account createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder() {
+
+org.springframework.samples.jpetstore.domain.Account account0 = new org.springframework.samples.jpetstore.domain.Account();
+account0.setUsername("j2ee");
+account0.setPassword(null);
+account0.setEmail("yourname@yourdomain.com");
+account0.setFirstName("ABC");
+account0.setLastName("XYX");
+account0.setStatus("OK");
+account0.setAddress1("901 San Antonio Road");
+account0.setAddress2("MS UCUP02-206");
+account0.setCity("Palo Alto");
+account0.setState("CA");
+account0.setZip("94303");
+account0.setCountry("USA");
+account0.setPhone("555-555-5555");
+account0.setFavouriteCategoryId("DOGS");
+account0.setLanguagePreference("english");
+account0.setListOption(true);
+account0.setBannerOption(true);
+account0.setBannerName("&lt;image src=\"../images/banner_dogs.gif\">");
+
+return account0;
+}
+
+public org.springframework.samples.jpetstore.domain.Cart createParam2Cart_org_springframework_samples_jpetstore_domain_Order_initOrder() {
+
+org.springframework.samples.jpetstore.domain.Cart cart0 = new org.springframework.samples.jpetstore.domain.Cart();
+.
+.
+.</programlisting>
         </listitem>
         <listitem>
-          <para>The next error is at this line:</para>
-          <para>CODE HERE</para>
-          <para>We will fix this later, so for now just comment out the code so that the dummy class
-            will compile.</para>
+          <para>When Eclipse tries to build the code for the class file (or if you have autobuild
+            configured for the project) after the log contents have been pasted in, then you will
+            see that it will not compile and has some errors.</para>
+          <para>IMAGE HERE</para>
         </listitem>
         <listitem>
-          <para>The last error occurs here:</para>
-          <para>CODE HERE</para>
-          <para>This will also be fixed later, so once again comment out the error lines. Now the
-            dumy class should compile properly.</para>
+          <para>The first error that stops the file compiling will occur at this line:</para>
+          <programlisting>.
+.
+.
+java.util.Collections$SynchronizedMap collections$SynchronizedMap0 = new java.util.Collections$SynchronizedMap();
+// Default constructor for java.util.Collections$SynchronizedMap does not exist.
+.
+.
+.</programlisting>
+          <para>If we look at the JPetStore source, we can see the problem in
+            org.springframework.samples.jpetstore.domain.Cart.java in the itemMap field is created
+            using a java.util.Collections wrapper method instead of new() operator to create the
+            field.</para>
+          <programlisting>package org.springframework.samples.jpetstore.domain;
+
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.springframework.beans.support.PagedListHolder;
+
+public class Cart implements Serializable {
+
+  /* Private Fields */
+
+  private final Map itemMap = Collections.synchronizedMap(new HashMap());
+
+.
+.
+.</programlisting>
+          <para>This is one of the limitations of the TestDataCaptureJ tool, currently there is no
+            way around this yet. For the purposes of this tutorial, we will ignore this for
+            now.</para>
+        </listitem>
+        <listitem>
+          <para>The second error is at this line that is trying to create a Date object:</para>
+          <programlisting>.
+.
+.
+java.util.Date date8 = new java.util.Date();
+date8.setFastTime(1279213622453L);
+date8.setCdate(null);
+.
+.
+.</programlisting>
+        </listitem>
+        <listitem>
+          <para>The last error occurs near the end of the class:</para>
+          <programlisting>.
+.
+.
+pagedListHolder4.setSort(mutableSortDefinition9);
+pagedListHolder4.setSortUsed(null);
+pagedListHolder4.setPageSize(4);
+pagedListHolder4.setPage(0);
+pagedListHolder4.setNewPageSet(false);
+pagedListHolder4.setMaxLinkedPages(10);
+cart0.setItemList(pagedListHolder4);
+
+return cart0;
+}
+
+}</programlisting>
         </listitem>
         <listitem>
           <para>Create a unit test that uses the dummy class to test the data that was generated.
@@ -395,7 +521,8 @@ return account0;
           <para>Run the unit test, NAME.</para>
           <para>Although the test case should run using the generated code, we have had to comment
             out some lines that did not compile for various reasons. Now we can try to fix some of
-            these issues.</para>
+            these issues.As we see this first run has generated code that did not compile for
+            various reasons, we can try to fix some of these errors.</para>
         </listitem>
       </itemizedlist></para>
   </section>
@@ -403,8 +530,8 @@ return account0;
   <section>
     <title>The Tutorial Application - 2nd Run</title>
     <para>The second error we encountered was with the java.util.Date field. If we look at the
-      source or the API for java.util.Date, then we can see that the reason the error was caused
-      problems are:</para>
+      source or the javadoc API for java.util.Date, then we can see that the reason the error was
+      caused problems are:</para>
     <itemizedlist>
       <listitem>
         <para>The fields NAMES do not have setter methods, and the NAME field is actually meant to
@@ -418,18 +545,39 @@ return account0;
           field.</para>
       </listitem>
     </itemizedlist>
-    <para>To get around these problems we need to do some configuration for the TestDataCaptureJ
+    <para> To get around these problems we need to do some configuration for the TestDataCaptureJ
       tool.</para>
+    <para>IMAGE HERE (API)</para>
     <para>EXPLANATION HERE</para>
     <para>Now we can run the tutorial application again with the updated configuration.
       <itemizedlist>
         <listitem>
-          <para>Stop the Tomcat server if it is still running.</para>
+          <para>Stop the Tomcat server if it is still running, but make sure the JPetStore database
+            server is still running.</para>
+        </listitem>
+        <listitem>
+          <para>Edit the configuration file <filename>'conf/configuration.properties'</filename> so
+            that the customization files <filename>'conf/setter-config.xml'</filename> and
+              <filename>'conf/constructor-config.xml'</filename> will be used:</para>
+          <para>As an example see
+              <filename>'tutorial/conf/step.2.configuration.properties'</filename> :</para>
+          <programlisting># config files for constructor configuration
+
+constructor.config.files=constructor-config.xml
+
+# config files for setter method configuration
+
+setter.config.files=setter-config.xml</programlisting>
+          <para>This ensures that the TestDataCaptureJ tool will run with the configuration in the
+            files 'setter-config.xml' and 'constructor-config.xml' for the generated logs.</para>
+          <remark>See the <link xlink:href="customization.html">customization page</link> for an
+            explanation of customization for constructors and setter methods..</remark>
         </listitem>
         <listitem>
           <para>Export the TestDataCaptureJ project as a jar with AspectJ support to
-            {TOMCAT_HOME}/shared/lib, over-writing the jar exported before from the previous
-            run.</para>
+            {TOMCAT_HOME}/shared/lib, over-writing the jar exported before from the previous run (or
+            if you export with a different file name for the jar, then the jar from the previous run
+            will have to be deleted)</para>
         </listitem>
         <listitem>
           <para>Start the Tomcat server.</para>
@@ -439,40 +587,113 @@ return account0;
             process.</para>
         </listitem>
         <listitem>
-          <para>Create another dummy class file, containing an empty class, at the correct location
-            in the test directory.</para>
+          <para>As before, create another empty class file, containing an empty class, in the test
+            directory.</para>
         </listitem>
         <listitem>
-          <para>Copy and paste the contents of the log file, NAME, containing the generated code
-            into the new dummy class.</para>
+          <para>Copy and paste the contents of the new log file, containing the generated code, into
+            the empty class. For the tutorial we are copying the contents of 'TutorialTest2.java'
+            into the empty class.</para>
+          <para>As an example see
+              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Step2.java'</filename>
+            :</para>
+          <programlisting>package au.com.dw.testdatacapturej.tutorial;
+
+public class CreateTestObject_Step2 {
+	
+	// Generated 12:55:46,937 
+	// org.springframework.samples.jpetstore.domain.Order.initOrder
+	public org.springframework.samples.jpetstore.domain.Account createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder() {
+
+	org.springframework.samples.jpetstore.domain.Account account0 = new org.springframework.samples.jpetstore.domain.Account();
+	account0.setUsername("j2ee");
+	account0.setPassword(null);
+	account0.setEmail("yourname@yourdomain.com");
+	account0.setFirstName("ABC");
+	account0.setLastName("XYX");
+	account0.setStatus("OK");
+	account0.setAddress1("901 San Antonio Road");
+	account0.setAddress2("MS UCUP02-206");
+	account0.setCity("Palo Alto");
+	account0.setState("CA");
+	account0.setZip("94303");
+	account0.setCountry("USA");
+	account0.setPhone("555-555-5555");
+	account0.setFavouriteCategoryId("DOGS");
+	account0.setLanguagePreference("english");
+	account0.setListOption(true);
+	account0.setBannerOption(true);
+	account0.setBannerName("&lt;image src=\"../images/banner_dogs.gif\">");
+
+	return account0;
+	}
+
+	public org.springframework.samples.jpetstore.domain.Cart createParam2Cart_org_springframework_samples_jpetstore_domain_Order_initOrder() {
+
+	org.springframework.samples.jpetstore.domain.Cart cart0 = new org.springframework.samples.jpetstore.domain.Cart();
+.
+.
+.</programlisting>
+        </listitem>
+        <listitem>          
+          <para>Once again this file will not compile properly due to errors that we found in the
+            first run of the tutorial.</para>
+
+          <para>However notice that there are fewer errors now because the previous error we had
+            with the java.util.Date field doesn't exist any more. The configuration for
+            TestDataCaptureJ has fixed this problem so that the java.util.Date object is created
+            properly now:</para>
+          <programlisting>.
+.
+.
+	java.util.Date date20 = new java.util.Date(1279454122375L);
+.
+.
+.</programlisting>
+          <para>instead of the error generated from the previous tutorial run:</para>
+          <programlisting>.
+.
+.
+java.util.Date date8 = new java.util.Date();
+date8.setFastTime(1279213622453L);
+date8.setCdate(null);
+.
+.
+.</programlisting>
+          <para>If we look at the  xml configuration in the file
+              <filename>'conf/constructor-config.xml'</filename>, we find that the configuration for
+            the class 'java.util.Date' is specifying that we want to set the value of the field
+            'fastTime' from a constructor instead of a setter method.</para>
+          <para>Fragment of <filename>'conf/constructor-config.xml'</filename>:</para>
+          <programlisting>.
+.
+.
+	&lt;constructor class="java.util.Date">
+		&lt;argument>
+			&lt;field-name>fastTime&lt;/field-name>
+		&lt;/argument>
+	&lt;/constructor>.
+.
+.</programlisting>
+          <para>In the  xml configuration in the file <filename>'conf/setter-config.xml'</filename>,
+            we find that the configuration for the class 'java.util.Date' is specifying that we want
+            to ignore the field 'cdate' when it comes to generating setter methods for that class
+            (i.e. no setter method will be generated for that particular field).</para>
+          <para>Fragment of <filename>'conf/setter-config.xml'</filename>:</para>
+          <programlisting>.
+.
+.
+	&lt;setter class="java.util.Date">
+		&lt;field>
+			&lt;field-name>cdate&lt;/field-name>
+			&lt;alternative>ignore&lt;/alternative>
+		&lt;/field>
+	&lt;/setter>.
+.
+.</programlisting>
         </listitem>
         <listitem>
-          <para>Once again the dummy file will not compile properly, so we will need to do some
-            manual editing again.</para>
-        </listitem>
-        <listitem>
-          <para>The first error will occur at this line:</para>
-          <para>CODE HERE</para>
-          <para>This is the error we have encountered before for the NAME field, so do the manual
-            edit as before.</para>
-          <para>CODE HERE</para>
-        </listitem>
-        <listitem>
-          <para>The last error occurs here:</para>
-          <para>CODE HERE</para>
-          <para>This is also the same problem that we have encountered before, and will be fixed
-            later so just comment it out as before</para>
-          <para>CODE HERE</para>
-        </listitem>
-        <listitem>
-          <para>The dummy class should now compile properly, notice that the previous error we had
-            with the java.util.Date field doesn't exist. The configuration for TestGen has fixed
-            this problem so that the java.util.Date object is created properly:</para>
-          <para>CODE HERE</para>
-        </listitem>
-        <listitem>
-          <para>Edit your unit test case to use the new dummy file and run it.</para>
-          <para>Now we will try to fix the error with NAME.</para>
+          <para>We've fixed one of the errors, now we can try to fix some of the others.</para>
         </listitem>
       </itemizedlist>
     </para>
@@ -480,23 +701,77 @@ return account0;
   
   <section>
     <title>The Tutorial Application - 3rd Run</title>
-    <para>The second error we encountered was with the NAME field. If we look at the JPetStore
-      source, then we can see that the problem is that the NAME field in the NAME class does not
-      have a setter method.</para>
+    <para>Another error we encountered was with the
+      'org.springframework.beans.support.PagedListHolder' field in the Cart class. </para>
+    <para>IMAGE HERE</para>
+    <para>If we look at the Spring source code, then we can see that the problem is that the
+      'refreshDate' and 'newPageSet' fields in the
+      'org.springframework.beans.support.PagedListHolder' class do not have setter methods (i.e.
+      there is no 'setRefreshDate()' or 'setNewPageSet()' method defined in the class.</para>
+    <para>Fragment of <filename>'PageListHolder.java'</filename> from the Spring Framework
+      source:</para>
+    <programlisting>package org.springframework.beans.support;
+.
+.
+.
+public class PagedListHolder implements Serializable {
+
+	public static final int DEFAULT_PAGE_SIZE = 10;
+
+	public static final int DEFAULT_MAX_LINKED_PAGES = 10;
+
+
+	private List source;
+
+	private Date refreshDate;
+
+	private SortDefinition sort;
+
+	private SortDefinition sortUsed;
+
+	private int pageSize = DEFAULT_PAGE_SIZE;
+
+	private int page = 0;
+
+	private boolean newPageSet;
+
+	private int maxLinkedPages = DEFAULT_MAX_LINKED_PAGES;
+.
+.
+.</programlisting>
     <para>In this case, we need to examine the source code to see if we actual need this field for
-      our unit testing. It seems that the NAME class contains some field which are not required for
-      creating an order, but are purely for the web navigation.</para>
-    <para>CODE HERE AND MORE EXPLANATION</para>
-    <para>Hence we can do some configuration for TestGen so that a setter method is not generated
-      for the NAME field.</para>
-    <para>EXPLANATION HERE</para>
+      our unit testing. It seems that the 'org.springframework.beans.support.PagedListHolder' class
+      contains some fields which are not required for creating an order, but are purely for the web
+      navigation.</para>
+    <para>Hence for the purposes of unit testing the contents of the
+      'org.springframework.samples.jpetstore.domain.Cart' object, we don't really need these web
+      navigation fields so for the purposes of the tutorial we can ignore them in the generated
+      log.</para>
     <para>Now we can run the tutorial application again with the updated configuration. <itemizedlist>
         <listitem>
-          <para>Stop the Tomcat server if it is still running.</para>
+          <para>Stop the Tomcat server if it is still running, but make sure the JPetStore database
+            server is still running.</para>
+        </listitem>
+        <listitem>
+          <para>Edit the configuration file <filename>'conf/configuration.properties'</filename> so
+            that in addition to the customization files that we used in the previous run, it will
+            also include <filename>'conf/jpetstore-test-setter-config.xml'</filename> .</para>
+          <para>As an example see
+              <filename>'tutorial/conf/step.3.configuration.properties'</filename> :</para>
+          <programlisting># config files for constructor configuration
+
+constructor.config.files=constructor-config.xml
+
+# config files for setter method configuration
+
+setter.config.files=setter-config.xml, jpetstore-test-setter-config.xml</programlisting>
+          <para>This ensures that the TestDataCaptureJ tool will run with all 3 configuration files
+            for the generated logs.</para>
         </listitem>
         <listitem>
           <para>Export the TestDataCaptureJ project as a jar with AspectJ support to
-            {TOMCAT_HOME}/shared/lib.</para>
+            {TOMCAT_HOME}/shared/lib. Once again if you are not over-writing the jar exported from
+            the previous run, then the jar from the previous run will have to be deleted.</para>
         </listitem>
         <listitem>
           <para>Start the Tomcat server.</para>
