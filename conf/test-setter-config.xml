@@ -6,43 +6,43 @@
 
 <!-- 
   The following classes are deliberately missing so that they can be used for negative au.com.dw.testing.
-  mock.classcheck.Setter_UnconfiguredSimple
-  mock.classcheck.Setter_UnconfiguredObject
-  mock.classcheck.Setter_UnconfiguredCollection
-  mock.classcheck.Setter_UnconfiguredArray
-  mock.classcheck.Setter_UnconfiguredMap
-  mock.classcheck.Setter_UnconfiguredObjectArray
+  au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredSimple
+  au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject
+  au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredCollection
+  au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredArray
+  au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredMap
+  au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObjectArray
  -->
  
-	<setter class="mock.classcheck.Setter_Simple">
+	<setter class="au.com.dw.testdatacapturej.mock.classcheck.Setter_Simple">
 		<field>
 			<field-name>setterField</field-name>
 			<alternative>ignore</alternative>
 		</field>
 	</setter>
 		
-	<setter class="mock.classcheck.Setter_Object">
+	<setter class="au.com.dw.testdatacapturej.mock.classcheck.Setter_Object">
 		<field>
 			<field-name>setterField</field-name>
 			<alternative>ignore</alternative>
 		</field>
 	</setter>
 	
-	<setter class="mock.classcheck.Setter_Collection">
+	<setter class="au.com.dw.testdatacapturej.mock.classcheck.Setter_Collection">
 		<field>
 			<field-name>setterField</field-name>
 			<alternative>ignore</alternative>
 		</field>
 	</setter>
 
-	<setter class="mock.classcheck.Setter_Array">
+	<setter class="au.com.dw.testdatacapturej.mock.classcheck.Setter_Array">
 		<field>
 			<field-name>setterField</field-name>
 			<alternative>ignore</alternative>
 		</field>
 	</setter>
 	
-	<setter class="mock.classcheck.Setter_Map">
+	<setter class="au.com.dw.testdatacapturej.mock.classcheck.Setter_Map">
 		<field>
 			<field-name>setterField</field-name>
 			<alternative>ignore</alternative>
@@ -51,7 +51,7 @@
 
 <!-- Examples for documentation -->
 
-    <setter class="mock.explanation.CustomerFullName">
+    <setter class="au.com.dw.testdatacapturej.mock.explanation.CustomerFullName">
 		<field>
 			<field-name>fullName</field-name>
 			<alternative>ignore</alternative>

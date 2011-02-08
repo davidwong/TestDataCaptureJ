@@ -5,16 +5,16 @@
 <!-- *********************************** -->
 
 <!-- 
-  mock.classcheck.NDCNS_Int and mock.classcheck.NDCNS_UnconfiguredObject are deliberately missing for negative au.com.dw.testing.
+  au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int and au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject are deliberately missing for negative au.com.dw.testing.
  -->
  
-	<constructor class="mock.classcheck.NDCNS_String">
+	<constructor class="au.com.dw.testdatacapturej.mock.classcheck.NDCNS_String">
 		<argument>
 			<field-name>noSetterField</field-name>
 		</argument>
 	</constructor>
 	
-	<constructor class="mock.classcheck.NDCNS_BooleanFloat">
+	<constructor class="au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat">
 		<argument>
 			<field-name>noSetterField</field-name>
 		</argument>
@@ -23,13 +23,13 @@
 		</argument>
 	</constructor>
 
-	<constructor class="mock.classcheck.NDCNS_Object">
+	<constructor class="au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object">
 		<argument>
 			<field-name>noSetterField</field-name>
 		</argument>
 	</constructor>
 
-	<constructor class="mock.classcheck.NDCNS_Collection">
+	<constructor class="au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Collection">
 		<argument>
 			<field-name>noSetterField</field-name>
 		</argument>
@@ -38,7 +38,7 @@
 		</argument>
 	</constructor>
 
-	<constructor class="mock.classcheck.NDCNS_Array">
+	<constructor class="au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Array">
 		<argument>
 			<field-name>noSetterField</field-name>
 		</argument>
@@ -47,7 +47,7 @@
 		</argument>
 	</constructor>
 	
-	<constructor class="mock.classcheck.NDCNS_Map">
+	<constructor class="au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Map">
 		<argument>
 			<field-name>noSetterField</field-name>
 		</argument>
@@ -57,14 +57,14 @@
 	</constructor>	
 		
 	<!-- This is deliberately mis-configured with only one of the two fields configured -->
-	<constructor class="mock.classcheck.NDCNS_LongChar">
+	<constructor class="au.com.dw.testdatacapturej.mock.classcheck.NDCNS_LongChar">
 		<argument>
 			<field-name>noSetterField</field-name>
 		</argument>
 	</constructor>	
 	
 	<!-- This is deliberately mis-configured with an extra field that does not exist in the class -->
-	<constructor class="mock.classcheck.NDCNS_Double">
+	<constructor class="au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Double">
 		<argument>
 			<field-name>noSetterField</field-name>
 		</argument>
@@ -74,7 +74,7 @@
 	</constructor>
 
 	<!-- This is deliberately mis-configured with the wrong field name -->
-	<constructor class="mock.classcheck.NDCNS_Integer">
+	<constructor class="au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Integer">
 		<argument>
 			<field-name>noSetterField2</field-name>
 		</argument>
@@ -82,7 +82,7 @@
 
 <!-- Examples for documentation -->
 
-	<constructor class="mock.explanation.CustomerMultipleConstructors">
+	<constructor class="au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors">
 		<argument>
 			<field-name>firstName</field-name>
 		</argument>
