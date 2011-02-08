@@ -20,7 +20,9 @@ package au.com.dw.testing;
 
 import java.util.Collection;
 
+import org.apache.commons.lang.SystemUtils;
 import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Additional asserts for use with JUnit.
@@ -192,5 +194,32 @@ public class AssertUtil {
 	 */
 	static public void assertNotEqualsAny(Collection<?> expected, Object actual) {
 		assertNotEqualsAny(null, expected, actual);
+	}	
+	
+	/**
+	 * Version of assertEquals() for comparing strings with the new line formatting
+	 * removed.
+	 * 
+	 * This should make the comparison of generated logs more robust since don't have to
+	 * worry about changes in new line formatting.
+	 * 
+	 * @param expected
+	 * @param actual
+	 */
+	static public void assertEqualsWithoutFormatting(String expected, String actual)
+	{
+		String expectedWithoutFormatting = null;
+		String actualWithoutFormatting = null;
+		
+		if (expected != null)
+		{
+			expectedWithoutFormatting = expected.replaceAll(SystemUtils.LINE_SEPARATOR, "");
+		}
+		if (actual != null)
+		{
+			actualWithoutFormatting = actual.replaceAll(SystemUtils.LINE_SEPARATOR, "");
+		}
+		assertEquals(expectedWithoutFormatting, actualWithoutFormatting);
 	}
+
 }
