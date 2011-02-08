@@ -30,7 +30,8 @@ import org.junit.runners.Suite;
 	au.com.dw.testdatacapturej.log.AllTests.class,
 	au.com.dw.testdatacapturej.test.AllTests.class,
 	au.com.dw.testdatacapturej.reflection.AllTests.class,
-	au.com.dw.testdatacapturej.reflection.util.AllTests.class
+	au.com.dw.testdatacapturej.reflection.util.AllTests.class,
+	au.com.dw.testdatacapturej.adder.AllTests.class
 })
 
 public class AllTests {
