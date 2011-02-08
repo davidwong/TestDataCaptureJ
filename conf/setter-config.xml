@@ -1,4 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Configuration for fields in a class that should not have setter methods generated for them.
+
+package example;
+
+public class Test {
+  private Object noSetterField;
+  
+  public Test(Object noSetterField)
+  {
+  	this.noSetterField = noSetterField;
+  }
+  
+  public Object getNoSetterField()
+  {
+    return noSetterField;
+  }
+}
+
+The configuration should be in this format, with the field names
+of the parameters in order.
+
+	<setter class="[fully qualified class name]">
+		<field>
+			<field-name>[field name]</field-name>
+			<alternative>[alternative generation for setter method]</alternative>
+		</field>
+	</setter>
+	
+So for the above example, should be:
+
+	<setter class="example.Test">
+		<field>
+			<field-name>noSetterField</field-name>
+			<alternative>ignore</alternative>
+		</field>
+	</setter>
+	
+If this config file is included in configuration.properties file, then that
+means that no setter method is generated for 'noSetterField' field, whereas if this was not
+configured then would generate:
+
+...Test.setNoSetterField(..);
+
+Currently the only alternative generation is 'ignore' which means not to generate setter method
+for the field. Other alternative generation options have not been done yet.
+
+ -->
 <setter-config>
 
 	<setter class="java.util.Date">

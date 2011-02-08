@@ -1,4 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Configuration for classes that can't be constructed by using a default
+no-argument constructor and setters. That is either the class doesn't have a default constructor or
+some fields don't have setters and need to be set in the constructor.
+e.g. objects that are meant to be immutable
+
+package example;
+
+public class Immutable {
+  private Object immutableField;
+  
+  public Immutable(Object immutableField)
+  {
+    this.immutableField = immutableField;
+  }
+  
+  public Object getImmutableField()
+  {
+    return immutableField;
+  }
+}
+
+The configuration should be in this format, with the field names
+of the parameters in order.
+
+	<constructor class="[fully qualified class name]">
+		<argument>
+			<field-name>[field name]</field-name>
+		</argument>
+	</constructor>
+	
+So for the above example, should be:
+
+	<constructor class="example.Immutable">
+		<argument>
+			<field-name>immutableField</field-name>
+		</argument>
+	</constructor>
+	
+If this config file is included in configuration.properties file, then the example configuration
+should produce:
+
+... = new example.Immutable(immutableField);
+
+instead of the default:
+
+... = new example.Immutable();
+...setImmutableField(..);
+	
+ -->
 <constructor-config>
 
 	<constructor class="java.util.Date">
