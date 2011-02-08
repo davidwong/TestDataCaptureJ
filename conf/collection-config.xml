@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Configuration for classes that contain collection fields that do not allow direct access to the collection, but only
+allow adding elements to it through a adder method in that class. So there
+is usually no setter or getter for the collection field itself.
+e.g.
+
+package example;
+
+public class ClassWithAdder {
+  private Collection<?> collectionField = new ArrayList<Object>();
+  
+  public ClassWithAdder()
+  {
+  }
+  
+  public void addElement(Object element)
+  {
+    collectionField.add(element);
+  }
+}
+
+The configuration should be in the format:
+
+	<container class="[fully qualified class name of the class containing the collection]">
+		<argument>
+			<field-name>[field name of the collection field]</field-name>
+			<adder-method>[adder method name]</adder-method>
+		</argument>
+	</container>
+	
+So for the above example, should be:
+
+	<container class="example.ClassWithAdder">
+		<argument>
+			<field-name>collectionField</field-name>
+			<adder-method>addElement</adder-method>
+		</argument>
+	</container>
+	
+If this config file is included in configuration.properties file, then that
+means that the adder method is generated:
+
+...classWithAdder.addElement(..)
+
+instead of the default:
+
+...collection = new ArrayList();
+...collection.add(..)
+...classWithAdder.setCollectionField(collection)
+	
+ -->
+<collection-config>
+
+		
+</collection-config>

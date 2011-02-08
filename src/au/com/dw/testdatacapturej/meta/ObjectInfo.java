@@ -24,6 +24,9 @@ import java.util.List;
 /**
  * Holder for the metadata required to generate test data for an object, whether it is for the initial object
  * to be logged or a field somewhere in the recursive process.
+ * 
+ * ***************************************************
+ * Overview of the most common fields
  * ***************************************************
  * e.g. The object to be logged as a parameter or return value is InitialObject in the example.
  * 
@@ -110,13 +113,20 @@ import java.util.List;
  *                          [from fieldName]
  * 
  * ***************************************************
- * 
+ * Array specific fields
+ * ***************************************************
  * The index would only be used for array elements, so the first element would have index 0, the second element
  * would have index 1, etc.
  * 
+ * ***************************************************
+ * Map specific fields
+ * ***************************************************
  * The keyInfo is only used for map entries. The ObjectInfo would store the metadata for the value while the
  * keyInfo would be created to store the metadata for the key.
  * 
+ * ***************************************************
+ * Constructor specific fields
+ * ***************************************************
  * Where a parameterized constructor has been configured for this object, the following fields are used.
  * 1. constructorParamFieldNames
  * This is the list of field names for the parameters, assuming that the constructor is setting fields rather
@@ -126,7 +136,7 @@ import java.util.List;
  * this list in the parent ObjectInfo (parentInfo)
  * 3. alreadyLogged
  * If this object has been logged as a parameter, then this flag is set to indicate do not need to log again as a field.
- * *********************************************************
+ *
  * e.g.
  * This is the object to be logger:
  * 
@@ -157,7 +167,39 @@ import java.util.List;
  *    it from the field ObjectInfo, e.g. 100L.
  * 3. alreadyLogged in the field ObjectInfo would be set to true.
  * 
- * *********************************************************
+ * ***************************************************
+ * Adder method fields
+ * ***************************************************
+ * A common pattern for collection fields is not to allow direct access to the collection, but only
+ * allow adding elements to it through a adder method in the class containing the collection. So there
+ * is usually no setter or getter for the collection field itself.
+ * e.g.
+ * 
+ * public class ClassWithAdder {
+ *   private Collection<?> collectionField = new ArrayList<Object>();
+ *   
+ *   public ClassWithAdder()
+ *   {
+ *   }
+ *   
+ *   public void addElement(Object element)
+ *   {
+ *     collectionField.add(element);
+ *   }
+ * }
+ * 
+ * The ObjectInfo for the collection field will have to be marked as requiring generation for this
+ * pattern instead of the default generation of:
+ * 1. create the collection object
+ * 2. add element to the collection
+ * 3. set the collection to the field of the containing class
+ * Instead we just want to invoke the adder method in the containing class.
+ * 
+ * usesAdder is the flag field, which is set in the collection object (not the ObjectInfo for the elements
+ * or the containing class).
+ * 
+ * adderMethodName is the name of the adder method name in the containing class and must be specified since
+ * there is no standard naming convention.
  * 
  * @author David Wong
  *
@@ -233,6 +275,16 @@ public class ObjectInfo {
 	 * should be set in case we don't want it logged again as a field.
 	 */
 	private boolean alreadyLogged;
+	
+	/** If the object is a collection, are elements added to it through an adder method in it's enclosing
+	 *  class, instead being added directly to the collection.
+	 */
+	private boolean usesAdder = false;
+
+	/** If the object is a collection and elements are only to be added to it through an add method in it's
+	 *  enclosing class, then this is the name of that adder method.
+	 */
+	private String adderMethodName;
 	
 	/** Store any errors from the recursive reflection process that sets the meta-data */
 	private List<String> errors = new ArrayList<String>();
@@ -470,6 +522,22 @@ public class ObjectInfo {
 
 	public void setAlreadyLogged(boolean alreadyLogged) {
 		this.alreadyLogged = alreadyLogged;
+	}
+	
+	public boolean isUsesAdder() {
+		return usesAdder;
+	}
+
+	public void setUsesAdder(boolean usesAdder) {
+		this.usesAdder = usesAdder;
+	}
+	
+	public String getAdderMethodName() {
+		return adderMethodName;
+	}
+	
+	public void setAdderMethodName(String adderMethodName) {
+		this.adderMethodName = adderMethodName;
 	}
 
 	public List<String> getErrors() {

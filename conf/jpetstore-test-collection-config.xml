@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection-config>
+
+<!-- These are testing for the Spring sample JPetstore only -->
+<!-- See collection-config for explanation                  -->
+<!-- ****************************************************** -->
+
+	<container class="java.util.Date">
+		<argument>
+			<field-name>fastTime</field-name>
+			<adder-method>addElement</adder-method>
+		</argument>
+	</container>
+		
+</collection-config>

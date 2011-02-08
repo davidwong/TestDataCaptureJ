@@ -19,7 +19,9 @@
 package au.com.dw.testdatacapturej.config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.util.Messages;
@@ -115,7 +117,6 @@ public class ConfigUtil {
 	public List<String> getIgnoredSetters(ObjectInfo info)
 	{
 		Configuration config = Configuration.getConfiguration();
-		List<String> emptyList = new ArrayList<String>();
 		
 		// get the parameter field name list
 		List<String> ignoredSetterFieldNames = config.getIgnoredSetter(info.getClassName());
@@ -126,7 +127,54 @@ public class ConfigUtil {
 		}
 		else
 		{
+			List<String> emptyList = new ArrayList<String>();
 			return emptyList;
 		}
+	}
+	
+	/**
+	 * Check configuration for classes that have collection fields that are only accessed through
+	 * adder methods.
+	 * 
+	 * @param info
+	 * @return List of collection field names and the adder method names to access them, if found, else empty list
+	 */
+	public List<CollectionAdderConfig> getAddedCollections(ObjectInfo info)
+	{
+		Configuration config = Configuration.getConfiguration();
+		
+		// get the collection field name and adder method name list
+		List<CollectionAdderConfig> collectionConfigs = config.getAdderCollection(info.getClassName());
+		
+		if (collectionConfigs != null)
+		{
+			return collectionConfigs;
+		}
+		else
+		{
+			List<CollectionAdderConfig> emptyList = new ArrayList<CollectionAdderConfig>();
+			return emptyList;
+		}
+	}
+	
+	/**
+	 * Utility method to find the CollectionAdderConfig that matches a collection field name.
+	 * 
+	 * @param collectionConfigs
+	 * @param fieldName
+	 * @return Null if no match is found.
+	 */
+	public CollectionAdderConfig getCollectionAdderConfig(List<CollectionAdderConfig> collectionConfigs, String fieldName)
+	{
+		for (CollectionAdderConfig collectionConfig : collectionConfigs)
+		{
+			if (collectionConfig.getFieldName().equals(fieldName))
+			{
+				return collectionConfig;
+			}
+		}
+		
+		// not found
+		return null;
 	}
 }

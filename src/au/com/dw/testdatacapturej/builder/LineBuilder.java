@@ -260,6 +260,42 @@ public class LineBuilder {
     }
 
     /**
+	 * Generate a line for adding an element to a collection by invoking an adder method
+	 * on it's enclosing class
+	 * 
+	 * If the collection field name is :
+	 *   arrayList0
+	 * and the enclosing class name is :
+	 *   test0
+	 * and the value to be added is :
+	 *   "test"
+	 * and the adder method name is :
+	 *   addItem
+	 *   
+	 * Then should generate:
+	 *   test0.addItem("test");
+     * 
+     * @param enclosingClassName Class name for the class that contains the collection field
+     * @param adderMethodName Name for the adder method, needed since there is no standard convention unlike for getters and setters
+     * @param fieldValue
+     * @param literal
+     * @return
+     */
+    public String createCollectionEnclosingAdderLine(String enclosingClassName, String adderMethodName, Object fieldValue, boolean literal)
+    {
+       	StringBuilder builder = new StringBuilder();
+       	
+		builder.append(enclosingClassName);
+    	builder.append(".");
+       	builder.append(adderMethodName);
+       	builder.append("(");
+       	interpretValue(builder, fieldValue, literal);       
+       	builder.append(");");
+       	
+       	return builder.toString();
+    }
+    
+    /**
 	 * Generate a line for assigning an element to an array.
 	 * 
 	 * If the array field name is :

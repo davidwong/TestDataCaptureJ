@@ -20,6 +20,7 @@ package au.com.dw.testdatacapturej.log;
 
 import java.util.List;
 
+import au.com.dw.testdatacapturej.log.display.AddedElementDisplay;
 import au.com.dw.testdatacapturej.log.display.ArrayElementDisplay;
 import au.com.dw.testdatacapturej.log.display.ArrayFieldDisplay;
 import au.com.dw.testdatacapturej.log.display.ClassFieldDisplay;
@@ -264,7 +265,11 @@ public class ObjectLogger {
 				case MAP_ENTRY:
 					fieldDisplay = new MapEntryDisplay();
 					break;
-					
+
+				case ADDED_COLLECTION_ELEMENT:
+					fieldDisplay = new AddedElementDisplay();
+					break;
+
 				default:
 					// shouldn't fall through here
 					fieldDisplay = new ClassFieldDisplay();

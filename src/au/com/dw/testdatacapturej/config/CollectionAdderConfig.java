@@ -16,24 +16,32 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log;
+package au.com.dw.testdatacapturej.config;
 
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
-	FieldDisplayTest.class,
-	ConstructorParamTest.class,
-	ConstructorParamNestedTest.class,
-	ConstructorParamNullTest.class,
-	SetterMethodTest.class,
-	SetterMethodNestedTest.class,
-	SetterMethodNullTest.class,
-	CollectionAdderTest.class
-})
-
-public class AllTests {
-		//just an empty class for make file compile with annotation
+/**
+ * Holds configuration data for collection fields that are accessed through adder methods.
+ * 
+ * @author David Wong
+ *
+ */
+public class CollectionAdderConfig {
+	/** The field name of the collection */
+	private String fieldName;
+	
+	/** Name of the adder method used to add elements to the collection field */
+	private String adderMethodName;
+	
+	public String getFieldName() {
+		return fieldName;
+	}
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
+	}
+	public String getAdderMethodName() {
+		return adderMethodName;
+	}
+	public void setAdderMethodName(String adderMethodName) {
+		this.adderMethodName = adderMethodName;
+	}
 }

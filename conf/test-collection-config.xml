@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection-config>
+
+<!-- These are all for unit testing only -->
+<!-- *********************************** -->
+
+	<container class="au.com.dw.testdatacapturej.mock.adder.CollectionHolder">
+		<argument>
+			<field-name>collection</field-name>
+			<adder-method>addCollectionElement</adder-method>
+		</argument>
+	</container>	
+
+	<container class="au.com.dw.testdatacapturej.mock.adder.CollectionClassHolder">
+		<argument>
+			<field-name>collection</field-name>
+			<adder-method>addCollectionElementToClass</adder-method>
+		</argument>
+		<argument>
+			<field-name>collection2</field-name>
+			<adder-method>addCollectionElementToClass2</adder-method>
+		</argument>
+	</container>	
+	
+	<container class="au.com.dw.testdatacapturej.mock.adder.CollectionHolderWithSetter">
+		<argument>
+			<field-name>collection</field-name>
+			<adder-method>addCollectionElementInsteadOfSetter</adder-method>
+		</argument>
+	</container>	
+				
+</collection-config>

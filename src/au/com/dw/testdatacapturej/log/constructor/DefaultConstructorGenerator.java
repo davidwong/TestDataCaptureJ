@@ -32,21 +32,25 @@ public class DefaultConstructorGenerator extends BaseConstructorGenerator {
 
 	@Override
 	public void generateConstructor(StringBuilder builder, ObjectInfo info) {
-		String fieldIndex = String.valueOf(info.getClassFieldNameIndex());
-
-		builder.append(FormatConstants.newLine);
-
-		// create the constructor line
-		String classFieldName = getLineBuilder().createConstructorLine(builder, info.getValue(), null, fieldIndex);
-		info.setClassFieldName(classFieldName);
-		
-		// pass the newly created class field name to child objects
-		for (ObjectInfo fieldInfo : info.getFieldList())
+		// no need to construct a collection is it is only accessed through adder method
+		if (!info.isUsesAdder())
 		{
-			fieldInfo.setContainingClassFieldName(classFieldName);
+			String fieldIndex = String.valueOf(info.getClassFieldNameIndex());
+	
+			builder.append(FormatConstants.newLine);
+	
+			// create the constructor line
+			String classFieldName = getLineBuilder().createConstructorLine(builder, info.getValue(), null, fieldIndex);
+			info.setClassFieldName(classFieldName);
+			
+			// pass the newly created class field name to child objects
+			for (ObjectInfo fieldInfo : info.getFieldList())
+			{
+				fieldInfo.setContainingClassFieldName(classFieldName);
+			}
+			
+			builder.append(FormatConstants.newLine);
 		}
-		
-		builder.append(FormatConstants.newLine);
 	}
 
 	@Override

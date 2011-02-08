@@ -36,9 +36,13 @@ package au.com.dw.testdatacapturej.meta;
  * MAP_ENTRY:
  * Object is an entry of a map.
  * 
+ * ADDED_COLLECTION_ELEMENT:
+ * Object is an element of a collection that is only added to the collection by a
+ * adder method in the enclosing class that contains the collection
+ * 
  * @author David Wong
  *
  */
 public enum ContainmentType {
-	NONE, FIELD, COLLECTION_ELEMENT, ARRAY_ELEMENT, MAP_ENTRY
+	NONE, FIELD, COLLECTION_ELEMENT, ARRAY_ELEMENT, MAP_ENTRY, ADDED_COLLECTION_ELEMENT
 }

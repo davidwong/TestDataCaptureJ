@@ -42,12 +42,14 @@ public class ConfigurationFileTest {
 
 	private XMLConfiguration xmlConstructorConfig;
 	private XMLConfiguration xmlSetterConfig;
+	private XMLConfiguration xmlCollectionConfig;
 	
 	@Before
 	public void setUp() throws Exception {	
 		try {
 			xmlConstructorConfig = new XMLConfiguration("test-constructor-config.xml");
 			xmlSetterConfig = new XMLConfiguration("test-setter-config.xml");
+			xmlCollectionConfig = new XMLConfiguration("test-collection-config.xml");
 		} catch (ConfigurationException cex) {
 			cex.printStackTrace();
 		}
@@ -145,4 +147,49 @@ public class ConfigurationFileTest {
 		}
     }
 
+    /**
+     * Test for getting collection adder config from the Configuration.
+     * 
+     */
+    @Test
+    public void collectionFileReadTest()
+    {
+		try {		
+
+			List<?> collections = xmlCollectionConfig.configurationsAt("container");
+			for (Iterator<?> it = collections.iterator(); it.hasNext();)
+			{
+				HierarchicalConfiguration sub = (HierarchicalConfiguration) it.next();
+			    // sub contains now all data about a single field
+				
+				String className = sub.getString("[@class]");
+				System.out.println(className);
+				
+				List<String> fieldNames = (List<String>)sub.getList("argument.field-name");
+				assertNotNull(fieldNames);
+				assertFalse(fieldNames.isEmpty());
+				
+			    for (String fieldName : fieldNames)
+			    {
+			    	System.out.println(fieldName);
+			    	assertNotNull(fieldName);
+			    }
+
+				List<String> adderMethodNames = (List<String>)sub.getList("argument.adder-method");
+				assertNotNull(adderMethodNames);
+				assertFalse(adderMethodNames.isEmpty());
+				
+			    for (String adderMethodName : adderMethodNames)
+			    {
+			    	System.out.println(adderMethodName);
+			    	assertNotNull(adderMethodName);
+			    }
+
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+    }
 }

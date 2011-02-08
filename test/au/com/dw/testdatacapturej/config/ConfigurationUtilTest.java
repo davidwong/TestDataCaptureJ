@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.util.Map;
 
 
 import org.junit.Before;
@@ -32,6 +33,9 @@ import org.junit.Test;
 
 import au.com.dw.testdatacapturej.config.ConfigUtil;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
+import au.com.dw.testdatacapturej.mock.adder.CollectionClassHolder;
+import au.com.dw.testdatacapturej.mock.adder.CollectionHolder;
+import au.com.dw.testdatacapturej.mock.adder.CollectionHolderWithSetter;
 import au.com.dw.testdatacapturej.mock.classcheck.Holder;
 import au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat;
 import au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int;
@@ -43,11 +47,12 @@ import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
 
 
 /**
- * Test for the checking of object for the presence of default no-argument constructors and of setter
- * methods for fields.
+ * Test for the checking of object for the presence of default no-argument constructors, of setter
+ * methods for fields, and of adder methods for collections. These are objects that have had
+ * custom configurations defined.
  * 
- * For these tests to run, the test constructor config files and test setter config files must be setup
- * and loaded into Configuration.
+ * For these tests to run, the test constructor config files, test setter config files and test
+ * collection config files must be setup for the objects to be tested, and loaded into Configuration.
  * 
  * @author David Wong
  *
@@ -61,6 +66,12 @@ public class ConfigurationUtilTest {
 	private String noSetterFieldName = "noSetterField";
 	private String noSetterFieldName2 = "noSetterField2";
 	private String setterFieldName = "setterField";
+	private String collectionFieldName = "collection";
+	private String collectionFieldName2 = "collection2";
+	private String collectionAdderMethod = "addCollectionElement";
+	private String collectionClassAdderMethod = "addCollectionElementToClass";
+	private String collectionClassAdderMethod2 = "addCollectionElementToClass2";
+	private String collectionSetterAdderMethod = "addCollectionElementInsteadOfSetter";
 	
 	private ConfigUtil configUtil;
 	
@@ -206,6 +217,106 @@ public class ConfigurationUtilTest {
 			List<String> fieldNames = configUtil.getIgnoredSetters(fieldInfo);
 			assertNotNull(fieldNames);
 			assertTrue(fieldNames.isEmpty());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+    }
+    
+    /**
+     * Test for getting collection adders from the Configuration.
+     * 
+     */
+    @Test
+    public void collectionTest()
+    {
+		CollectionHolder holder = new CollectionHolder();
+		holder.addCollectionElement("test1");
+		
+    	try {
+			ObjectInfo info = handler.handle(holder);
+			
+			ObjectInfo fieldInfo = info.getField(collectionFieldName);
+			assertNotNull(fieldInfo);
+			assertTrue(fieldInfo.isUsesAdder());
+			assertEquals(collectionAdderMethod, fieldInfo.getAdderMethodName());
+			
+			List<CollectionAdderConfig> collectionConfigs = configUtil.getAddedCollections(info);
+			assertNotNull(collectionConfigs);
+			assertEquals(1, collectionConfigs.size());
+			
+			assertNotNull(configUtil.getCollectionAdderConfig(collectionConfigs, collectionFieldName));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+    }
+    
+    /**
+     * Test for getting collection adders from the Configuration.
+     * 
+     * This version has multiple collection fields with adders, both of which are configured.
+     * 
+     */
+    @Test
+    public void collectionMultipleTest()
+    {
+		CollectionClassHolder holder = new CollectionClassHolder();
+		holder.addCollectionElement(new Integer(1));
+		// deliberately leave one of the collections empty
+		
+    	try {
+			ObjectInfo info = handler.handle(holder);
+			
+			ObjectInfo fieldInfo = info.getField(collectionFieldName);
+			assertNotNull(fieldInfo);
+			assertTrue(fieldInfo.isUsesAdder());
+			assertEquals(collectionClassAdderMethod, fieldInfo.getAdderMethodName());
+
+			fieldInfo = info.getField(collectionFieldName2);
+			assertNotNull(fieldInfo);
+			assertTrue(fieldInfo.isUsesAdder());
+			assertEquals(collectionClassAdderMethod2, fieldInfo.getAdderMethodName());
+
+			List<CollectionAdderConfig> collectionConfigs = configUtil.getAddedCollections(info);
+			assertNotNull(collectionConfigs);
+			assertEquals(2, collectionConfigs.size());
+			
+			assertNotNull(configUtil.getCollectionAdderConfig(collectionConfigs, collectionFieldName));
+			assertNotNull(configUtil.getCollectionAdderConfig(collectionConfigs, collectionFieldName2));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+    }
+    
+    /**
+     * Test for getting collection adders from the Configuration for a collection field that
+     * has both adder and setter methods.
+     * 
+     */
+    @Test
+    public void collectionWithSetterTest()
+    {
+		CollectionHolderWithSetter holder = new CollectionHolderWithSetter();
+		holder.addCollectionElement("test1");
+		
+    	try {
+			ObjectInfo info = handler.handle(holder);
+			
+			ObjectInfo fieldInfo = info.getField(collectionFieldName);
+			assertNotNull(fieldInfo);
+			assertTrue(fieldInfo.isUsesAdder());
+			assertEquals(collectionSetterAdderMethod, fieldInfo.getAdderMethodName());
+			
+			List<CollectionAdderConfig> collectionConfigs = configUtil.getAddedCollections(info);
+			assertNotNull(collectionConfigs);
+			assertEquals(1, collectionConfigs.size());
+			
+			assertNotNull(configUtil.getCollectionAdderConfig(collectionConfigs, collectionFieldName));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

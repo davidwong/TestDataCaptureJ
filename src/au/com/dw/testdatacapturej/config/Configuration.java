@@ -18,6 +18,7 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.config;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -90,6 +91,28 @@ public class Configuration {
 	 */
 	static public final String SETTER_IGNORE = "ignore";
 
+	/**
+	 * List of classes that contain collection field(s) that are only accessed through adder
+	 * methods.
+	 * 
+	 * public class ClassWithAdder {
+	 *   private Collection<?> collectionField = new ArrayList<Object>();
+	 *   
+	 *   public ClassWithAdder()
+	 *   {
+	 *   }
+	 *   
+	 *     public void addElement(Object element)
+	 *     {
+	 *        collectionField.add(element);
+	 *     }
+	 *   }
+	 * 
+	 * The Map is keyed by the fully qualified class name of the object containing the collection
+	 * field, and the inner map contains the collection field name and adder method name.
+	 */
+	private Map<String, List<CollectionAdderConfig>> adderCollections;
+
 	private Configuration()
 	{
 		try {
@@ -100,23 +123,16 @@ public class Configuration {
 			constructors = new HashMap<String, List<String>>();
 		    
 		    readConstructorConfigFile(constructorConfigFiles);
-		    
-		    /* for au.com.dw.testing only, should read these from config file
-		    List<String> parameters = new ArrayList<String>();
-		    parameters.add("noSetterField");
-		    constructors.put("mock.classcheck.NDCNS_String", parameters);
-		    
-		    parameters = new ArrayList<String>();
-		    parameters.add("noSetterField");
-		    parameters.add("noSetterField2");
-		    constructors.put("mock.classcheck.NDCNS_BooleanFloat", parameters);
-		    */
-		    
+		    	    
 		    setters = new HashMap<String, List<String>>();
 		    
 			String[] setterConfigFiles = propConfig.getStringArray("setter.config.files");
 		    readSetterConfigFile(setterConfigFiles);
-	    
+		    
+		    adderCollections = new HashMap<String, List<CollectionAdderConfig>>();
+			String[] collectionConfigFiles = propConfig.getStringArray("collection.config.files");
+		    readCollectionConfigFile(collectionConfigFiles);		    
+		    
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
 		}
@@ -239,7 +255,72 @@ public class Configuration {
 			cex.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Load the collection configurations from file. 
+	 * 
+	 * An example of the XML structure:
+	 * 
+	 * <collection-config>
+	 *
+	 *   <container class="dummy.ClassName">
+	 *	   <argument>
+	 *		  <field-name>collectionFieldName</field-name>
+	 *        <adder-method>adderMethodName</adder-method>
+	 *	   </argument>
+	 *   </container>
+	 *   .
+	 *   .
+	 *   .
+	 * 
+	 */
+	private void readCollectionConfigFile(String[] configFileNames)
+	{
+		XMLConfiguration xmlConfig = null;
+		
+		try {
+			for (String fileName : configFileNames)
+			{
+				xmlConfig = new XMLConfiguration(fileName);
+				
+				if (xmlConfig != null)
+				{
+					// get all the collection nodes and iterate through them
+					List<?> collectionNodes = xmlConfig.configurationsAt("container");
+					for (Iterator<?> it = collectionNodes.iterator(); it.hasNext();)
+					{
+						HierarchicalConfiguration sub = (HierarchicalConfiguration) it.next();
+					    // sub contains now all data about a single field
+						
+						String className = sub.getString("[@class]");
+						
+						List<String> collectionFieldNames = (List<String>)sub.getList("argument.field-name");
+						// not sure if this is the best way to handle multiple sub elements
+						List<String> adderMethodNames = (List<String>)sub.getList("argument.adder-method");
+						
+						// TODO need more error checking here in case of incorrect configuration
+						if (collectionFieldNames != null && !collectionFieldNames.isEmpty() && adderMethodNames != null && !adderMethodNames.isEmpty())
+						{
+							List<CollectionAdderConfig> collectionConfigs = new ArrayList<CollectionAdderConfig>();
+							for (int i = 0; i < collectionFieldNames.size(); i++)
+							{
+								CollectionAdderConfig collectionConfig = new CollectionAdderConfig();
+								collectionConfig.setFieldName(collectionFieldNames.get(i));
+								collectionConfig.setAdderMethodName(adderMethodNames.get(i));
+										
+								collectionConfigs.add(collectionConfig);
+							}
+							
+							adderCollections.put(className, collectionConfigs);
+						}
+					}
+				}
+			}
+		} catch (ConfigurationException cex) {
+			cex.printStackTrace();
+		}
+	}
+
 	public Object clone()	throws CloneNotSupportedException
 	{
 	    throw new CloneNotSupportedException(); 
@@ -285,4 +366,23 @@ public class Configuration {
 		}
 	}
 
+	/**
+	 * Retrieve a list of collection field names and adder method names for a class that
+	 * only accesses the collection(s) through adder methods.
+	 * 
+	 * @param className
+	 * @return
+	 */
+	public List<CollectionAdderConfig> getAdderCollection(String className) {
+		List<CollectionAdderConfig> collectionConfigs = adderCollections.get(className);
+		
+		if (collectionConfigs != null)
+		{
+			return Collections.unmodifiableList(collectionConfigs);
+		}
+		else
+		{
+			return collectionConfigs;
+		}
+	}
 }

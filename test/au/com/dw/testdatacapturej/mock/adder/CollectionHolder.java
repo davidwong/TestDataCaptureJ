@@ -16,24 +16,27 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log;
+package au.com.dw.testdatacapturej.mock.adder;
 
+import java.util.ArrayList;
+import java.util.Collection;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+/**
+ * Test mock object with collection field that does not use setter method to add to
+ * it's contents. Instead uses an adder method so the the collection field is not
+ * directly manipulated.
+ * 
+ * @author David Wong
+ *
+ */
+public class CollectionHolder {
+	private Collection<Object> collection = new ArrayList<Object>();
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
-	FieldDisplayTest.class,
-	ConstructorParamTest.class,
-	ConstructorParamNestedTest.class,
-	ConstructorParamNullTest.class,
-	SetterMethodTest.class,
-	SetterMethodNestedTest.class,
-	SetterMethodNullTest.class,
-	CollectionAdderTest.class
-})
-
-public class AllTests {
-		//just an empty class for make file compile with annotation
+	public CollectionHolder() {
+	}
+	
+	public void addCollectionElement(Object element) {
+		this.collection.add(element);
+	}
+	
 }

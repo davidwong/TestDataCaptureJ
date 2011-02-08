@@ -18,29 +18,54 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.log.display;
 
+import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Display for an collection field.
+ * Display a collection element for a collection that is accessed through adder methods in the class
+ * containing the collection
+ * e.g. parentField.addElement(value);
  * 
  * @author David Wong
  *
  */
-public class CollectionFieldDisplay extends BaseFieldDisplay {
+public class AddedElementDisplay extends BaseFieldDisplay {
 
 	@Override
-	public String log(ObjectInfo info) {
+	public String log(ObjectInfo info)
+	{
 		StringBuilder builder = new StringBuilder();
+		ObjectInfo parentInfo = info.getParentInfo();
 		
-		// check if configured to ignore a field for setter method generation or if
-		// the collection fields uses an adder method in it's containing class instead
-		// of a setter to add elements
-		if (!info.isSetterIgnoreType() && !info.isUsesAdder())
+		if (parentInfo != null)
 		{
-			generateSetter(builder, info);
+			if (parentInfo.isUsesAdder())
+			{		
+				boolean literal = true;
+				String classFieldName = parentInfo.getContainingClassFieldName();
+				String adderMethodName = parentInfo.getAdderMethodName();
+				
+				if (info.isSimpleType())
+				{
+					literal = false;
+					builder.append(getLineBuilder().createCollectionEnclosingAdderLine(classFieldName, adderMethodName, info.getValue(), literal));
+				}
+				else
+				{
+					builder.append(getLineBuilder().createCollectionEnclosingAdderLine(classFieldName, adderMethodName, info.getClassFieldName(), literal));
+				}
+				builder.append(FormatConstants.newLine);
+			}
+			else
+			{
+				// log error
+			}
 		}
-       	
+		else
+		{
+			// log error
+		}
+		
 		return builder.toString();
 	}
-
 }

@@ -27,7 +27,6 @@ import au.com.dw.testdatacapturej.log.FieldDisplayTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	FieldDisplayTest.class,
 	ConfigurationUtilTest.class,
 	ConfigurationFileTest.class,
 	DateConfigTest.class
