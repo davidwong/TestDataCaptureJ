@@ -36,12 +36,22 @@ import au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInMap;
 /**
  * This is not a real test case, it's only to generate logging for the explanation page in the documentation.
  * 
+ * Hence these tests will not be included when regression testing with AllTests.
+ * Also these tests will never fail as we are only using them to generate example logging.
+ * 
+ * Note that there are empty methods named 'joinPoint...(..)', these are used as JoinPoints that have been
+ * configured for AspectJ to capture the contents of the parameter object.
+ * e.g.
+ * The method 'testCustomerAddressesInCollection()' creates the data and passes the data object as a
+ * parameter to the method 'joinPointParamForCustomerAddressesInCollection(CustomerAddressesInCollection customerAddresses)'.
+ * Because this method has a JointPoint configured on it, AspectJ will be able to capture the 'CustomerAddressesInCollection'
+ * object to generate logging for it.
+ * 
  * @author David Wong
- *
  */
 public class ExplanationTest {
 
-	//@Test
+	@Test
 	public void testCustomer()
 	{
 		Customer customer = new Customer();
@@ -56,7 +66,7 @@ public class ExplanationTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void testAccount()
 	{
 		Account account = joinPointReturnForAccount();
@@ -96,7 +106,7 @@ public class ExplanationTest {
 		return address;
 	}
 
-	//@Test
+	@Test
 	public void testCustomerAddress()
 	{
 		CustomerAddress customerAddress = joinPointReturnForCustomerAddress();
@@ -128,7 +138,7 @@ public class ExplanationTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void testCustomerAddressesInArray()
 	{
 		CustomerAddressesInArray customerAddresses = new CustomerAddressesInArray();
@@ -146,7 +156,7 @@ public class ExplanationTest {
 		
 	}
 	
-	//@Test
+	@Test
 	public void testCustomerAddressesInMap()
 	{
 		CustomerAddressesInMap customerAddresses = new CustomerAddressesInMap();

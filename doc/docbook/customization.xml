@@ -14,12 +14,16 @@
           <para>Fields of data objects have setter methods that follow the standard naming
             convention.</para>
         </listitem>
+        <listitem>
+          <para>Collection fields that are only accessed by adder methods.</para>
+        </listitem>
       </itemizedlist></para>
-    <para>Ideally too the constructor for the data objects should not have side effects that affect
-      the state of the object.</para>
+    <para>Ideally too the constructor for the data objects and setter methods should not have any
+      side effects that affect the state of the object.</para>
     <para>While most classes that are used as data holders that I've come across do tend to follow
       these conventions, sometimes the classes you want to capture do not, so the TestDataCaptureJ
-      tool allows for some custom configuration to handle some of the more common exceptions.</para>
+      tool allows for some custom configuration to handle some of the exceptions based on some
+      commonly used programming patterns.</para>
     
   <itemizedlist>
     <listitem>
@@ -38,13 +42,26 @@
       of code and the logging that would be produced from them. The code and logging for the
       examples for the explanation page are found in:<itemizedlist>
         <listitem>
-          <para><filename>'au/com/dw/testdatacapturej/explanation/'</filename></para>
+          <para><filename>'test/au/com/dw/testdatacapturej/explanation/CustomizationTest.java'</filename></para>
         </listitem>
         <listitem>
-          <para><filename>'au/com/dw/testdatacapturej/mock/explanation/'</filename></para>
+          <para><filename>'test/au/com/dw/testdatacapturej/mock/explanation/*.java'</filename></para>
         </listitem>
       </itemizedlist></para>
-    <para>TODO: add log examples</para>
+    <para>In order the logging examples in this page, firstly configure
+        <filename>'conf/configuration.properties'</filename> to include the unit test configuration
+      files:</para>
+    <programlisting># config files for constructor configuration
+
+constructor.config.files=constructor-config.xml, test-constructor-config.xml
+
+# config files for setter method configuration
+
+setter.config.files=setter-config.xml, test-setter-config.xml
+
+# config files for collection adder configuration
+
+collection.config.files=test-collection-config.xml</programlisting>
     
   </section>
 
@@ -59,7 +76,7 @@
       initialized the fields, in addition to having the default no-argument constructor and setter
       methods for the fields.</para>
 
-    <para><filename>'au/com/dw/testdatacapturej/mock/explanation/CustomerMultipleConstructors.java'</filename>:</para>
+    <para><filename>'test/au/com/dw/testdatacapturej/mock/explanation/CustomerMultipleConstructors.java'</filename>:</para>
     
     <programlisting>package au.com.dw.testdatacapturej.mock.explanation;
 
@@ -93,7 +110,10 @@ public class CustomerMultipleConstructors {
 }</programlisting>
     
     <para>In this case the TestDataCaptureJ tool can be run without any custom configuration, so
-      that it uses the no-argument constructor and the setter method for the fields.</para>
+      that it uses the no-argument constructor and the setter method for the fields. This is what
+      the logging would look like if the configuration file
+        <filename>'conf/test-constructor-config.xml'</filename> is not used (i.e. this is the
+      default code generated).</para>
     
     <programlisting>// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerMultipleConstructors
 public au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors createParam1CustomerMultipleConstructors_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerMultipleConstructors() {
@@ -104,8 +124,9 @@ customerMultipleConstructors0.setSurName("Smith");
 
 return customerMultipleConstructors0;
 }</programlisting>
-    <para>However with some custom configuration we could generate code that uses the other
-      constructor that initializes the fields. <programlisting>1. // au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerMultipleConstructors
+    <para>However with the custom configuration in
+        <filename>'conf/test-constructor-config.xml'</filename> included,  we would generate code
+      that uses the other constructor that initializes the fields instead.<programlisting>1. // au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerMultipleConstructors
 2. public au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors createParam1CustomerMultipleConstructors_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerMultipleConstructors() {
 
 3. au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors customerMultipleConstructors0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors("John", "Smith");
@@ -199,7 +220,7 @@ customerMultipleConstructors0.setSurName("Smith");
       have only the parameterized constructor that initializes all the fields, and not to have any
       setter methods for the fields - i.e. the object becomes read-only after construction.</para>
     
-    <para><filename>'au/com/dw/testdatacapturej/mock/explanation/CustomerImmutable.java'</filename>:</para>
+    <para><filename>'test/au/com/dw/testdatacapturej/mock/explanation/CustomerImmutable.java'</filename>:</para>
     
     <programlisting>package au.com.dw.testdatacapturej.mock.explanation;
 
@@ -240,6 +261,28 @@ public class CustomerImmutable {
 	&lt;/constructor>
 			
 &lt;/constructor-config></programlisting>
+    <para>If the custom configuration was not used, then the following code would be generated in the
+      logging. Of course this code would not compile because the 'CustomerImmutable' class doesn't
+      have the setters 'setFirstName(..)' and 'setSurName(..)'.</para>
+    <programlisting>// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerImmutable
+public au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable createParam1CustomerImmutable_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerImmutable() {
+
+au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable customerImmutable0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable();
+// Default constructor for au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable does not exist.
+customerImmutable0.setFirstName("Mary");
+customerImmutable0.setSurName("Jones");
+
+return customerImmutable0;
+}</programlisting>
+    <para>However with the custom configuration included, the correct code is generated setting the
+      value of the fields in the constructor.</para>
+    <programlisting>// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerImmutable
+public au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable createParam1CustomerImmutable_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerImmutable() {
+
+au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable customerImmutable0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable("Mary", "Jones");
+
+return customerImmutable0;
+}</programlisting>
     
   </section>
   
@@ -259,25 +302,18 @@ public class CustomerImmutable {
       </listitem>
     </itemizedlist>
     
-    <para><filename>'au/com/dw/testdatacapturej/mock/explanation/CustomerFullName.java'</filename>:</para>
+    <para><filename>'test/au/com/dw/testdatacapturej/mock/explanation/CustomerFullName.java'</filename>:</para>
     
-    <programlisting>package au.com.dw.testdatacapturej.mock.explanation;
-
-public class CustomerFullName {
+    <programlisting>public class CustomerFullName {
 	private String firstName;
 	private String surName;
 	private String fullName;
 	
-	public CustomerFullName(String firstName, String surName) {
-		super();
-		this.firstName = firstName;
-		this.surName = surName;
-		
-		this.fullName = surName + ", " + firstName;
-	}
-	
 	public CustomerFullName() {
+	}
 
+	private void createFullName() {
+		fullName = surName + ", " + firstName;
 	}
 	
 	public String getFirstName() {
@@ -285,21 +321,24 @@ public class CustomerFullName {
 	}
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+		
+		createFullName();
 	}
 	public String getSurName() {
 		return surName;
 	}
 	public void setSurName(String surName) {
 		this.surName = surName;
+		
+		createFullName();
 	}
 	public String getFullName() {
 		return fullName;
 	}
 	
-}
-</programlisting>
+}</programlisting>
     <para>In this rather contrived example, we do not want TestDataCaptureJ to generate a setter
-      method for the fullName field since the class does not have any setter method.</para>
+      method for the 'fullName' field since the class does not have any setter method.</para>
     <para>There is a custom configuration for setters that will configure TestDataCaptureJ not to
       generate setter methods for certain fields in data objects.</para>
     <para>Fragment of <filename>'conf/test-setter-config.xml'</filename>:</para>
@@ -334,11 +373,111 @@ public class CustomerFullName {
 setter.config.files=setter-config.xml, test-setter-config.xml
 .
 .
-.
-</programlisting>
+.</programlisting>
+    <para>The generated log will not have a 'setFullName(..)' method:</para>
+    <programlisting>// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerFullName
+public au.com.dw.testdatacapturej.mock.explanation.CustomerFullName createParam1CustomerFullName_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerFullName() {
+
+au.com.dw.testdatacapturej.mock.explanation.CustomerFullName customerFullName0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerFullName();
+customerFullName0.setFirstName("Ted");
+customerFullName0.setSurName("Jones");
+
+return customerFullName0;</programlisting>
 
   </section>
   
+  <section>
+    <title>Collection Adder Methods</title>
+    <para>A common pattern for handling collection fields is to only allow access to it through
+      methods in the enclosing class, rather than accessing the collection directly.</para>
+    <para>An example is
+        <filename>'test/au/com/dw/testdatacapturej/mock/explanation/CustomerListing.java'</filename>:</para>
+    <programlisting>public class CustomerListing {
+	private final Collection&lt;Customer> customers = new ArrayList&lt;Customer>();
+
+	public CustomerListing() {
+	}
+	
+	public void addCustomer(Customer customer) {
+		this.customers.add(customer);
+	}
+	
+}</programlisting>
+    <para>In this case there are no getter or setter methods for accessing the collection field
+      'customer', instead add elements to the collection requires using the adder method
+      'addCustomer()'.</para>
+    <para>Running the TestDataCaptureJ tool on this class would generate the following code, which
+      would not work since it is trying to use a setter method named 'setCustomers()' which, of
+      course, doesn't exist in the 'CustomerListing' class.</para>
+    <programlisting>// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerListing
+public au.com.dw.testdatacapturej.mock.explanation.CustomerListing createParam1CustomerListing_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerListing() {
+
+au.com.dw.testdatacapturej.mock.explanation.CustomerListing customerListing0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerListing();
+
+java.util.ArrayList arrayList0 = new java.util.ArrayList();
+
+au.com.dw.testdatacapturej.mock.explanation.Customer customer1 = new au.com.dw.testdatacapturej.mock.explanation.Customer();
+customer1.setFirstName("John");
+customer1.setSurName("Smith");
+arrayList0.add(customer1);
+
+au.com.dw.testdatacapturej.mock.explanation.Customer customer2 = new au.com.dw.testdatacapturej.mock.explanation.Customer();
+customer2.setFirstName("Mary");
+customer2.setSurName("Jones");
+arrayList0.add(customer2);
+
+customerListing0.setCustomers(arrayList0);
+
+return customerListing0;
+}</programlisting>
+    <para>There is a custom configuration that will handle cases like this, to allow using an adder
+      method instead of a setter method.</para>
+    <para>Fragment of <filename>'conf/test-collection-config.xml'</filename>:</para>
+    <programlisting>.
+.
+.
+	&lt;container class="au.com.dw.testdatacapturej.mock.explanation.CustomerListing">
+		&lt;argument>
+			&lt;field-name>customers&lt;/field-name>
+			&lt;adder-method>addCustomer&lt;/adder-method>
+		&lt;/argument>
+	&lt;/container>
+.
+.
+.</programlisting>
+    <para>The collection configuration file needs to be included in the properties file when the
+      TestDataCaptureJ tool is run.</para>
+    <para>Fragment of <filename>'conf/configuration.properties'</filename>:</para>
+    <programlisting>.
+.
+.
+# config files for setter method configuration
+
+collection.config.files=test-collection-config.xml
+.
+.
+.</programlisting>
+    <para>Now when TestDataCaptureJ is run, it should generate the following logging:</para>
+    <programlisting>// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerListing
+public au.com.dw.testdatacapturej.mock.explanation.CustomerListing createParam1CustomerListing_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerListing() {
+
+au.com.dw.testdatacapturej.mock.explanation.CustomerListing customerListing0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerListing();
+
+au.com.dw.testdatacapturej.mock.explanation.Customer customer1 = new au.com.dw.testdatacapturej.mock.explanation.Customer();
+customer1.setFirstName("John");
+customer1.setSurName("Smith");
+customerListing0.addCustomer(customer1);
+
+au.com.dw.testdatacapturej.mock.explanation.Customer customer2 = new au.com.dw.testdatacapturej.mock.explanation.Customer();
+customer2.setFirstName("Mary");
+customer2.setSurName("Jones");
+customerListing0.addCustomer(customer2);
+
+return customerListing0;
+}</programlisting>
+    <para>Now the generated code correctly uses the adder method defined in the XML
+      configuration.</para>
+  </section>
   <section>
     <title>Next:</title>
     <para><link xlink:href="tutorial.html">Tutorial</link></para>

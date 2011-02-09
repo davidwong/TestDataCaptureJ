@@ -62,11 +62,14 @@ not both
 - make the algorithm that generates methods names in the log configurable 
 e.g. public au.com.dw.testdatacapturej.mock.explanation.Customer createParam1Customer_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomer() {
 
+- doesn't currently handle static fields, should it?
+
+- make the index numbers used to suffix generated field names based on the class, instead of the categories of
+object, collection, array and map
+
 
 Unit Tests:
 ----------
-
-- FIX BROKEN TESTS!!!
 
 - many of the unit tests are very brittle because they compare the logged output against specific
 text
@@ -82,14 +85,12 @@ comments are present or if setters are generated for null fields
 - probably need more detailed comments about what the tests are doing and the purpose of the mock
 test objects and also about configuring the test aspects
 
+- change all assert tests on logged output to use assertEqualsWithoutFormatting() instead of
+assertEquals()
 
 Documentation:
 -------------
 
 - finish the tutorial page
 
-- finish page with explanation of how it works
-
 - finish customization page about how to configure for different output
-
-- need comments for the configuration xml files

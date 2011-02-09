@@ -21,6 +21,7 @@ package au.com.dw.testdatacapturej.adder;
 import static au.com.dw.testing.AssertUtil.assertEqualsWithoutFormatting;
 import static org.junit.Assert.fail;
 
+import org.apache.commons.lang.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,6 +31,7 @@ import au.com.dw.testdatacapturej.mock.adder.CollectionHolder;
 import au.com.dw.testdatacapturej.mock.adder.CollectionHolderWithSetter;
 import au.com.dw.testdatacapturej.mock.adder.CollectionHolder_Unconfigured;
 import au.com.dw.testdatacapturej.mock.classcheck.Holder;
+import au.com.dw.testdatacapturej.mock.dataholder.TestData;
 import au.com.dw.testdatacapturej.reflection.BaseReflectionTest;
 import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
 import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
@@ -69,7 +71,7 @@ public class CollectionAdderMethodTest extends BaseReflectionTest {
      * contains elements.
      */
     @Test
-    public void collectionHolderTest()
+    public void collectionHolderSimpleTest()
     {
 		CollectionHolder holder = new CollectionHolder();
 		holder.addCollectionElement("test1");
@@ -89,6 +91,44 @@ public class CollectionAdderMethodTest extends BaseReflectionTest {
 		}
     }
 
+    /**
+     * Test for adder method for Collection field configured in XML config file.
+     * Should not generate any constructor or setter method for the collection field,
+     * but use the adder method instead.
+     * 
+     * This version adds an object to the collection instead of a simple value.
+     */
+    @Test
+    public void collectionHolderObjectTest()
+    {
+		CollectionHolder holder = new CollectionHolder();
+		
+		TestData testData = new TestData();
+		holder.addCollectionElement(testData.createSimpleDataHolder());
+
+		try {
+			logger.logObject(builder, handler.handle(holder));
+			String result = builder.toString();
+			
+			String expected = "au.com.dw.testdatacapturej.mock.adder.CollectionHolder collectionHolder0 = new au.com.dw.testdatacapturej.mock.adder.CollectionHolder();" +
+			"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
+			"simpleDataHolder1.setText(\"aaa\");" +
+			"simpleDataHolder1.setNumber(1);" +
+			"simpleDataHolder1.setCharacter('a');" +
+			"simpleDataHolder1.setBool(true);" +
+			"simpleDataHolder1.setLongNumber(100L);" +
+			"simpleDataHolder1.setPrimitiveFraction(0.1f);" +
+			"simpleDataHolder1.setFraction(100.1d);" +
+			"collectionHolder0.addCollectionElement(simpleDataHolder1);";
+			
+			System.out.println(result);
+			assertEqualsWithoutFormatting(expected, result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+    }
+    
     /**
      * Test for adder method for Collection field configured in XML config file.
      * 

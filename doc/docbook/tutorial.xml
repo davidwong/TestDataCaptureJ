@@ -375,7 +375,11 @@ constructor.config.files=
 
 # config files for setter method configuration
 
-setter.config.files=</programlisting>
+setter.config.files=
+
+# config files for collection adder configuration
+
+collection.config.files=</programlisting>
           <para>This ensures that the TestDataCaptureJ tool will run without any custom
             configurations for the generated logs.</para>
           <remark>See the <link xlink:href="customization.html">customization page</link> for details of the custom configurations that are available.</remark>
@@ -567,7 +571,11 @@ constructor.config.files=constructor-config.xml
 
 # config files for setter method configuration
 
-setter.config.files=setter-config.xml</programlisting>
+setter.config.files=setter-config.xml
+
+# config files for collection adder configuration
+
+collection.config.files=</programlisting>
           <para>This ensures that the TestDataCaptureJ tool will run with the configuration in the
             files 'setter-config.xml' and 'constructor-config.xml' for the generated logs.</para>
           <remark>See the <link xlink:href="customization.html">customization page</link> for an
@@ -764,7 +772,11 @@ constructor.config.files=constructor-config.xml
 
 # config files for setter method configuration
 
-setter.config.files=setter-config.xml, jpetstore-test-setter-config.xml</programlisting>
+setter.config.files=setter-config.xml, jpetstore-test-setter-config.xml
+
+# config files for collection adder configuration
+
+collection.config.files=</programlisting>
           <para>This ensures that the TestDataCaptureJ tool will run with all 3 configuration files
             for the generated logs.</para>
         </listitem>

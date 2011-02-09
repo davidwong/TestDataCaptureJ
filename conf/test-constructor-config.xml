@@ -90,5 +90,14 @@
 			<field-name>surName</field-name>
 		</argument>
 	</constructor>
+	
+	<constructor class="au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable">
+		<argument>
+			<field-name>firstName</field-name>
+		</argument>
+		<argument>
+			<field-name>surName</field-name>
+		</argument>
+	</constructor>
 			
 </constructor-config>

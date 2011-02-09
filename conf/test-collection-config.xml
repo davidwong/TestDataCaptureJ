@@ -28,5 +28,14 @@
 			<adder-method>addCollectionElementInsteadOfSetter</adder-method>
 		</argument>
 	</container>	
-				
+
+<!-- Examples for documentation -->
+
+	<container class="au.com.dw.testdatacapturej.mock.explanation.CustomerListing">
+		<argument>
+			<field-name>customers</field-name>
+			<adder-method>addCustomer</adder-method>
+		</argument>
+	</container>
+					
 </collection-config>

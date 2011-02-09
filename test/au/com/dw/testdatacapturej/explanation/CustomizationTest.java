@@ -21,13 +21,19 @@ package au.com.dw.testdatacapturej.explanation;
 
 import org.junit.Test;
 
+import au.com.dw.testdatacapturej.mock.explanation.Customer;
+import au.com.dw.testdatacapturej.mock.explanation.CustomerFullName;
+import au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable;
+import au.com.dw.testdatacapturej.mock.explanation.CustomerListing;
 import au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors;
 
 /**
  * This is not a real test case, it's only to generate logging for the customization page in the documentation.
  * 
+ * Hence these tests will not be included when regression testing with AllTests.
+ * Also these tests will never fail as we are only using them to generate example logging.
+ * 
  * @author David Wong
- *
  */
 public class CustomizationTest {
 
@@ -45,5 +51,55 @@ public class CustomizationTest {
 	{
 		
 	}
+	
+	@Test
+	public void testCustomerImmutable()
+	{
+		CustomerImmutable customer = new CustomerImmutable("Mary", "Jones");
+		
+		joinPointParamForCustomerImmutable(customer);
+	}
 
+	private void joinPointParamForCustomerImmutable(CustomerImmutable customer)
+	{
+		
+	}
+
+	@Test
+	public void testCustomerFullName()
+	{
+		CustomerFullName customer = new CustomerFullName();
+		customer.setFirstName("Ted");
+		customer.setSurName("Jones");
+		
+		joinPointParamForCustomerFullName(customer);
+	}
+
+	private void joinPointParamForCustomerFullName(CustomerFullName customer)
+	{
+		
+	}
+	
+	@Test
+	public void testCustomerListing()
+	{
+		Customer customer1 = new Customer();
+		customer1.setFirstName("John");
+		customer1.setSurName("Smith");
+
+		Customer customer2 = new Customer();
+		customer2.setFirstName("Mary");
+		customer2.setSurName("Jones");
+		
+		CustomerListing listing = new CustomerListing();
+		listing.addCustomer(customer1);
+		listing.addCustomer(customer2);
+		
+		joinPointParamForCustomerListing(listing);
+	}
+
+	private void joinPointParamForCustomerListing(CustomerListing listing)
+	{
+		
+	}
 }

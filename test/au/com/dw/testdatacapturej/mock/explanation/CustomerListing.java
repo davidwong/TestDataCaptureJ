@@ -18,36 +18,25 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.mock.explanation;
 
-public class CustomerFullName {
-	private String firstName;
-	private String surName;
-	private String fullName;
-	
-	public CustomerFullName() {
-	}
+import java.util.ArrayList;
+import java.util.Collection;
 
-	private void createFullName() {
-		fullName = surName + ", " + firstName;
+/**
+ * Test mock object with collection field that does not use setter method to add to
+ * it's contents. Instead uses an adder method so the the collection field is not
+ * directly manipulated.
+ * 
+ * @author David Wong
+ *
+ */
+public class CustomerListing {
+	private final Collection<Customer> customers = new ArrayList<Customer>();
+
+	public CustomerListing() {
 	}
 	
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-		
-		createFullName();
-	}
-	public String getSurName() {
-		return surName;
-	}
-	public void setSurName(String surName) {
-		this.surName = surName;
-		
-		createFullName();
-	}
-	public String getFullName() {
-		return fullName;
+	public void addCustomer(Customer customer) {
+		this.customers.add(customer);
 	}
 	
 }
