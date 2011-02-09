@@ -412,7 +412,7 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 		    	else
 		    	{
 					elementInfo.setType(ObjectType.OBJECT);
-					elementInfo.setContainmentType(ContainmentType.COLLECTION_ELEMENT);
+					elementInfo.setContainmentType(elementType);
 		    		
 		    		handleFields(elementInfo);
 		    	}
@@ -422,7 +422,7 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 				// for Collection implementations that allow null elements
 				
 				elementInfo.setType(ObjectType.SIMPLE);
-				elementInfo.setContainmentType(ContainmentType.COLLECTION_ELEMENT);
+				elementInfo.setContainmentType(elementType);
 			}
 			
 			// add the link between the collection and the contained elements
