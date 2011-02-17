@@ -7,7 +7,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="conf"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="lib" path="D:/dev/workspace/TestDataCaptureJ/lib/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils-1.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils-bean-collections-1.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils-core-1.8.0.jar"/>
@@ -17,5 +16,8 @@
 	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/commons-configuration-1.6.jar"/>
+	<classpathentry kind="lib" path="lib/logback-classic-0.9.28.jar"/>
+	<classpathentry kind="lib" path="lib/logback-core-0.9.28.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

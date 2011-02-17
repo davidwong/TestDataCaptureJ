@@ -18,20 +18,17 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.config;
 
-import static org.junit.Assert.assertEquals;
+import static au.com.dw.testing.AssertUtil.assertEqualsWithoutFormatting;
 import static org.junit.Assert.fail;
 
 import java.util.Date;
 
-import org.apache.commons.lang.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import au.com.dw.testdatacapturej.log.ObjectLogger;
 import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
 import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
-
-
 
 /**
  * Test for configuration of java.util.Date.
@@ -89,12 +86,10 @@ public class DateConfigTest {
 			logger.logObject(builder, handler.handle(new Date(dateTime)));
 			String result = builder.toString();
 		
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.Date date0 = new java.util.Date(" + dateTime + "L);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "java.util.Date date0 = new java.util.Date(" + dateTime + "L);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("testPrimitiveHolder");

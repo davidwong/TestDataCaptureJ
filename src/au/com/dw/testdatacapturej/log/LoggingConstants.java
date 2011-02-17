@@ -19,7 +19,7 @@
 package au.com.dw.testdatacapturej.log;
 
 /**
- * Log4j logger name to use in XML config for logging au.com.dw.testing data.
+ * Logging library logger name to use in config for logging the captured data.
  * 
  * @author David Wong
  *
@@ -27,7 +27,7 @@ package au.com.dw.testdatacapturej.log;
 public class LoggingConstants {
 	
 	/*
-	 * Name of the file to log4j appender to log to.
+	 * Name of the logging library logger to use.
 	 */
 	public final static String TRACE_LOGGER = "au.com.dw.testdatacapturej-trace";
 }

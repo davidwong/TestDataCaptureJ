@@ -22,7 +22,7 @@ package au.com.dw.testdatacapturej.aspect;
  * For au.com.dw.testing TraceAdaptor, using a pointcut for a JUnit test instead of a real class.
  * 
  * Run the JUnit test that the pointcut is pointing to and the test data should be generated and output
- * to the log4j logger specified in TraceAdaptor.
+ * to the logging library logger specified in TraceAdaptor.
  */
 public aspect TraceAdaptorTest extends TraceAdaptor {
 	private final static boolean debugOn = false;

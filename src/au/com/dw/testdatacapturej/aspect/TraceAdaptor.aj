@@ -18,13 +18,13 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.aspect;
 
-import org.apache.log4j.Logger;
-
 import au.com.dw.testdatacapturej.log.LoggingConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Adaptor for the Trace aspect to leave only the pointcut as abstract so that it can be defined in aop.xml.
- * This used log4j to do the logging, so will need to setup the log4j configuration as well.
+ * This uses a logging library to do the logging, so will need to setup the logging configuration as well.
  * 
  * The aop.xml would contain the Trace aspect and the TraceAdaptor as aspects, and would then define
  * a concrete-aspect which extends the TraceAdaptor and includes a pointcut for 'loggedOperations'.
@@ -52,13 +52,13 @@ import au.com.dw.testdatacapturej.log.LoggingConstants;
  * @author David Wong
  */
 public abstract aspect TraceAdaptor extends Trace {
-	private Logger _logger = Logger.getLogger(LoggingConstants.TRACE_LOGGER);
+	private Logger logger = LoggerFactory.getLogger(LoggingConstants.TRACE_LOGGER);
 
 	/**
 	 * Default logging method.
 	 */
 	protected void log(String msg) {
-		_logger.info(msg);
+		logger.info(msg);
 	}
 
 }
