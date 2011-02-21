@@ -47,7 +47,7 @@ public class ParameterDisplay extends BaseFieldDisplay {
 			
 			// just store the value in the parent class
 			ObjectInfo parentInfo = info.getParentInfo();
-			parentInfo.addConstructorParameter(builder.toString());
+			parentInfo.getConstructorInfo().addConstructorParameter(builder.toString());
 		}
 		
 		// don't actually log anything

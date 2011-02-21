@@ -36,7 +36,7 @@ public class ParameterizedConstructorGenerator extends BaseConstructorGenerator 
 		builder.append(FormatConstants.newLine);
 
 		// create the constructor line
-		String classFieldName = getLineBuilder().createParameterizedConstructorLine(builder, info.getValue(), null, fieldIndex, info.getConstructorParameters());
+		String classFieldName = getLineBuilder().createParameterizedConstructorLine(builder, info.getValue(), null, fieldIndex, info.getConstructorInfo().getConstructorParameters());
 		info.setClassFieldName(classFieldName);
 		
 		// pass the newly created class field name to child objects

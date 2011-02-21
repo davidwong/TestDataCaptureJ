@@ -45,7 +45,7 @@ public class SimpleFieldDisplay extends BaseFieldDisplay {
 		else
 		{
 			// check if configured to ignore a field for setter method generation
-			if (info.getSetterGenerationType() != SetterGenerationType.IGNORE)
+			if (info.getSetterAdderInfo().getSetterGenerationType() != SetterGenerationType.IGNORE)
 			{
 				builder.append(info.getContainingClassFieldName());
 				builder.append(getLineBuilder().createSetterLine(info.getFieldName(), info.getValue(), literal));

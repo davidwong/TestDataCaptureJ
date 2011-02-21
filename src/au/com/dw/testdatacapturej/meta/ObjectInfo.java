@@ -62,8 +62,8 @@ import java.util.List;
  * containingClassFieldName = null, since doesn't have a containing class
  * containmentType = NONE, since is the top level object
  * index = 0, since is not an array element
- * hasSetter = false, since is not a field
- * hasDefaultConstructor = true, since does have InitialObject() constructor
+ * setterAdderInfo.hasSetter = false, since is not a field
+ * constructorInfo.hasDefaultConstructor = true, since does have InitialObject() constructor
  * fieldList = [2], contains the ObjectInfo for the fields fieldObject and primitive
  * 
  * The ObjectInfo for fieldObjectName would be:
@@ -78,8 +78,8 @@ import java.util.List;
  * containingClassFieldName = initialObject0, the class field name generated for InitialObject
  * containmentType = FIELD, since is a field of it's parent
  * index = 0, since is not an array element
- * hasSetter = true, since InitialObject has setFieldName()
- * hasDefaultConstructor = false, since does have FieldObject() constructor - constructor has arguments
+ * setterAdderInfo.hasSetter = true, since InitialObject has setFieldName()
+ * constructorInfo.hasDefaultConstructor = false, since does have FieldObject() constructor - constructor has arguments
  * fieldList = [0], does not contain any fields itself
  * 
  * The ObjectInfo for primitiveName would be:
@@ -94,8 +94,8 @@ import java.util.List;
  * containingClassFieldName = initialObject0, the class field name generated for InitialObject
  * containmentType = FIELD, since is a field of it's parent
  * index = 0, since is not an array element
- * hasSetter = false, since InitialObject doesn't have a setPrimitiveName() method
- * hasDefaultConstructor = false, since constructor no required for primitive values
+ * setterAdderInfo.hasSetter = false, since InitialObject doesn't have a setPrimitiveName() method
+ * constructorInfo.hasDefaultConstructor = false, since constructor no required for primitive values
  * fieldList = [0], does not contain any fields itself
  * 
  * Therefore if Initial Object and FieldObject were to be constructed and generated:
@@ -127,79 +127,18 @@ import java.util.List;
  * ***************************************************
  * Constructor specific fields
  * ***************************************************
- * Where a parameterized constructor has been configured for this object, the following fields are used.
- * 1. constructorParamFieldNames
- * This is the list of field names for the parameters, assuming that the constructor is setting fields rather
- * than setting fields latter with setters.
- * 2. constructorParameters
- * When the field object (not this object) is generated as a value or class field name in the parameter logging, it is added to
- * this list in the parent ObjectInfo (parentInfo)
- * 3. alreadyLogged
- * If this object has been logged as a parameter, then this flag is set to indicate do not need to log again as a field.
- *
- * e.g.
- * This is the object to be logger:
  * 
- * public class ImmutableClass {
- *   private Double immutableField;
- *   
- *   public Immutable(Double immutableField)
- *   {
- *     this.immutableField = immutableField;
- *   }
- *   
- *   public Double getImmutableField()
- *   {
- *     return immutableField;
- *   }
- * }
+ * The info for handling of generating constructor lines is in a ConstructorInfo class.
+ * The alreadyLogged flag is also used when dealing with constructors.
  * 
- * The parameterized constructor is configured in the XML file:
- *
- *   <constructor class="dummy.ImmutableClass">
- *	   <argument>
- *		  <field-name>immutableField</field-name>
- *	   </argument>
- *   </constructor>
- *   
- * 1. constructorParamFieldNames would get the value [immutableField] from the configuration.
- * 2. after the field being logged as a parameter, constructorParameters would have the value added to
- *    it from the field ObjectInfo, e.g. 100L.
- * 3. alreadyLogged in the field ObjectInfo would be set to true.
+ * @see au.com.dw.testdatacapturej.meta.ConstructorInfo
  * 
  * ***************************************************
  * Adder method fields
  * ***************************************************
- * A common pattern for collection fields is not to allow direct access to the collection, but only
- * allow adding elements to it through a adder method in the class containing the collection. So there
- * is usually no setter or getter for the collection field itself.
- * e.g.
+ * The info for handling of generating adder method lines is in a SetterAdderInfo class.
  * 
- * public class ClassWithAdder {
- *   private Collection<?> collectionField = new ArrayList<Object>();
- *   
- *   public ClassWithAdder()
- *   {
- *   }
- *   
- *   public void addElement(Object element)
- *   {
- *     collectionField.add(element);
- *   }
- * }
- * 
- * The ObjectInfo for the collection field will have to be marked as requiring generation for this
- * pattern instead of the default generation of:
- * 1. create the collection object
- * 2. add element to the collection
- * 3. set the collection to the field of the containing class
- * Instead we just want to invoke the adder method in the containing class.
- * 
- * usesAdder is the flag field, which is set in the collection object (not the ObjectInfo for the elements
- * or the containing class).
- * 
- * adderMethodName is the name of the adder method name in the containing class and must be specified since
- * there is no standard naming convention.
+ * @see au.com.dw.testdatacapturej.meta.SetterAdderInfo
  * 
  * @author David Wong
  *
@@ -236,32 +175,12 @@ public class ObjectInfo {
 	/** Index if is an array element */
 	private int index;
 	
-	/** Does the object have a default no argument constructor */
-	private boolean hasDefaultConstructor = true;
-
-	/** List of field names to use as constructor parameters when generating a constructor line */
-	private List<String> constructorParamFieldNames = new ArrayList<String>();
-	
-	/** 
-	 * List of constructor parameter values, these can be field names or formatted simple values. These
-	 * are to be used to generate a constructor line with parameters.
-	 */
-	private List<String> constructorParameters = new ArrayList<String>();
-	
-	/** If the object is a field, PLACEHOLDER for alternative name for the constructor - not implemented yet */
-	private String alternateConstructorName;
+	/** Info for handling generation of constructor line, should never be null */
+	private ConstructorInfo constructorInfo = new ConstructorInfo(true,
+			new ArrayList<String>(), new ArrayList<String>());
 
 	/** Nested ObjectInfo for the key, if object is a map entry */
 	private ObjectInfo keyInfo;
-	
-	/** If the object is a field, does the containing class has a setter for it with standard naming */
-	private boolean hasSetter = true;
-	
-	/** If the object is a field, the type of setter method to generate */
-	private SetterGenerationType setterGenerationType = SetterGenerationType.DEFAULT;
-	
-	/** If the object is a field, PLACEHOLDER for alternative name for the setter method - not implemented yet */
-	private String alternateSetterMethodName;
 	
 	/** List of ObjectInfo's for fields of the object, including elements of a collection, array or map */
 	private List<ObjectInfo> fieldList = new ArrayList<ObjectInfo>();
@@ -276,16 +195,10 @@ public class ObjectInfo {
 	 */
 	private boolean alreadyLogged;
 	
-	/** If the object is a collection, are elements added to it through an adder method in it's enclosing
-	 *  class, instead being added directly to the collection.
-	 */
-	private boolean usesAdder = false;
+	/** Info for handling setter and adder methods, should never be null */
+	private SetterAdderInfo setterAdderInfo = new SetterAdderInfo(true,
+			SetterGenerationType.DEFAULT, false);
 
-	/** If the object is a collection and elements are only to be added to it through an add method in it's
-	 *  enclosing class, then this is the name of that adder method.
-	 */
-	private String adderMethodName;
-	
 	/** Store any errors from the recursive reflection process that sets the meta-data */
 	private List<String> errors = new ArrayList<String>();
 
@@ -304,7 +217,7 @@ public class ObjectInfo {
 
 	public boolean isSetterIgnoreType()
 	{
-		return (getSetterGenerationType() == SetterGenerationType.IGNORE);
+		return (getSetterAdderInfo().getSetterGenerationType() == SetterGenerationType.IGNORE);
 	}
 	
 	/**
@@ -336,7 +249,7 @@ public class ObjectInfo {
 	 */
 	public boolean useParameterizedConstructor()
 	{
-		return (constructorParamFieldNames != null);
+		return (constructorInfo.getConstructorParamFieldNames() != null);
 	}
 	
 	// Accessors
@@ -420,40 +333,9 @@ public class ObjectInfo {
 	public void setIndex(int index) {
 		this.index = index;
 	}
-
-	public List<String> getConstructorParamFieldNames() {
-		return constructorParamFieldNames;
-	}
-
-	public void setConstructorParamFieldNames(
-			List<String> constructorParamFieldNames) {
-		this.constructorParamFieldNames = constructorParamFieldNames;
-	}
-
-	public void addParamFieldName(String fieldName)
-	{
-		constructorParamFieldNames.add(fieldName);
-	}
-
-	public List<String> getConstructorParameters() {
-		return constructorParameters;
-	}
-
-	public void setConstructorParameters(List<String> constructorParameters) {
-		this.constructorParameters = constructorParameters;
-	}
-
-	public void addConstructorParameter(String param)
-	{
-		constructorParameters.add(param);
-	}
 	
-	public String getAlternateConstructorName() {
-		return alternateConstructorName;
-	}
-
-	public void setAlternateConstructorName(String alternateConstructorName) {
-		this.alternateConstructorName = alternateConstructorName;
+	public ConstructorInfo getConstructorInfo() {
+		return constructorInfo;
 	}
 
 	public ObjectInfo getKeyInfo() {
@@ -464,36 +346,8 @@ public class ObjectInfo {
 		this.keyInfo = keyInfo;
 	}
 	
-	public boolean hasSetter() {
-		return hasSetter;
-	}
-
-	public void setHasSetter(boolean hasSetter) {
-		this.hasSetter = hasSetter;
-	}
-
-	public SetterGenerationType getSetterGenerationType() {
-		return setterGenerationType;
-	}
-
-	public void setSetterGenerationType(SetterGenerationType setterGenerationType) {
-		this.setterGenerationType = setterGenerationType;
-	}
-
-	public String getAlternateSetterMethodName() {
-		return alternateSetterMethodName;
-	}
-
-	public void setAlternateSetterMethodName(String alternateSetterMethodName) {
-		this.alternateSetterMethodName = alternateSetterMethodName;
-	}
-
-	public boolean hasDefaultConstructor() {
-		return hasDefaultConstructor;
-	}
-
-	public void setHasDefaultConstructor(boolean hasDefaultConstructor) {
-		this.hasDefaultConstructor = hasDefaultConstructor;
+	public SetterAdderInfo getSetterAdderInfo() {
+		return setterAdderInfo;
 	}
 
 	public List<ObjectInfo> getFieldList() {
@@ -524,22 +378,6 @@ public class ObjectInfo {
 		this.alreadyLogged = alreadyLogged;
 	}
 	
-	public boolean isUsesAdder() {
-		return usesAdder;
-	}
-
-	public void setUsesAdder(boolean usesAdder) {
-		this.usesAdder = usesAdder;
-	}
-	
-	public String getAdderMethodName() {
-		return adderMethodName;
-	}
-	
-	public void setAdderMethodName(String adderMethodName) {
-		this.adderMethodName = adderMethodName;
-	}
-
 	public List<String> getErrors() {
 		return errors;
 	}

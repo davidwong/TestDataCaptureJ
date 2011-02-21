@@ -75,7 +75,7 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 		info.setValue(initialObject);
 		info.setInitalObject(true);
 		info.setContainmentType(ContainmentType.NONE);
-		info.setHasDefaultConstructor(hasDefaultConstructor(info.getValue()));
+		info.getConstructorInfo().setHasDefaultConstructor(hasDefaultConstructor(info.getValue()));
 		
 		if (TypeUtil.isJavaClass(initialObject))
 		{
@@ -121,7 +121,7 @@ public class MetadataGenerationHandler implements ReflectionHandler {
            		
 	            // check if configured parameterized constructor is to be used for the initial object
 	            ConfigUtil configUtil = new ConfigUtil();
-	            info.setConstructorParamFieldNames(configUtil.getConstructionParameters(info)); 
+	            info.getConstructorInfo().addConstructorParamFieldNames(configUtil.getConstructionParameters(info)); 
         	}
         	
         	info.setFieldName(fieldName);
@@ -174,14 +174,14 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 	    		fieldInfo.setFieldName(fieldName);
 	    		fieldInfo.setValue(fieldValue);
 	    		fieldInfo.setContainingClassFieldName(info.getClassFieldName());
-	    		fieldInfo.setHasDefaultConstructor(hasDefaultConstructor(fieldValue));
+	    		fieldInfo.getConstructorInfo().setHasDefaultConstructor(hasDefaultConstructor(fieldValue));
 	    		
 	    		// check if requires any special setter method generation
 	    		if (ignoredSetterFieldNames != null)
 	    		{
 	    			if (ignoredSetterFieldNames.contains(fieldName))
 	    			{
-	    				fieldInfo.setSetterGenerationType(SetterGenerationType.IGNORE);
+	    				fieldInfo.getSetterAdderInfo().setSetterGenerationType(SetterGenerationType.IGNORE);
 	    			}
 	    		}
 	    		
@@ -190,7 +190,7 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 	            {
 	            	if (!ReflectionUtil.hasSetterMethod(object, fieldName, fieldValue))
 	            	{
-	            		fieldInfo.setHasSetter(false);
+	            		fieldInfo.getSetterAdderInfo().setHasSetter(false);
 	            	}
 		    		fieldInfo.setClassName(fieldValue.getClass().getName());
 
@@ -220,8 +220,8 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 		        		
 		        		if (foundConfig != null)
 		        		{
-		        			fieldInfo.setUsesAdder(true);
-		        			fieldInfo.setAdderMethodName(foundConfig.getAdderMethodName());
+		        			fieldInfo.getSetterAdderInfo().setUsesAdder(true);
+		        			fieldInfo.getSetterAdderInfo().setAdderMethodName(foundConfig.getAdderMethodName());
 		        			
 		        			handleCollection(fieldInfo);
 		        		}
@@ -258,7 +258,7 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 	            }
 	            
 	            // check if configured parameterized constructor is to be used for the field
-	            fieldInfo.setConstructorParamFieldNames(configUtil.getConstructionParameters(fieldInfo));
+	            fieldInfo.getConstructorInfo().addConstructorParamFieldNames(configUtil.getConstructionParameters(fieldInfo));
 	            
 	            // add the parent class to field class link
 	            fieldInfo.setParentInfo(info);
@@ -295,9 +295,9 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 				elementInfo.setValue(elementObject);
 	    		elementInfo.setContainingClassFieldName(info.getClassFieldName());
 				elementInfo.setClassName(elementObject.getClass().getName());
-				elementInfo.setHasDefaultConstructor(hasDefaultConstructor(elementObject));
+				elementInfo.getConstructorInfo().setHasDefaultConstructor(hasDefaultConstructor(elementObject));
 	    		// no need to check for setter since is an element of an array, so would be assigned instead
-	    		elementInfo.setHasSetter(false);
+	    		elementInfo.getSetterAdderInfo().setHasSetter(false);
 				
 				if (TypeUtil.isJavaClass(elementObject))
 				{
@@ -364,7 +364,7 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 		Collection<?> collection = (Collection<?>)info.getValue();
 		
 		// determine whether the collection is accessed through an adder method in it's containing class
-		ContainmentType elementType = info.isUsesAdder() ? ContainmentType.ADDED_COLLECTION_ELEMENT : ContainmentType.COLLECTION_ELEMENT;
+		ContainmentType elementType = info.getSetterAdderInfo().isUsesAdder() ? ContainmentType.ADDED_COLLECTION_ELEMENT : ContainmentType.COLLECTION_ELEMENT;
 		
 		// handle each collection element
 		for (Object elementObject : collection)
@@ -376,9 +376,9 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 				elementInfo.setValue(elementObject);
 	    		elementInfo.setContainingClassFieldName(info.getClassFieldName());
 				elementInfo.setClassName(elementObject.getClass().getName());
-				elementInfo.setHasDefaultConstructor(hasDefaultConstructor(elementObject));
+				elementInfo.getConstructorInfo().setHasDefaultConstructor(hasDefaultConstructor(elementObject));
 	    		// no need to check for setter since is an element of a collection, so would be added to the collection
-	    		elementInfo.setHasSetter(false);
+	    		elementInfo.getSetterAdderInfo().setHasSetter(false);
 	    				
 				if (TypeUtil.isJavaClass(elementObject))
 		    	{
@@ -461,10 +461,10 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 				keyInfo.setValue(key);
 				keyInfo.setClassName(key.getClass().getName());
 				keyInfo.setContainingClassFieldName(info.getClassFieldName());
-				keyInfo.setHasDefaultConstructor(hasDefaultConstructor(key));
+				keyInfo.getConstructorInfo().setHasDefaultConstructor(hasDefaultConstructor(key));
 	    		// no need to check for setter since is a part of an entry to a map, so would be put
 	    		// into the map instead
-	    		keyInfo.setHasSetter(false);
+	    		keyInfo.getSetterAdderInfo().setHasSetter(false);
 				
 				if (TypeUtil.isJavaClass(key))
 				{
@@ -513,10 +513,10 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 				valueInfo.setValue(value);
 	    		valueInfo.setContainingClassFieldName(info.getClassFieldName());
 				valueInfo.setClassName(value.getClass().getName());
-				valueInfo.setHasDefaultConstructor(hasDefaultConstructor(value));
+				valueInfo.getConstructorInfo().setHasDefaultConstructor(hasDefaultConstructor(value));
 	    		// no need to check for setter since is a part of an entry to a map, so would be put
 	    		// into the map instead
-	    		valueInfo.setHasSetter(false);
+	    		valueInfo.getSetterAdderInfo().setHasSetter(false);
 		
 		    	if (TypeUtil.isJavaClass(value))
 		    	{

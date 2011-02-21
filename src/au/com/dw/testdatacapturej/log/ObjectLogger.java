@@ -132,7 +132,7 @@ public class ObjectLogger {
 	 */
 	private void logParameters(StringBuilder builder, ObjectInfo info)
 	{
-		List<String> paramFieldNames = info.getConstructorParamFieldNames();
+		List<String> paramFieldNames = info.getConstructorInfo().getConstructorParamFieldNames();
 		if (!paramFieldNames.isEmpty())
 		{
 			FieldDisplay fieldDisplay = new ParameterDisplay();

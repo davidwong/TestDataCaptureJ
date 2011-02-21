@@ -56,7 +56,7 @@ public class BaseFieldDisplay implements FieldDisplay {
 		if (!info.isSimpleType())
 		{
 			// check if configured to ignore a field for setter method generation
-			if (info.getSetterGenerationType() != SetterGenerationType.IGNORE)
+			if (info.getSetterAdderInfo().getSetterGenerationType() != SetterGenerationType.IGNORE)
 			{
 				generateConstructor(builder, info);
 			}
@@ -89,7 +89,7 @@ public class BaseFieldDisplay implements FieldDisplay {
 		}
 		else
 		{
-			List<String> constructorParams = info.getConstructorParameters();
+			List<String> constructorParams = info.getConstructorInfo().getConstructorParameters();
 			
 			if (!constructorParams.isEmpty())
 			{
@@ -102,7 +102,7 @@ public class BaseFieldDisplay implements FieldDisplay {
 				gen = new DefaultConstructorGenerator();
 				
 				// if the class doesn't have a default constructor, add comment
-				if (!info.hasDefaultConstructor())
+				if (!info.getConstructorInfo().hasDefaultConstructor())
 				{
 					doNoDefaultConstructorComment = true;
 					

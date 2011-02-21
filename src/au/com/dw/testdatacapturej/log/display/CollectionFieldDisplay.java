@@ -35,7 +35,7 @@ public class CollectionFieldDisplay extends BaseFieldDisplay {
 		// check if configured to ignore a field for setter method generation or if
 		// the collection fields uses an adder method in it's containing class instead
 		// of a setter to add elements
-		if (!info.isSetterIgnoreType() && !info.isUsesAdder())
+		if (!info.isSetterIgnoreType() && !info.getSetterAdderInfo().isUsesAdder())
 		{
 			generateSetter(builder, info);
 		}

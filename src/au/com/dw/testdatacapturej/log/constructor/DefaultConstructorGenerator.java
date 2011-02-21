@@ -33,7 +33,7 @@ public class DefaultConstructorGenerator extends BaseConstructorGenerator {
 	@Override
 	public void generateConstructor(StringBuilder builder, ObjectInfo info) {
 		// no need to construct a collection is it is only accessed through adder method
-		if (!info.isUsesAdder())
+		if (!info.getSetterAdderInfo().isUsesAdder())
 		{
 			String fieldIndex = String.valueOf(info.getClassFieldNameIndex());
 	

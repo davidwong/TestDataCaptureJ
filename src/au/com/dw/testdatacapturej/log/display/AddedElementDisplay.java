@@ -39,11 +39,11 @@ public class AddedElementDisplay extends BaseFieldDisplay {
 		
 		if (parentInfo != null)
 		{
-			if (parentInfo.isUsesAdder())
+			if (parentInfo.getSetterAdderInfo().isUsesAdder())
 			{		
 				boolean literal = true;
 				String classFieldName = parentInfo.getContainingClassFieldName();
-				String adderMethodName = parentInfo.getAdderMethodName();
+				String adderMethodName = parentInfo.getSetterAdderInfo().getAdderMethodName();
 				
 				if (info.isSimpleType())
 				{
