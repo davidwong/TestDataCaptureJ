@@ -18,7 +18,6 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.classcheck;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -39,8 +38,6 @@ import au.com.dw.testdatacapturej.mock.classcheck.NoDefaultConstructorNoSetter;
 import au.com.dw.testdatacapturej.mock.classcheck.NoDefaultConstructorSetter;
 import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
 import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
-
-
 
 /**
  * Test for the checking of object for the presence of default no-argument constructors and of setter
@@ -78,14 +75,14 @@ public class TestGenDefaultConstructorSetterTest {
 			
 			// check if the test class has default constructor
 			ObjectInfo fieldInfo = fieldList.get(0);		
-			assertTrue(fieldInfo.hasDefaultConstructor());
+			assertTrue(fieldInfo.getConstructorInfo().hasDefaultConstructor());
 			
 			List<ObjectInfo> innerFieldList = fieldInfo.getFieldList();
 			assertEquals(1, innerFieldList.size());
 			
 			// check if the test class field has setter
 			ObjectInfo innerFieldInfo = innerFieldList.get(0);
-			assertTrue(innerFieldInfo.hasSetter());
+			assertTrue(innerFieldInfo.getSetterAdderInfo().hasSetter());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -107,14 +104,14 @@ public class TestGenDefaultConstructorSetterTest {
 			
 			// check if the test class has default constructor
 			ObjectInfo fieldInfo = fieldList.get(0);		
-			assertTrue(fieldInfo.hasDefaultConstructor());
+			assertTrue(fieldInfo.getConstructorInfo().hasDefaultConstructor());
 			
 			List<ObjectInfo> innerFieldList = fieldInfo.getFieldList();
 			assertEquals(1, innerFieldList.size());
 			
 			// check if the test class field has setter
 			ObjectInfo innerFieldInfo = innerFieldList.get(0);
-			assertFalse(innerFieldInfo.hasSetter());
+			assertFalse(innerFieldInfo.getSetterAdderInfo().hasSetter());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,14 +133,14 @@ public class TestGenDefaultConstructorSetterTest {
 			
 			// check if the test class has default constructor
 			ObjectInfo fieldInfo = fieldList.get(0);		
-			assertFalse(fieldInfo.hasDefaultConstructor());
+			assertFalse(fieldInfo.getConstructorInfo().hasDefaultConstructor());
 			
 			List<ObjectInfo> innerFieldList = fieldInfo.getFieldList();
 			assertEquals(1, innerFieldList.size());
 			
 			// check if the test class field has setter
 			ObjectInfo innerFieldInfo = innerFieldList.get(0);
-			assertTrue(innerFieldInfo.hasSetter());
+			assertTrue(innerFieldInfo.getSetterAdderInfo().hasSetter());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -165,14 +162,14 @@ public class TestGenDefaultConstructorSetterTest {
 			
 			// check if the test class has default constructor
 			ObjectInfo fieldInfo = fieldList.get(0);		
-			assertFalse(fieldInfo.hasDefaultConstructor());
+			assertFalse(fieldInfo.getConstructorInfo().hasDefaultConstructor());
 			
 			List<ObjectInfo> innerFieldList = fieldInfo.getFieldList();
 			assertEquals(1, innerFieldList.size());
 			
 			// check if the test class field has setter
 			ObjectInfo innerFieldInfo = innerFieldList.get(0);
-			assertFalse(innerFieldInfo.hasSetter());
+			assertFalse(innerFieldInfo.getSetterAdderInfo().hasSetter());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -194,7 +191,7 @@ public class TestGenDefaultConstructorSetterTest {
 			
 			// check if the test class has default constructor
 			ObjectInfo fieldInfo = fieldList.get(0);		
-			assertFalse(fieldInfo.hasDefaultConstructor());
+			assertFalse(fieldInfo.getConstructorInfo().hasDefaultConstructor());
 			
 			List<ObjectInfo> innerFieldList = fieldInfo.getFieldList();
 			assertEquals(2, innerFieldList.size());
@@ -202,7 +199,7 @@ public class TestGenDefaultConstructorSetterTest {
 			// check if the test class fields have setter
 			for (ObjectInfo innerFieldInfo : innerFieldList)
 			{
-				assertFalse(innerFieldInfo.hasSetter());
+				assertFalse(innerFieldInfo.getSetterAdderInfo().hasSetter());
 			}
 			
 		} catch (Exception e) {

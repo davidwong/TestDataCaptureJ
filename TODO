@@ -15,35 +15,9 @@ e.g. 'Map map = Collections.synchronizedMap(new HashMap())' instead of 'Map map 
 (possibly some configurable filtering, e.g. for a particular field in a particular class - have
 a properties file for doing substitutions and configure in xml files)
 
-- handle 'adders' for collection fields, i.e. a common pattern for collection fields is not to use
-setters in the enclosing class to give direct access to the collection - but to have adder methods
-that indirectly puts an object into the collection:
-e.g. for a field:
-public class Test {
-private Collection collectionField;
-.
-.
-.
-
-instead of adding to the collection using a setter:
-
-Collection collection = Test.getCollectionField();
-collection.add(Object someObject);
-
-it may use an adder instead:
-
-Test.addToCollectionField(Object someObject);
-
-- replace log4j with logback, would be good to be able to change logging config on the fly without restarting
-the server using jmx (i.e. change the log file name for different test scenarios rather than all the test data for the
-different scenarios being dumped into one file)
-
 - log formatting code is mixed up with the logging code (to make the logged output more readable), should
 try to refactor it out and maybe do any formatting as a post-processing step or even not bother and let
 eclipse or another tool do the formatting afterwards
-
-- don't log directly but store each object log in collection:
-to handle for instance constructor that sets fields and other non-standard options
 
 - check that a parameterized constructor that is configured in xml files actually exists in the class
 
@@ -92,5 +66,3 @@ Documentation:
 -------------
 
 - finish the tutorial page
-
-- finish customization page about how to configure for different output

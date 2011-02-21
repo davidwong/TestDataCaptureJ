@@ -94,8 +94,8 @@ public class ConfigurationUtilTest {
 			ObjectInfo fieldInfo = info.getField(holderFieldName);
 			assertNotNull(fieldInfo);
 			
-			info.setConstructorParamFieldNames(configUtil.getConstructionParameters(fieldInfo));
-			List<String> paramNames = fieldInfo.getConstructorParamFieldNames();
+			info.getConstructorInfo().addConstructorParamFieldNames(configUtil.getConstructionParameters(fieldInfo));
+			List<String> paramNames = fieldInfo.getConstructorInfo().getConstructorParamFieldNames();
 			assertNotNull(paramNames);
 			assertEquals(1, paramNames.size());
 			
@@ -122,8 +122,8 @@ public class ConfigurationUtilTest {
 			ObjectInfo fieldInfo = info.getField(holderFieldName);
 			assertNotNull(fieldInfo);
 			
-			info.setConstructorParamFieldNames(configUtil.getConstructionParameters(fieldInfo));
-			List<String> paramNames = fieldInfo.getConstructorParamFieldNames();
+			info.getConstructorInfo().addConstructorParamFieldNames(configUtil.getConstructionParameters(fieldInfo));
+			List<String> paramNames = fieldInfo.getConstructorInfo().getConstructorParamFieldNames();
 			assertNotNull(paramNames);
 			assertEquals(2, paramNames.size());
 			
@@ -153,8 +153,8 @@ public class ConfigurationUtilTest {
 			ObjectInfo fieldInfo = info.getField(holderFieldName);
 			assertNotNull(fieldInfo);
 			
-			info.setConstructorParamFieldNames(configUtil.getConstructionParameters(fieldInfo));
-			List<String> paramNames = fieldInfo.getConstructorParamFieldNames();
+			info.getConstructorInfo().addConstructorParamFieldNames(configUtil.getConstructionParameters(fieldInfo));
+			List<String> paramNames = fieldInfo.getConstructorInfo().getConstructorParamFieldNames();
 			assertNotNull(paramNames);
 			assertTrue(paramNames.isEmpty());
 		
@@ -237,8 +237,8 @@ public class ConfigurationUtilTest {
 			
 			ObjectInfo fieldInfo = info.getField(collectionFieldName);
 			assertNotNull(fieldInfo);
-			assertTrue(fieldInfo.isUsesAdder());
-			assertEquals(collectionAdderMethod, fieldInfo.getAdderMethodName());
+			assertTrue(fieldInfo.getSetterAdderInfo().isUsesAdder());
+			assertEquals(collectionAdderMethod, fieldInfo.getSetterAdderInfo().getAdderMethodName());
 			
 			List<CollectionAdderConfig> collectionConfigs = configUtil.getAddedCollections(info);
 			assertNotNull(collectionConfigs);
@@ -270,13 +270,13 @@ public class ConfigurationUtilTest {
 			
 			ObjectInfo fieldInfo = info.getField(collectionFieldName);
 			assertNotNull(fieldInfo);
-			assertTrue(fieldInfo.isUsesAdder());
-			assertEquals(collectionClassAdderMethod, fieldInfo.getAdderMethodName());
+			assertTrue(fieldInfo.getSetterAdderInfo().isUsesAdder());
+			assertEquals(collectionClassAdderMethod, fieldInfo.getSetterAdderInfo().getAdderMethodName());
 
 			fieldInfo = info.getField(collectionFieldName2);
 			assertNotNull(fieldInfo);
-			assertTrue(fieldInfo.isUsesAdder());
-			assertEquals(collectionClassAdderMethod2, fieldInfo.getAdderMethodName());
+			assertTrue(fieldInfo.getSetterAdderInfo().isUsesAdder());
+			assertEquals(collectionClassAdderMethod2, fieldInfo.getSetterAdderInfo().getAdderMethodName());
 
 			List<CollectionAdderConfig> collectionConfigs = configUtil.getAddedCollections(info);
 			assertNotNull(collectionConfigs);
@@ -307,8 +307,8 @@ public class ConfigurationUtilTest {
 			
 			ObjectInfo fieldInfo = info.getField(collectionFieldName);
 			assertNotNull(fieldInfo);
-			assertTrue(fieldInfo.isUsesAdder());
-			assertEquals(collectionSetterAdderMethod, fieldInfo.getAdderMethodName());
+			assertTrue(fieldInfo.getSetterAdderInfo().isUsesAdder());
+			assertEquals(collectionSetterAdderMethod, fieldInfo.getSetterAdderInfo().getAdderMethodName());
 			
 			List<CollectionAdderConfig> collectionConfigs = configUtil.getAddedCollections(info);
 			assertNotNull(collectionConfigs);

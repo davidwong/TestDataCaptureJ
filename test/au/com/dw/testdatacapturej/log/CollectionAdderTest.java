@@ -91,8 +91,8 @@ public class CollectionAdderTest {
 		ObjectInfo parentInfo = new ObjectInfo();
 		parentInfo.setContainingClassFieldName(parentClassFieldName);
 		parentInfo.setClassFieldName("collection");
-		parentInfo.setUsesAdder(true);
-		parentInfo.setAdderMethodName(adderMethodName);
+		parentInfo.getSetterAdderInfo().setUsesAdder(true);
+		parentInfo.getSetterAdderInfo().setAdderMethodName(adderMethodName);
 			
 		info.setParentInfo(parentInfo);
 		parentInfo.addFieldToList(info);
