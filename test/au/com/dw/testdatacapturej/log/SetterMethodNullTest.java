@@ -18,31 +18,21 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.log;
 
-import static au.com.dw.testing.AssertUtil.assertEqualsAny;
-import static org.junit.Assert.assertEquals;
+import static au.com.dw.testing.AssertUtil.assertEqualsWithoutFormatting;
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-
-import org.apache.commons.lang.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import au.com.dw.testdatacapturej.log.ObjectLogger;
 import au.com.dw.testdatacapturej.mock.classcheck.Holder;
 import au.com.dw.testdatacapturej.mock.classcheck.Setter_Array;
 import au.com.dw.testdatacapturej.mock.classcheck.Setter_Collection;
 import au.com.dw.testdatacapturej.mock.classcheck.Setter_Map;
 import au.com.dw.testdatacapturej.mock.classcheck.Setter_Object;
-import au.com.dw.testdatacapturej.mock.classcheck.Setter_Simple;
 import au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredArray;
 import au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredCollection;
 import au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredMap;
 import au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject;
-import au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredSimple;
-import au.com.dw.testdatacapturej.mock.dataholder.TestData;
 import au.com.dw.testdatacapturej.reflection.BaseReflectionTest;
 import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
 import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
@@ -89,17 +79,12 @@ public class SetterMethodNullTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Object setter_Object1 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Object();" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(setter_Object1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Object setter_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Object();" +
+			"holder0.setTestField(setter_Object0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -123,19 +108,13 @@ public class SetterMethodNullTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject setter_UnconfiguredObject1 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject();" +
-			SystemUtils.LINE_SEPARATOR +
-			"setter_UnconfiguredObject1.setSetterField(null);" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(setter_UnconfiguredObject1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject setter_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject();" +
+			"setter_UnconfiguredObject0.setSetterField(null);" +
+			"holder0.setTestField(setter_UnconfiguredObject0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -159,17 +138,12 @@ public class SetterMethodNullTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Collection setter_Collection1 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Collection();" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(setter_Collection1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Collection setter_Collection0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Collection();" +
+			"holder0.setTestField(setter_Collection0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -194,19 +168,13 @@ public class SetterMethodNullTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredCollection setter_UnconfiguredCollection1 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredCollection();" +
-			SystemUtils.LINE_SEPARATOR +
-			"setter_UnconfiguredCollection1.setSetterField(null);" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(setter_UnconfiguredCollection1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredCollection setter_UnconfiguredCollection0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredCollection();" +
+			"setter_UnconfiguredCollection0.setSetterField(null);" +
+			"holder0.setTestField(setter_UnconfiguredCollection0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -230,17 +198,12 @@ public class SetterMethodNullTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Array setter_Array1 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Array();" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(setter_Array1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Array setter_Array0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Array();" +
+			"holder0.setTestField(setter_Array0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -265,19 +228,13 @@ public class SetterMethodNullTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredArray setter_UnconfiguredArray1 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredArray();" +
-			SystemUtils.LINE_SEPARATOR +
-			"setter_UnconfiguredArray1.setSetterField(null);" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(setter_UnconfiguredArray1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredArray setter_UnconfiguredArray0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredArray();" +
+			"setter_UnconfiguredArray0.setSetterField(null);" +
+			"holder0.setTestField(setter_UnconfiguredArray0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -301,17 +258,12 @@ public class SetterMethodNullTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Map setter_Map1 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Map();" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(setter_Map1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Map setter_Map0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Map();" +
+			"holder0.setTestField(setter_Map0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -336,19 +288,13 @@ public class SetterMethodNullTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredMap setter_UnconfiguredMap1 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			"setter_UnconfiguredMap1.setSetterField(null);" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(setter_UnconfiguredMap1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredMap setter_UnconfiguredMap0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredMap();" +
+			"setter_UnconfiguredMap0.setSetterField(null);" +
+			"holder0.setTestField(setter_UnconfiguredMap0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -370,12 +316,10 @@ public class SetterMethodNullTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(objectField));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Object setter_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Object();" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Setter_Object setter_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Object();";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -397,14 +341,11 @@ public class SetterMethodNullTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(objectField));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject setter_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject();" +
-			SystemUtils.LINE_SEPARATOR +
-			"setter_UnconfiguredObject0.setSetterField(null);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject setter_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject();" +
+			"setter_UnconfiguredObject0.setSetterField(null);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

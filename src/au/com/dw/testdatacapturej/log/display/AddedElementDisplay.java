@@ -52,7 +52,7 @@ public class AddedElementDisplay extends BaseFieldDisplay {
 				}
 				else
 				{
-					builder.append(getLineBuilder().createCollectionEnclosingAdderLine(classFieldName, adderMethodName, info.getClassFieldName(), literal));
+					builder.append(getLineBuilder().createCollectionEnclosingAdderLine(classFieldName, adderMethodName, info.getFullFieldName(), literal));
 				}
 				builder.append(FormatConstants.newLine);
 			}

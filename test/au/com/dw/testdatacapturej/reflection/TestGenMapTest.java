@@ -18,8 +18,8 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.reflection;
 
-import static au.com.dw.testing.AssertUtil.assertEqualsAny;
-import static org.junit.Assert.assertEquals;
+import static au.com.dw.testing.AssertUtil.assertEqualsAnyWithoutFormatting;
+import static au.com.dw.testing.AssertUtil.assertEqualsWithoutFormatting;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -27,8 +27,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-
-import org.apache.commons.lang.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,8 +34,6 @@ import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.log.ObjectLogger;
 import au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder;
 import au.com.dw.testdatacapturej.mock.dataholder.MapHolder;
-import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
-import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
 import au.com.dw.testdatacapturej.util.Messages;
 
 
@@ -45,7 +41,7 @@ import au.com.dw.testdatacapturej.util.Messages;
  * Note that the result checking has to take into account that the iteration over collections may
  * not necessarily guarantee the order of the elements returned by the iterator.
  * 
- * Therefore use assertEqualsAny() instead of just assertEquals().
+ * Therefore use assertEqualsAnyWithoutFormatting() instead of just assertEqualsWithoutFormatting().
  * 
  * @author David Wong
  *
@@ -75,12 +71,10 @@ public class TestGenMapTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(map));
 			String result = builder.toString();
 		
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "java.util.TreeMap treeMap0 = new java.util.TreeMap();";
 
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -98,26 +92,18 @@ public class TestGenMapTest extends BaseReflectionTest {
 		
 			Collection<String> expectedValues = new ArrayList<String>();
 			
-			String expected1 = SystemUtils.LINE_SEPARATOR +
-			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected1 = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
 			"treeMap0.put(\"key1\", \"value1\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(\"key2\", \"value2\");" +
-			SystemUtils.LINE_SEPARATOR;
+			"treeMap0.put(\"key2\", \"value2\");";
 			expectedValues.add(expected1);
 
-			String expected2 = SystemUtils.LINE_SEPARATOR +
-			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected2 = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
 			"treeMap0.put(\"key2\", \"value2\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(\"key1\", \"value1\");" +
-			SystemUtils.LINE_SEPARATOR;
+			"treeMap0.put(\"key1\", \"value1\");";
 			expectedValues.add(expected2);
 			
 			System.out.println(result);
-			assertEqualsAny(expectedValues, result);
+			assertEqualsAnyWithoutFormatting(expectedValues, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -135,82 +121,42 @@ public class TestGenMapTest extends BaseReflectionTest {
 
 			Collection<String> expectedValues = new ArrayList<String>();
 			
-			String expected1 = SystemUtils.LINE_SEPARATOR +
-			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected1 = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"key-1\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImNumber(1.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"treeMap0.put(innerDataHolder0, innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder2 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder2.setImText(\"key-2\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder2.setImNumber(2.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder3 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder3.setImText(\"immutable-20\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder3.setImNumber(20.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(innerDataHolder2, innerDataHolder3);" +
-			SystemUtils.LINE_SEPARATOR;
+			"treeMap0.put(innerDataHolder2, innerDataHolder3);";
 			expectedValues.add(expected1);
 
-			String expected2 = SystemUtils.LINE_SEPARATOR +
-			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected2 = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"key-2\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImNumber(2.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"immutable-20\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImNumber(20.1d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"treeMap0.put(innerDataHolder0, innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder2 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder2.setImText(\"key-1\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder2.setImNumber(1.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder3 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder3.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder3.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(innerDataHolder2, innerDataHolder3);" +
-			SystemUtils.LINE_SEPARATOR;
+			"treeMap0.put(innerDataHolder2, innerDataHolder3);";
 			expectedValues.add(expected2);
 		
 			System.out.println(result);
-			assertEqualsAny(expectedValues, result);
+			assertEqualsAnyWithoutFormatting(expectedValues, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -228,40 +174,24 @@ public class TestGenMapTest extends BaseReflectionTest {
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
-			String expected1 = SystemUtils.LINE_SEPARATOR +
-			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected1 = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"treeMap0.put(\"key1\", innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(\"key2\", 20);" +
-			SystemUtils.LINE_SEPARATOR;
+			"treeMap0.put(\"key2\", 20);";
 			expectedValues.add(expected1);
 
-			String expected2 = SystemUtils.LINE_SEPARATOR +
-			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected2 = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
 			"treeMap0.put(\"key2\", 20);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(\"key1\", innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"treeMap0.put(\"key1\", innerDataHolder0);" ;
 			expectedValues.add(expected2);
 			
 			System.out.println(result);
-			assertEqualsAny(expectedValues, result);
+			assertEqualsAnyWithoutFormatting(expectedValues, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -280,20 +210,13 @@ public class TestGenMapTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 		
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapHolder0.setMap(treeMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"mapHolder0.setMap(treeMap0);";
 
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -314,42 +237,24 @@ public class TestGenMapTest extends BaseReflectionTest {
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
-			String expected1 = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected1 = "au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
 			"treeMap0.put(\"key1\", \"value1\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"treeMap0.put(\"key2\", \"value2\");" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapHolder0.setMap(treeMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"mapHolder0.setMap(treeMap0);";
 			expectedValues.add(expected1);
 
-			String expected2 = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected2 = "au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
 			"treeMap0.put(\"key2\", \"value2\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"treeMap0.put(\"key1\", \"value1\");" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapHolder0.setMap(treeMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"mapHolder0.setMap(treeMap0);";
 			expectedValues.add(expected2);
 		
 			System.out.println(result);
-			assertEqualsAny(expectedValues, result);
+			assertEqualsAnyWithoutFormatting(expectedValues, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -370,98 +275,48 @@ public class TestGenMapTest extends BaseReflectionTest {
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
-			String expected1 = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected1 = "au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
+			"innerDataHolder0.setImText(\"key-1\");" +
+			"innerDataHolder0.setImNumber(1.1d);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImText(\"key-1\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImNumber(1.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			"innerDataHolder1.setImText(\"immutable-10\");" +
+			"innerDataHolder1.setImNumber(10.1d);" +
+			"treeMap0.put(innerDataHolder0, innerDataHolder1);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder2 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder2.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder2.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(innerDataHolder1, innerDataHolder2);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			"innerDataHolder2.setImText(\"key-2\");" +
+			"innerDataHolder2.setImNumber(2.1d);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder3 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder3.setImText(\"key-2\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder3.setImNumber(2.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder4 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder4.setImText(\"immutable-20\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder4.setImNumber(20.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(innerDataHolder3, innerDataHolder4);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapHolder0.setMap(treeMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"innerDataHolder3.setImText(\"immutable-20\");" +
+			"innerDataHolder3.setImNumber(20.1d);" +
+			"treeMap0.put(innerDataHolder2, innerDataHolder3);" +
+			"mapHolder0.setMap(treeMap0);";
 			expectedValues.add(expected1);
 
-			String expected2 = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected2 = "au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
+			"innerDataHolder0.setImText(\"key-2\");" +
+			"innerDataHolder0.setImNumber(2.1d);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImText(\"key-2\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImNumber(2.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			"innerDataHolder1.setImText(\"immutable-20\");" +
+			"innerDataHolder1.setImNumber(20.1d);" +
+			"treeMap0.put(innerDataHolder0, innerDataHolder1);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder2 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder2.setImText(\"immutable-20\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder2.setImNumber(20.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(innerDataHolder1, innerDataHolder2);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			"innerDataHolder2.setImText(\"key-1\");" +
+			"innerDataHolder2.setImNumber(1.1d);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder3 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder3.setImText(\"key-1\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder3.setImNumber(1.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder4 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder4.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder4.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(innerDataHolder3, innerDataHolder4);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapHolder0.setMap(treeMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"innerDataHolder3.setImText(\"immutable-10\");" +
+			"innerDataHolder3.setImNumber(10.1d);" +
+			"treeMap0.put(innerDataHolder2, innerDataHolder3);" +
+			"mapHolder0.setMap(treeMap0);";
 			expectedValues.add(expected2);
 			
 			System.out.println(result);
-			assertEqualsAny(expectedValues, result);
+			assertEqualsAnyWithoutFormatting(expectedValues, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -482,56 +337,30 @@ public class TestGenMapTest extends BaseReflectionTest {
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
-			String expected1 = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected1 = "au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(\"key1\", innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
+			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
+			"innerDataHolder0.setImText(\"immutable-10\");" +
+			"innerDataHolder0.setImNumber(10.1d);" +
+			"treeMap0.put(\"key1\", innerDataHolder0);" +
 			"treeMap0.put(\"key2\", 20);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapHolder0.setMap(treeMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"mapHolder0.setMap(treeMap0);";
 			expectedValues.add(expected1);
 
-			String expected2 = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected2 = "au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"treeMap0.put(\"key2\", 20);" +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(\"key1\", innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapHolder0.setMap(treeMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
+			"innerDataHolder0.setImText(\"immutable-10\");" +
+			"innerDataHolder0.setImNumber(10.1d);" +
+			"treeMap0.put(\"key1\", innerDataHolder0);" +
+			"mapHolder0.setMap(treeMap0);";
 			expectedValues.add(expected2);
 			
 			System.out.println(result);
-			assertEqualsAny(expectedValues, result);
+			assertEqualsAnyWithoutFormatting(expectedValues, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -550,12 +379,10 @@ public class TestGenMapTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(hashMap));
 			String result = builder.toString();
 		
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "java.util.HashMap hashMap0 = new java.util.HashMap();";
 
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -573,26 +400,18 @@ public class TestGenMapTest extends BaseReflectionTest {
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
-			String expected1 = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected1 = "java.util.HashMap hashMap0 = new java.util.HashMap();" +
 			"hashMap0.put(\"key1\", \"value1\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(\"key2\", \"value2\");" +
-			SystemUtils.LINE_SEPARATOR;
+			"hashMap0.put(\"key2\", \"value2\");";
 			expectedValues.add(expected1);
 
-			String expected2 = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected2 = "java.util.HashMap hashMap0 = new java.util.HashMap();" +
 			"hashMap0.put(\"key2\", \"value2\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(\"key1\", \"value1\");" +
-			SystemUtils.LINE_SEPARATOR;
+			"hashMap0.put(\"key1\", \"value1\");";
 			expectedValues.add(expected2);
 			
 			System.out.println(result);
-			assertEqualsAny(expectedValues, result);
+			assertEqualsAnyWithoutFormatting(expectedValues, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -610,82 +429,42 @@ public class TestGenMapTest extends BaseReflectionTest {
 
 			Collection<String> expectedValues = new ArrayList<String>();
 			
-			String expected1 = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected1 = "java.util.HashMap hashMap0 = new java.util.HashMap();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"key-1\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImNumber(1.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"hashMap0.put(innerDataHolder0, innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder2 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder2.setImText(\"key-2\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder2.setImNumber(2.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder3 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder3.setImText(\"immutable-20\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder3.setImNumber(20.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(innerDataHolder2, innerDataHolder3);" +
-			SystemUtils.LINE_SEPARATOR;
+			"hashMap0.put(innerDataHolder2, innerDataHolder3);";
 			expectedValues.add(expected1);
 
-			String expected2 = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected2 = "java.util.HashMap hashMap0 = new java.util.HashMap();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"key-2\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImNumber(2.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"immutable-20\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImNumber(20.1d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"hashMap0.put(innerDataHolder0, innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder2 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder2.setImText(\"key-1\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder2.setImNumber(1.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder3 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder3.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder3.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(innerDataHolder2, innerDataHolder3);" +
-			SystemUtils.LINE_SEPARATOR;
+			"hashMap0.put(innerDataHolder2, innerDataHolder3);";
 			expectedValues.add(expected2);
 			
 			System.out.println(result);
-			assertEqualsAny(expectedValues, result);
+			assertEqualsAnyWithoutFormatting(expectedValues, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -703,40 +482,24 @@ public class TestGenMapTest extends BaseReflectionTest {
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
-			String expected1 = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected1 = "java.util.HashMap hashMap0 = new java.util.HashMap();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"hashMap0.put(\"key1\", innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(\"key2\", 20);" +
-			SystemUtils.LINE_SEPARATOR;
+			"hashMap0.put(\"key2\", 20);";
 			expectedValues.add(expected1);
 
-			String expected2 = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected2 = "java.util.HashMap hashMap0 = new java.util.HashMap();" +
 			"hashMap0.put(\"key2\", 20);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(\"key1\", innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"hashMap0.put(\"key1\", innerDataHolder0);";
 			expectedValues.add(expected2);
 			
 			System.out.println(result);
-			assertEqualsAny(expectedValues, result);
+			assertEqualsAnyWithoutFormatting(expectedValues, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -755,20 +518,13 @@ public class TestGenMapTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 		
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapClassHolder0.setMap(hashMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"mapClassHolder0.setMap(hashMap0);";
 
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -789,42 +545,24 @@ public class TestGenMapTest extends BaseReflectionTest {
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
-			String expected1 = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected1 = "au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
 			"hashMap0.put(\"key1\", \"value1\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"hashMap0.put(\"key2\", \"value2\");" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapClassHolder0.setMap(hashMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"mapClassHolder0.setMap(hashMap0);";
 			expectedValues.add(expected1);
 
-			String expected2 = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected2 = "au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
 			"hashMap0.put(\"key2\", \"value2\");" +
-			SystemUtils.LINE_SEPARATOR +
 			"hashMap0.put(\"key1\", \"value1\");" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapClassHolder0.setMap(hashMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"mapClassHolder0.setMap(hashMap0);";
 			expectedValues.add(expected2);
 		
 			System.out.println(result);
-			assertEqualsAny(expectedValues, result);
+			assertEqualsAnyWithoutFormatting(expectedValues, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -845,98 +583,48 @@ public class TestGenMapTest extends BaseReflectionTest {
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
-			String expected1 = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected1 = "au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
+			"innerDataHolder0.setImText(\"key-1\");" +
+			"innerDataHolder0.setImNumber(1.1d);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImText(\"key-1\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImNumber(1.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			"innerDataHolder1.setImText(\"immutable-10\");" +
+			"innerDataHolder1.setImNumber(10.1d);" +
+			"hashMap0.put(innerDataHolder0, innerDataHolder1);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder2 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder2.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder2.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(innerDataHolder1, innerDataHolder2);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			"innerDataHolder2.setImText(\"key-2\");" +
+			"innerDataHolder2.setImNumber(2.1d);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder3 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder3.setImText(\"key-2\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder3.setImNumber(2.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder4 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder4.setImText(\"immutable-20\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder4.setImNumber(20.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(innerDataHolder3, innerDataHolder4);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapClassHolder0.setMap(hashMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"innerDataHolder3.setImText(\"immutable-20\");" +
+			"innerDataHolder3.setImNumber(20.1d);" +
+			"hashMap0.put(innerDataHolder2, innerDataHolder3);" +
+			"mapClassHolder0.setMap(hashMap0);";
 			expectedValues.add(expected1);
 
-			String expected2 = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected2 = "au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
+			"innerDataHolder0.setImText(\"key-2\");" +
+			"innerDataHolder0.setImNumber(2.1d);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImText(\"key-2\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImNumber(2.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			"innerDataHolder1.setImText(\"immutable-20\");" +
+			"innerDataHolder1.setImNumber(20.1d);" +
+			"hashMap0.put(innerDataHolder0, innerDataHolder1);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder2 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder2.setImText(\"immutable-20\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder2.setImNumber(20.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(innerDataHolder1, innerDataHolder2);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			"innerDataHolder2.setImText(\"key-1\");" +
+			"innerDataHolder2.setImNumber(1.1d);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder3 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder3.setImText(\"key-1\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder3.setImNumber(1.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder4 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder4.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder4.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(innerDataHolder3, innerDataHolder4);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapClassHolder0.setMap(hashMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"innerDataHolder3.setImText(\"immutable-10\");" +
+			"innerDataHolder3.setImNumber(10.1d);" +
+			"hashMap0.put(innerDataHolder2, innerDataHolder3);" +
+			"mapClassHolder0.setMap(hashMap0);";
 			expectedValues.add(expected2);
 			
 			System.out.println(result);
-			assertEqualsAny(expectedValues, result);
+			assertEqualsAnyWithoutFormatting(expectedValues, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -957,54 +645,30 @@ public class TestGenMapTest extends BaseReflectionTest {
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
-			String expected1 = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected1 = "au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(\"key1\", innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
+			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
+			"innerDataHolder0.setImText(\"immutable-10\");" +
+			"innerDataHolder0.setImNumber(10.1d);" +
+			"hashMap0.put(\"key1\", innerDataHolder0);" +
 			"hashMap0.put(\"key2\", 20);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapClassHolder0.setMap(hashMap0);" +			SystemUtils.LINE_SEPARATOR;
+			"mapClassHolder0.setMap(hashMap0);";
 			expectedValues.add(expected1);
 
-			String expected2 = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected2 = "au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
 			"hashMap0.put(\"key2\", 20);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImText(\"immutable-10\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"innerDataHolder1.setImNumber(10.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(\"key1\", innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"mapClassHolder0.setMap(hashMap0);" +
-			SystemUtils.LINE_SEPARATOR;
-			expectedValues.add(expected2);			
+			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
+			"innerDataHolder0.setImText(\"immutable-10\");" +
+			"innerDataHolder0.setImNumber(10.1d);" +
+			"hashMap0.put(\"key1\", innerDataHolder0);" +
+			"mapClassHolder0.setMap(hashMap0);";
+			expectedValues.add(expected2);	
+			
 			System.out.println(result);
-			assertEqualsAny(expectedValues, result);
+			assertEqualsAnyWithoutFormatting(expectedValues, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

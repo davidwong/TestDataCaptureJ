@@ -44,7 +44,7 @@ public class ElementDisplay extends BaseFieldDisplay {
 		}
 		else
 		{
-			builder.append(getLineBuilder().createCollectionAddLine(info.getContainingClassFieldName(), info.getClassFieldName(), literal));
+			builder.append(getLineBuilder().createCollectionAddLine(info.getContainingClassFieldName(), info.getFullFieldName(), literal));
 		}
 		builder.append(FormatConstants.newLine);
 		

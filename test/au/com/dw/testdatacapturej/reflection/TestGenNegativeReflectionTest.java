@@ -18,14 +18,11 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.reflection;
 
-
-import static org.junit.Assert.assertEquals;
+import static au.com.dw.testing.AssertUtil.assertEqualsWithoutFormatting;
 import static org.junit.Assert.fail;
 
 import java.util.Collection;
 
-
-import org.apache.commons.lang.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,11 +31,7 @@ import au.com.dw.testdatacapturej.log.ObjectLogger;
 import au.com.dw.testdatacapturej.mock.dataholder.TestData;
 import au.com.dw.testdatacapturej.mock.type.reflection.NoMethodContainer;
 import au.com.dw.testdatacapturej.mock.type.reflection.NoMethodDataHolder;
-import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
-import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
 import au.com.dw.testdatacapturej.util.Messages;
-
-
 
 /**
  * Regression tests for classes that don't have the appropriate constructors and setters. This is to test
@@ -79,23 +72,15 @@ public class TestGenNegativeReflectionTest {
 			logger.logObject(builder, handler.handle(container));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.type.reflection.NoMethodContainer noMethodContainer0 = new au.com.dw.testdatacapturej.mock.type.reflection.NoMethodContainer();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "au.com.dw.testdatacapturej.mock.type.reflection.NoMethodContainer noMethodContainer0 = new au.com.dw.testdatacapturej.mock.type.reflection.NoMethodContainer();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.type.reflection.NoMethodDataHolder noMethodDataHolder1 = new au.com.dw.testdatacapturej.mock.type.reflection.NoMethodDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
+			"au.com.dw.testdatacapturej.mock.type.reflection.NoMethodDataHolder noMethodDataHolder0 = new au.com.dw.testdatacapturej.mock.type.reflection.NoMethodDataHolder();" +
 			constructorComment2 +
-			SystemUtils.LINE_SEPARATOR +
-			"noMethodDataHolder1.setNoSetterField(\"no setter\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"noMethodContainer0.setHolder(noMethodDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR;
+			"noMethodDataHolder0.setNoSetterField(\"no setter\");" +
+			"noMethodContainer0.setHolder(noMethodDataHolder0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -116,39 +101,21 @@ public class TestGenNegativeReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashSet hashSet0 = new java.util.HashSet();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.HashSet hashSet0 = new java.util.HashSet();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"java.util.ArrayList arrayList1 = new java.util.ArrayList();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"java.util.HashMap[] hashMapArray1 = new java.util.HashMap[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"java.util.HashMap hashMap1 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap1.put(\"inner-map-key\", \"inner-map-value\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMapArray1[0] = hashMap1;" +
-			SystemUtils.LINE_SEPARATOR +
-			"arrayList1.add(hashMapArray1);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(\"out-map-key\", arrayList1);" +
-			SystemUtils.LINE_SEPARATOR +
+			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
+			"java.util.HashMap[] hashMapArray0 = new java.util.HashMap[1];" +
+			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
+			"hashMap0.put(\"inner-map-key\", \"inner-map-value\");" +
+			"hashMapArray0[0] = hashMap0;" +
+			"arrayList0.add(hashMapArray0);" +
+			"treeMap0.put(\"out-map-key\", arrayList0);" +
 			"objectArray0[0] = treeMap0;" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashSet0.add(objectArray0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"hashSet0.add(objectArray0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

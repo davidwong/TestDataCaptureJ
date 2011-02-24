@@ -38,7 +38,7 @@ public class MapEntryDisplay extends BaseFieldDisplay {
 		boolean literal = !info.isSimpleType();
 		boolean keyLiteral = !info.getKeyInfo().isSimpleType();
 		
-		builder.append(getLineBuilder().createMapPutLine(info.getContainingClassFieldName(), info.getKeyInfo().getClassFieldName(), info.getClassFieldName(), info.getKeyInfo().getValue(), info.getValue(), keyLiteral, literal));
+		builder.append(getLineBuilder().createMapPutLine(info.getContainingClassFieldName(), info.getKeyInfo().getFullFieldName(), info.getFullFieldName(), info.getKeyInfo().getValue(), info.getValue(), keyLiteral, literal));
 		builder.append(FormatConstants.newLine);
        	
 		return builder.toString();

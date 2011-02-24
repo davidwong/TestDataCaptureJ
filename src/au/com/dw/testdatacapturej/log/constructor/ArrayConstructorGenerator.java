@@ -34,8 +34,6 @@ public class ArrayConstructorGenerator extends BaseConstructorGenerator {
 
 	@Override
 	public void generateConstructor(StringBuilder builder, ObjectInfo info) {
-		String fieldIndex = String.valueOf(info.getClassFieldNameIndex());
-		
 		builder.append(FormatConstants.newLine);
 		
 		// extra info required for an array constructor as opposed to an object constructor
@@ -44,13 +42,13 @@ public class ArrayConstructorGenerator extends BaseConstructorGenerator {
 		int initialSize = Array.getLength(array);
 		
 		// create the constructor line
-		String classFieldName = getLineBuilder().createArrayConstructorLine(builder, arrayType, initialSize, null, fieldIndex);
-		info.setClassFieldName(classFieldName);
+		String constructorLine = getLineBuilder().createArrayConstructorLine(info);
+		builder.append(constructorLine);
 		
 		// pass the newly created class field name to child objects
 		for (ObjectInfo fieldInfo : info.getFieldList())
 		{
-			fieldInfo.setContainingClassFieldName(classFieldName);
+			fieldInfo.setContainingClassFieldName(info.getFullFieldName());
 		}
 		
 		builder.append(FormatConstants.newLine);

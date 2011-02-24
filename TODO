@@ -38,9 +38,6 @@ e.g. public au.com.dw.testdatacapturej.mock.explanation.Customer createParam1Cus
 
 - doesn't currently handle static fields, should it?
 
-- make the index numbers used to suffix generated field names based on the class, instead of the categories of
-object, collection, array and map
-
 
 Unit Tests:
 ----------

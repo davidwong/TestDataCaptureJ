@@ -18,6 +18,7 @@
  *******************************************************************************/
 package au.com.dw.testing;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.SystemUtils;
@@ -46,7 +47,7 @@ public class AssertUtil {
 	 * @param actual
 	 *            actual value
 	 */
-	static public void assertEqualsAny(String message, Collection<?> expected,
+	public static void assertEqualsAny(String message, Collection<?> expected,
 			Object actual) {
 		for (Object expectedObject : expected)
 		{
@@ -78,7 +79,7 @@ public class AssertUtil {
 	 * @param actual
 	 *            actual value
 	 */
-	static public void assertNotEqualsAny(String message, Collection<?> expected,
+	public static void assertNotEqualsAny(String message, Collection<?> expected,
 			Object actual) {
 		for (Object expectedObject : expected)
 		{
@@ -111,7 +112,7 @@ public class AssertUtil {
 	 * @param expected
 	 * @param actual
 	 */
-	static private void failNotEqualsAny(String message, Collection<?> expected,
+	private static void failNotEqualsAny(String message, Collection<?> expected,
 			Object actual) {
 		for (Object expectedObject : expected)
 		{
@@ -126,7 +127,7 @@ public class AssertUtil {
 	 * @param expected
 	 * @param actual
 	 */
-	static private void failNotEquals(String message, Object expected,
+	private static void failNotEquals(String message, Object expected,
 			Object actual) {
 		Assert.fail(format(message, expected, actual));
 	}
@@ -139,7 +140,7 @@ public class AssertUtil {
 	 * @param actual
 	 * @return
 	 */
-	static String format(String message, Object expected, Object actual) {
+	private static String format(String message, Object expected, Object actual) {
 		String formatted= "";
 		if (message != null && !message.equals(""))
 			formatted= message + " ";
@@ -177,7 +178,7 @@ public class AssertUtil {
 	 * @param actual
 	 *            the value to check against <code>expected</code>
 	 */
-	static public void assertEqualsAny(Collection<?> expected, Object actual) {
+	public static void assertEqualsAny(Collection<?> expected, Object actual) {
 		assertEqualsAny(null, expected, actual);
 	}
 	
@@ -192,7 +193,7 @@ public class AssertUtil {
 	 * @param actual
 	 *            the value to check against <code>expected</code>
 	 */
-	static public void assertNotEqualsAny(Collection<?> expected, Object actual) {
+	public static void assertNotEqualsAny(Collection<?> expected, Object actual) {
 		assertNotEqualsAny(null, expected, actual);
 	}	
 	
@@ -206,7 +207,7 @@ public class AssertUtil {
 	 * @param expected
 	 * @param actual
 	 */
-	static public void assertEqualsWithoutFormatting(String expected, String actual)
+	public static void assertEqualsWithoutFormatting(String expected, String actual)
 	{
 		String expectedWithoutFormatting = null;
 		String actualWithoutFormatting = null;
@@ -222,4 +223,49 @@ public class AssertUtil {
 		assertEquals(expectedWithoutFormatting, actualWithoutFormatting);
 	}
 
+	/**
+	 * Version of assertEqualsAny() for comparing strings with the new line formatting
+	 * removed.
+	 * 
+	 * This should make the comparison of generated logs more robust since don't have to
+	 * worry about changes in new line formatting.
+	 * 
+	 * @param expected
+	 * @param actual
+	 */
+	public static void assertEqualsAnyWithoutFormatting(String message, Collection<String> expected,
+			String actual)
+	{
+		Collection<String> expectedWithoutFormatting = new ArrayList<String>();
+		String actualWithoutFormatting = null;
+		
+		if (expected != null)
+		{
+			for (String expectedElement : expected)
+			{
+				expectedWithoutFormatting.add(expectedElement.replaceAll(SystemUtils.LINE_SEPARATOR, ""));
+			}
+		}
+		if (actual != null)
+		{
+			actualWithoutFormatting = actual.replaceAll(SystemUtils.LINE_SEPARATOR, "");
+		}
+		assertEqualsAny(message, expectedWithoutFormatting, actualWithoutFormatting);
+	}
+	
+	/**
+	 * Version of assertEqualsAny() for comparing strings with the new line formatting
+	 * removed.
+	 * 
+	 * This should make the comparison of generated logs more robust since don't have to
+	 * worry about changes in new line formatting.
+	 * 
+	 * @param expected
+	 * @param actual
+	 */
+	public static void assertEqualsAnyWithoutFormatting(Collection<String> expected,
+			String actual)
+	{
+		assertEqualsAnyWithoutFormatting(null, expected, actual);
+	}
 }

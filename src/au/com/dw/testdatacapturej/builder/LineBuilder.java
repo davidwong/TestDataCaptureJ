@@ -18,10 +18,12 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.builder;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 import org.apache.commons.lang.WordUtils;
 
+import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.util.StringEscapeUtil;
 
 
@@ -42,39 +44,23 @@ public class LineBuilder {
 	 * 
 	 * This should be used for classes that have a no-argument constructor.
 	 * 
-	 * @param message
-	 * @param object
-	 * @param fieldNamePrefix
-	 * @param fieldNameSuffix
-	 * @return The generated name of the field for the class
+	 * @param info The ObjectInfo for the object that requires the constructor line to be generated
+	 * @return The generated constructor line
 	 */
-	public String createConstructorLine(StringBuilder message, Object object, String fieldNamePrefix, String fieldNameSuffix) {
+	public String createConstructorLine(ObjectInfo info) {
+		StringBuilder constructorLineBuilder = new StringBuilder();
 		
-		Class clazz = object.getClass();
-		String fieldName = getObjectFieldName(object);
+		constructorLineBuilder.append(info.getClassName());
+		constructorLineBuilder.append(" ");
 
-		// derive the class field name
-		StringBuilder fieldNameBuilder = new StringBuilder();
-		if (fieldNamePrefix != null)
-		{
-			fieldNameBuilder.append(fieldNamePrefix);
-		}		
-		fieldNameBuilder.append(fieldName);
-		if (fieldNameSuffix != null)
-		{
-			fieldNameBuilder.append(fieldNameSuffix);
-		}
+		constructorLineBuilder.append(info.getClassFieldName());
+		constructorLineBuilder.append(info.getClassFieldNameIndex());
 		
-		message.append(clazz.getName());
-		message.append(" ");
-
-		message.append(fieldNameBuilder.toString());
+		constructorLineBuilder.append(" = new ");
+		constructorLineBuilder.append(info.getClassName());
+		constructorLineBuilder.append("();");
 		
-		message.append(" = new ");
-		message.append(clazz.getName());
-		message.append("();");
-		
-		return fieldNameBuilder.toString();
+		return constructorLineBuilder.toString();
 	}
 
 	/**
@@ -88,52 +74,38 @@ public class LineBuilder {
 	 * Then should generate:
 	 *   com.test.TestClass testClass = new com.test.TestClass("test", fieldObject1, 1000L);
 	 * 
-	 * @param message
-	 * @param object
-	 * @param fieldNamePrefix
-	 * @param fieldNameSuffix
-	 * @param params List of parameters, either field names or values
-	 * @return
+	 * @param info The ObjectInfo for the object that requires the constructor line to be generated
+	 * @return The generated constructor line
 	 */
-	public String createParameterizedConstructorLine(StringBuilder message, Object object, String fieldNamePrefix, String fieldNameSuffix, List<String> params) {
+	public String createParameterizedConstructorLine(ObjectInfo info) {
 		
-		Class<?> clazz = object.getClass();
-		String fieldName = getObjectFieldName(object);
+		List<String> params = info.getConstructorInfo().getConstructorParameters();
 
-		// derive the class field name
-		StringBuilder fieldNameBuilder = new StringBuilder();
-		if (fieldNamePrefix != null)
-		{
-			fieldNameBuilder.append(fieldNamePrefix);
-		}		
-		fieldNameBuilder.append(fieldName);
-		if (fieldNameSuffix != null)
-		{
-			fieldNameBuilder.append(fieldNameSuffix);
-		}
-		
-		message.append(clazz.getName());
-		message.append(" ");
+		StringBuilder constructorLineBuilder = new StringBuilder();
 
-		message.append(fieldNameBuilder.toString());
+		constructorLineBuilder.append(info.getClassName());
+		constructorLineBuilder.append(" ");
+
+		constructorLineBuilder.append(info.getClassFieldName());
+		constructorLineBuilder.append(info.getClassFieldNameIndex());
 		
-		message.append(" = new ");
-		message.append(clazz.getName());
-		message.append("(");
+		constructorLineBuilder.append(" = new ");
+		constructorLineBuilder.append(info.getClassName());
+		constructorLineBuilder.append("(");
 		
 		// log the parameters
 		int size = params.size();
 		for (int i = 0; i < size; i++)
 		{
-			message.append(params.get(i));
+			constructorLineBuilder.append(params.get(i));
 			if (i < size-1)
 			{
-				message.append(", ");
+				constructorLineBuilder.append(", ");
 			}
 		}
-		message.append(");");
+		constructorLineBuilder.append(");");
 		
-		return fieldNameBuilder.toString();
+		return constructorLineBuilder.toString();
 	}
 	
 	/**
@@ -144,50 +116,33 @@ public class LineBuilder {
 	 * Then should generate:
 	 *   Object[] objectArray = new Object[10];
 	 *   
-	 * @param message
-	 * @param argumentType Use string literal for type rather than object, so can create constructor for primitive types.
-	 * @param initialSize Optional, will use [] if initial size is 0.
-	 * @param fieldNamePrefix
-	 * @param fieldNameSuffix
-	 * @return The generated name of the field for the array
+	 * @param info The ObjectInfo for the object that requires the constructor line to be generated
+	 * @return The generated constructor line
 	 */
-	public String createArrayConstructorLine(StringBuilder message, String argumentType, int initialSize, String fieldNamePrefix, String fieldNameSuffix) {
-		String fieldName = "Array";
-		String objectType = argumentType;
+	public String createArrayConstructorLine(ObjectInfo info) {
+		// extra info required for an array constructor as opposed to an object constructor
+		Object array = info.getValue();
+		String arrayType = array.getClass().getComponentType().getName();
+		int initialSize = Array.getLength(array);
 		
-		// derive the class field name
-		StringBuilder fieldNameBuilder = new StringBuilder();
-		if (fieldNamePrefix != null)
-		{
-			fieldNameBuilder.append(fieldNamePrefix);
-			objectType = WordUtils.capitalize(objectType.substring(objectType.lastIndexOf(".")+1));	
-		}	
-		else
-		{
-			objectType = WordUtils.uncapitalize(objectType.substring(objectType.lastIndexOf(".")+1));				
-		}
-		fieldNameBuilder.append(objectType);
-		fieldNameBuilder.append(fieldName);
-		if (fieldNameSuffix != null)
-		{
-			fieldNameBuilder.append(fieldNameSuffix);
-		}
+		StringBuilder constructorLineBuilder = new StringBuilder();
 		
-		message.append(argumentType);
-		message.append("[] ");
+		constructorLineBuilder.append(arrayType);
+		constructorLineBuilder.append("[] ");
 
-		message.append(fieldNameBuilder.toString());
+		constructorLineBuilder.append(info.getClassFieldName());
+		constructorLineBuilder.append(info.getClassFieldNameIndex());
 		
-		message.append(" = new ");
-		message.append(argumentType);
-		message.append("[");
+		constructorLineBuilder.append(" = new ");
+		constructorLineBuilder.append(arrayType);
+		constructorLineBuilder.append("[");
 		if (initialSize >= 0)
 		{
-			message.append(initialSize);
+			constructorLineBuilder.append(initialSize);
 		}
-		message.append("];");
+		constructorLineBuilder.append("];");
 		
-		return fieldNameBuilder.toString();
+		return constructorLineBuilder.toString();
 	}
 	
     /**
@@ -479,41 +434,4 @@ public class LineBuilder {
     	}
 	}
 
-	/**
-	 * Generate a object field name for the class of an object.
-	 * 
-	 * If the object's class is:
-	 *   com.test.TestClass
-	 * Then the field name would be:
-	 *   testClass
-	 *   
-	 * @param object
-	 * @return
-	 */
-	public String getObjectFieldName(Object object)
-	{
-		String className = object.getClass().getName();
-		String fieldName = WordUtils.uncapitalize(className.substring(className.lastIndexOf(".")+1));	
-		
-		return fieldName;
-	}
-	
-	/**
-	 * Generate a object field name for the class.
-	 * 
-	 * If the class is:
-	 *   com.test.TestClass
-	 * Then the field name would be:
-	 *   testClass
-	 *   
-	 * @param clazz
-	 * @return
-	 */
-	public String getObjectFieldName(Class<?> clazz)
-	{
-		String className = clazz.getName();
-		String fieldName = WordUtils.uncapitalize(className.substring(className.lastIndexOf(".")+1));	
-		
-		return fieldName;
-	}
 }

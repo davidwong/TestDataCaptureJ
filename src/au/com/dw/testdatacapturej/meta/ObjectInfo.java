@@ -160,7 +160,11 @@ public class ObjectInfo {
 	/** If the object is a field, the name of the field from it's containing object */
 	private String fieldName;
 	
-	/** The created field name for the object, e.g. when constructed */
+	/**
+	 * The created field name to use for the object, e.g. when constructed. Note that this
+	 * is only the named fragment of the field name. The full field name that will be actually used
+	 * when generated will require the classFieldNameIndex suffixed to it.
+	 */
 	public String classFieldName;
 	
 	/** Number suffix to use to create a unique classfieldName for this object */
@@ -240,6 +244,16 @@ public class ObjectInfo {
 		}
 		
 		return foundFieldInfo;
+	}
+	
+	/**
+	 * Get the full generated field name for the object, including the numerical index suffix.
+	 * 
+	 * @return
+	 */
+	public String getFullFieldName()
+	{
+		return getClassFieldName() + String.valueOf(getClassFieldNameIndex());
 	}
 	
 	/**

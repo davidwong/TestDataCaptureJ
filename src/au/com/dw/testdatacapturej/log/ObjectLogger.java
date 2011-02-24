@@ -20,6 +20,7 @@ package au.com.dw.testdatacapturej.log;
 
 import java.util.List;
 
+import au.com.dw.testdatacapturej.builder.FieldNameIndex;
 import au.com.dw.testdatacapturej.log.display.AddedElementDisplay;
 import au.com.dw.testdatacapturej.log.display.ArrayElementDisplay;
 import au.com.dw.testdatacapturej.log.display.ArrayFieldDisplay;
@@ -44,22 +45,10 @@ import au.com.dw.testdatacapturej.meta.ObjectType;
  *
  */
 public class ObjectLogger {
-	
-	// Counters to add to generated class field names to prevent duplicates, e.g. if there are several fields
-	// for HashMaps then we would want uniques field names for them such as hashMap0, hashMap1, hashMap2, etc.
-	
-	/** Counter for class field names */
-	private int fieldNameCounter = 0;
-	
-	/** Counter for collection field names */
-	private int collectionNameCounter = 0;
-	
-	/** Counter for array field names */
-	private int arrayNameCounter = 0;
-	
-	/** Counter for map field names */
-	private int mapNameCounter = 0;
 
+	/** The generation of the numerical index is delegated to the FieldNameIndex */
+	private final FieldNameIndex nameIndex = new FieldNameIndex();
+	
 	/**
 	 * Log an object that is passed as a parameter to a method, can also be used to log return values. This doesn't
 	 * log the object directly, but the ObjectInfo metadata holder that was created from the object beforehand.
@@ -76,7 +65,7 @@ public class ObjectLogger {
 	 * May need to call resetNameCounters() after this method has run from the caller of logObject(). Shouldn't
 	 * call it at the end of this method since it is recursive.
 	 * 
-	 * @param message StringBuilder to hold the log.
+	 * @param builder StringBuilder to hold the log.
 	 * @param info The Object metadata to use for the logging.
 	 */
 	public void logObject(StringBuilder builder, ObjectInfo info)
@@ -125,10 +114,11 @@ public class ObjectLogger {
 	}
 
 	/**
-	 * Log any construction parameters.
+	 * Log any construction parameters for objects that need to have a parameterized constructor
+	 * line generated, instead of the default no-parameter constructor.
 	 * 
-	 * @param builder
-	 * @param info
+	 * @param builder StringBuilder to hold the log.
+	 * @param info The Object metadata to use for the logging.
 	 */
 	private void logParameters(StringBuilder builder, ObjectInfo info)
 	{
@@ -170,52 +160,27 @@ public class ObjectLogger {
 	 */
 	private void setClassNameIndex(ObjectInfo info)
 	{
-		int nameIndex = getFieldNameIndexForType(info.getType());
+		int nameIndex = getFieldNameIndexForField(info.getClassFieldName());
 		info.setClassFieldNameIndex(nameIndex);
 	}
 	
 	/**
 	 * Get the next counter for the field name of a particular type to use to append to that class field name.
 	 * 
-	 * @param type
-	 * @return
+	 * @param fieldName The field name fragment, without any numerical index
+	 * @return The numerical index to be used to append to the field name
 	 */
-	private int getFieldNameIndexForType(ObjectType type)
+	private int getFieldNameIndexForField(String fieldName)
 	{
-		int nameIndex;
-		
-		switch (type)
-		{
-			case ARRAY:
-				nameIndex = arrayNameCounter++;
-				break;
-				
-			case COLLECTION:
-				nameIndex = collectionNameCounter++;
-				break;
-	
-			case MAP:
-				nameIndex = mapNameCounter++;
-				break;
-
-			case SIMPLE:
-				nameIndex = 0;
-				break;
-				
-			default:
-				nameIndex = fieldNameCounter++;
-				break;
-		}
-		
-		return nameIndex;
+		return nameIndex.getAndIncrementIndexForField(fieldName);
 	}
 	
 	/**
 	 * Get the correct implementation of FieldDisplay for the type of object. The FieldDisplay will be
 	 * responsible for the actual generation of the test code.
 	 * 
-	 * @param type
-	 * @param containmentType
+	 * @param type The ObjectType enum for the object
+	 * @param containmentType The ContainmentType enum, if the object is an element in an array or collection, etc
 	 * @return
 	 */
 	private FieldDisplay getFieldDisplayForType(ObjectType type, ContainmentType containmentType)
@@ -287,9 +252,6 @@ public class ObjectLogger {
 	 */
 	public void resetNameCounters()
 	{
-		fieldNameCounter = 0;
-		collectionNameCounter = 0;
-		arrayNameCounter = 0;
-		mapNameCounter = 0;
+		nameIndex.resetIndices();
 	}
 }

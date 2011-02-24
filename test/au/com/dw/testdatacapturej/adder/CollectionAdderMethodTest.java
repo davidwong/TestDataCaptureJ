@@ -111,15 +111,15 @@ public class CollectionAdderMethodTest extends BaseReflectionTest {
 			String result = builder.toString();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.adder.CollectionHolder collectionHolder0 = new au.com.dw.testdatacapturej.mock.adder.CollectionHolder();" +
-			"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
-			"simpleDataHolder1.setText(\"aaa\");" +
-			"simpleDataHolder1.setNumber(1);" +
-			"simpleDataHolder1.setCharacter('a');" +
-			"simpleDataHolder1.setBool(true);" +
-			"simpleDataHolder1.setLongNumber(100L);" +
-			"simpleDataHolder1.setPrimitiveFraction(0.1f);" +
-			"simpleDataHolder1.setFraction(100.1d);" +
-			"collectionHolder0.addCollectionElement(simpleDataHolder1);";
+			"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
+			"simpleDataHolder0.setText(\"aaa\");" +
+			"simpleDataHolder0.setNumber(1);" +
+			"simpleDataHolder0.setCharacter('a');" +
+			"simpleDataHolder0.setBool(true);" +
+			"simpleDataHolder0.setLongNumber(100L);" +
+			"simpleDataHolder0.setPrimitiveFraction(0.1f);" +
+			"simpleDataHolder0.setFraction(100.1d);" +
+			"collectionHolder0.addCollectionElement(simpleDataHolder0);";
 			
 			System.out.println(result);
 			assertEqualsWithoutFormatting(expected, result);

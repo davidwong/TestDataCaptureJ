@@ -43,7 +43,7 @@ public class ArrayElementDisplay extends BaseFieldDisplay {
 		}
 		else
 		{
-			builder.append(getLineBuilder().createArrayAssignLine(info.getContainingClassFieldName(), info.getIndex(), info.getClassFieldName(), literal));
+			builder.append(getLineBuilder().createArrayAssignLine(info.getContainingClassFieldName(), info.getIndex(), info.getFullFieldName(), literal));
 		}
 		builder.append(FormatConstants.newLine);
        	

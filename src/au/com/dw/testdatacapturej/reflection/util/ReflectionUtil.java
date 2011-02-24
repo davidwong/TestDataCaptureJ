@@ -23,6 +23,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+import org.apache.commons.lang.WordUtils;
+
 import au.com.dw.testdatacapturej.builder.LineBuilder;
 import au.com.dw.testdatacapturej.log.FormatConstants;
 
@@ -270,8 +272,7 @@ public class ReflectionUtil {
     	{
     		Class<?> clazz = array.getClass();
     		Class<?> stringArrayComponentType = clazz.getComponentType();
-    		
-    		
+    				
     		return stringArrayComponentType.getName() + FormatConstants.arraySuffix;
     	}
     	else
@@ -291,4 +292,49 @@ public class ReflectionUtil {
     {
     	return field.getType().getName();
     }
+    
+	/**
+	 * Generate a field name fragment for the class of an object by extracting the non-qualified
+	 * class name of the object.
+	 * 
+	 * If the object's class is:
+	 *   com.test.TestClass
+	 * Then the field name fragment would be:
+	 *   testClass
+	 *   
+	 * This fragment is meant to be used as the basis for building the full field name.
+	 * 
+	 * @param object
+	 * @return
+	 */
+	public static String getObjectFieldName(Object object)
+	{
+		String className = object.getClass().getName();
+		String fieldName = WordUtils.uncapitalize(className.substring(className.lastIndexOf(".")+1));	
+		
+		return fieldName;
+	}
+	
+	/**
+	 * Generate a field name fragment for the class of an object by extracting the non-qualified
+	 * class name.
+	 * 
+	 * If the class is:
+	 *   com.test.TestClass
+	 * Then the field name fragment would be:
+	 *   testClass
+	 *   
+	 * This fragment is meant to be used as the basis for building the full field name.
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	public static String getObjectFieldName(Class<?> clazz)
+	{
+		String className = clazz.getName();
+		String fieldName = WordUtils.uncapitalize(className.substring(className.lastIndexOf(".")+1));	
+		
+		return fieldName;
+	}
+
 }

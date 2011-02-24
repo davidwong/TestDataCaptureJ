@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.apache.commons.collections.iterators.ArrayIterator;
 
+import au.com.dw.testdatacapturej.builder.BuilderUtil;
 import au.com.dw.testdatacapturej.config.CollectionAdderConfig;
 import au.com.dw.testdatacapturej.config.ConfigUtil;
 import au.com.dw.testdatacapturej.meta.ContainmentType;
@@ -86,15 +87,16 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 			String fieldName;
 
 			Class<?> clazz = initialObject.getClass();
-			info.setClassName(clazz.getName());
 
         	if (TypeUtil.isArray(initialObject))
         	{
         		fieldName = ReflectionUtil.ARGUMENT_ARRAY_FIELD_NAME;       		
         		info.setType(ObjectType.ARRAY);
     			
-    			// special handling for array class names
+    			// special handling for array class names and field names
     			info.setClassName(ReflectionUtil.getArrayClassName(initialObject));
+    			String arrayType = initialObject.getClass().getComponentType().getName();
+    			info.setClassFieldName(BuilderUtil.createArrayClassFieldName(arrayType, null, null));
         		
         		handleArray(info);
         	}
@@ -102,6 +104,9 @@ public class MetadataGenerationHandler implements ReflectionHandler {
         	{
         		fieldName = ReflectionUtil.ARGUMENT_COLLECTION_FIELD_NAME;
         		info.setType(ObjectType.COLLECTION);
+        		
+    			info.setClassName(clazz.getName());
+        		info.setClassFieldName(BuilderUtil.createClassFieldName(initialObject, null, null));
        		
          		handleCollection(info);
         	}
@@ -109,6 +114,9 @@ public class MetadataGenerationHandler implements ReflectionHandler {
         	{
         		fieldName = ReflectionUtil.ARGUMENT_MAP_FIELD_NAME;
            		info.setType(ObjectType.MAP);
+           		
+    			info.setClassName(clazz.getName());
+        		info.setClassFieldName(BuilderUtil.createClassFieldName(initialObject, null, null));
         		
            		handleMap(info);
         	}
@@ -116,6 +124,9 @@ public class MetadataGenerationHandler implements ReflectionHandler {
         	{
         		fieldName = ReflectionUtil.ARGUMENT_OBJECT_FIELD_NAME;
            		info.setType(ObjectType.OBJECT);
+           		
+    			info.setClassName(clazz.getName());
+        		info.setClassFieldName(BuilderUtil.createClassFieldName(initialObject, null, null));
         		
            		handleFields(info);
            		
@@ -192,11 +203,13 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 	            	{
 	            		fieldInfo.getSetterAdderInfo().setHasSetter(false);
 	            	}
-		    		fieldInfo.setClassName(fieldValue.getClass().getName());
 
 		    		if (TypeUtil.isJavaClass(fieldValue))
 		    		{
 		    			fieldInfo.setType(ObjectType.SIMPLE);
+		    			
+		    			fieldInfo.setClassName(fieldValue.getClass().getName());
+		        		fieldInfo.setClassFieldName(BuilderUtil.createClassFieldName(fieldValue, null, null));
 		    		}
 		    		else if (TypeUtil.isArray(fieldValue))
 		        	{
@@ -204,6 +217,8 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 
 		    			// special handling for array class names
 		        		fieldInfo.setClassName(ReflectionUtil.getArrayClassName(fieldValue));
+		    			String arrayType = fieldValue.getClass().getComponentType().getName();
+		    			fieldInfo.setClassFieldName(BuilderUtil.createArrayClassFieldName(arrayType, null, null));
 
 		        		if (!fieldInfo.isSetterIgnoreType())
 		        		{
@@ -213,7 +228,10 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 		        	else if (TypeUtil.isCollection(fieldValue))
 		        	{
 		        		fieldInfo.setType(ObjectType.COLLECTION);
-		        		
+
+		    			fieldInfo.setClassName(fieldValue.getClass().getName());
+		        		fieldInfo.setClassFieldName(BuilderUtil.createClassFieldName(fieldValue, null, null));
+
 		        		// check if the collection field is only accessed through adder methods
 		        		// Note: the adder check overrides the ignored setter check if both are set
 		        		CollectionAdderConfig foundConfig = configUtil.getCollectionAdderConfig(collectionConfigs, fieldName);
@@ -234,6 +252,9 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 		        	{
 		        		fieldInfo.setType(ObjectType.MAP);
 		        		
+		    			fieldInfo.setClassName(fieldValue.getClass().getName());
+		        		fieldInfo.setClassFieldName(BuilderUtil.createClassFieldName(fieldValue, null, null));
+
 		        		if (!fieldInfo.isSetterIgnoreType())
 		        		{
 		        			handleMap(fieldInfo);
@@ -243,6 +264,9 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 		        	{
 		        		fieldInfo.setType(ObjectType.OBJECT);
 		        		
+		    			fieldInfo.setClassName(fieldValue.getClass().getName());
+		        		fieldInfo.setClassFieldName(BuilderUtil.createClassFieldName(fieldValue, null, null));
+
 		        		if (!fieldInfo.isSetterIgnoreType())
 		        		{
 		        			handleFields(fieldInfo);
@@ -253,6 +277,7 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 	            {
 	            	// get class name from the Field if the field value is null
 	            	fieldInfo.setClassName(ReflectionUtil.getClassNameFromField(field));
+	            	fieldInfo.setClassFieldName(BuilderUtil.createClassFieldName(field, null, null));
 	            	
 	            	fieldInfo.setType(ObjectType.SIMPLE);
 	            }
@@ -294,7 +319,6 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 			{
 				elementInfo.setValue(elementObject);
 	    		elementInfo.setContainingClassFieldName(info.getClassFieldName());
-				elementInfo.setClassName(elementObject.getClass().getName());
 				elementInfo.getConstructorInfo().setHasDefaultConstructor(hasDefaultConstructor(elementObject));
 	    		// no need to check for setter since is an element of an array, so would be assigned instead
 	    		elementInfo.getSetterAdderInfo().setHasSetter(false);
@@ -303,6 +327,9 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 				{
 					elementInfo.setType(ObjectType.SIMPLE);
 					elementInfo.setContainmentType(elementType);
+					
+					elementInfo.setClassName(elementObject.getClass().getName());
+					elementInfo.setClassFieldName(BuilderUtil.createClassFieldName(elementObject, null, null));
 				}
 				else if (TypeUtil.isArray(elementObject))
 		    	{
@@ -311,13 +338,18 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 
 	    			// special handling for array class names
 					elementInfo.setClassName(ReflectionUtil.getArrayClassName(elementObject));
-
-					handleArray(elementInfo);
+	    			String arrayType = elementObject.getClass().getComponentType().getName();
+	    			elementInfo.setClassFieldName(BuilderUtil.createArrayClassFieldName(arrayType, null, null));
+					
+	    			handleArray(elementInfo);
 		    	}
 				else if (TypeUtil.isMap(elementObject))
 		    	{
 					elementInfo.setType(ObjectType.MAP);
 					elementInfo.setContainmentType(elementType);
+								
+					elementInfo.setClassName(elementObject.getClass().getName());
+					elementInfo.setClassFieldName(BuilderUtil.createClassFieldName(elementObject, null, null));
 					
 					handleMap(elementInfo);
 		    	}
@@ -326,14 +358,20 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 					elementInfo.setType(ObjectType.COLLECTION);
 					elementInfo.setContainmentType(elementType);
 		    		
-		    		handleCollection(elementInfo);
+					elementInfo.setClassName(elementObject.getClass().getName());
+					elementInfo.setClassFieldName(BuilderUtil.createClassFieldName(elementObject, null, null));
+		    		
+					handleCollection(elementInfo);
 		    	}
 		    	else
 		    	{
 					elementInfo.setType(ObjectType.OBJECT);
 					elementInfo.setContainmentType(elementType);
 		    		
-		    		handleFields(elementInfo);
+					elementInfo.setClassName(elementObject.getClass().getName());
+					elementInfo.setClassFieldName(BuilderUtil.createClassFieldName(elementObject, null, null));
+		    		
+					handleFields(elementInfo);
 		    	}				
 			}
 			else
@@ -375,7 +413,6 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 			{
 				elementInfo.setValue(elementObject);
 	    		elementInfo.setContainingClassFieldName(info.getClassFieldName());
-				elementInfo.setClassName(elementObject.getClass().getName());
 				elementInfo.getConstructorInfo().setHasDefaultConstructor(hasDefaultConstructor(elementObject));
 	    		// no need to check for setter since is an element of a collection, so would be added to the collection
 	    		elementInfo.getSetterAdderInfo().setHasSetter(false);
@@ -384,6 +421,9 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 		    	{
 					elementInfo.setType(ObjectType.SIMPLE);
 					elementInfo.setContainmentType(elementType);
+					
+					elementInfo.setClassName(elementObject.getClass().getName());
+					elementInfo.setClassFieldName(BuilderUtil.createClassFieldName(elementObject, null, null));
 		    	}
 		    	else if (TypeUtil.isArray(elementObject))
 		    	{
@@ -392,6 +432,8 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 
 	    			// special handling for array class names
 					elementInfo.setClassName(ReflectionUtil.getArrayClassName(elementObject));
+	    			String arrayType = elementObject.getClass().getComponentType().getName();
+	    			elementInfo.setClassFieldName(BuilderUtil.createArrayClassFieldName(arrayType, null, null));
 
 		    		handleArray(elementInfo);
 		    	}
@@ -400,21 +442,30 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 					elementInfo.setType(ObjectType.COLLECTION);
 					elementInfo.setContainmentType(elementType);
 		    		
-		    		handleCollection(elementInfo);
+					elementInfo.setClassName(elementObject.getClass().getName());
+					elementInfo.setClassFieldName(BuilderUtil.createClassFieldName(elementObject, null, null));
+		    		
+					handleCollection(elementInfo);
 		    	}
 		    	else if (TypeUtil.isMap(elementObject))
 		    	{
 					elementInfo.setType(ObjectType.MAP);
 					elementInfo.setContainmentType(elementType);
 		    		
-		    		handleMap(elementInfo);
+					elementInfo.setClassName(elementObject.getClass().getName());
+					elementInfo.setClassFieldName(BuilderUtil.createClassFieldName(elementObject, null, null));
+		    		
+					handleMap(elementInfo);
 		    	}
 		    	else
 		    	{
 					elementInfo.setType(ObjectType.OBJECT);
 					elementInfo.setContainmentType(elementType);
 		    		
-		    		handleFields(elementInfo);
+					elementInfo.setClassName(elementObject.getClass().getName());
+					elementInfo.setClassFieldName(BuilderUtil.createClassFieldName(elementObject, null, null));
+		    		
+					handleFields(elementInfo);
 		    	}
 			}
 			else
@@ -459,7 +510,6 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 			if (key != null)
 			{
 				keyInfo.setValue(key);
-				keyInfo.setClassName(key.getClass().getName());
 				keyInfo.setContainingClassFieldName(info.getClassFieldName());
 				keyInfo.getConstructorInfo().setHasDefaultConstructor(hasDefaultConstructor(key));
 	    		// no need to check for setter since is a part of an entry to a map, so would be put
@@ -469,6 +519,9 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 				if (TypeUtil.isJavaClass(key))
 				{
 					keyInfo.setType(ObjectType.SIMPLE);
+					
+					keyInfo.setClassName(key.getClass().getName());
+					keyInfo.setClassFieldName(BuilderUtil.createClassFieldName(key, null, null));
 				}
 				else if (TypeUtil.isArray(key))
 				{
@@ -476,6 +529,8 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 					
 					// special handling for array class names
 					keyInfo.setClassName(ReflectionUtil.getArrayClassName(key));
+	    			String arrayType = key.getClass().getComponentType().getName();
+	    			keyInfo.setClassFieldName(BuilderUtil.createArrayClassFieldName(arrayType, null, null));
 					
 					handleArray(keyInfo);
 				}
@@ -483,17 +538,26 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 				{
 					keyInfo.setType(ObjectType.COLLECTION);
 					
+					keyInfo.setClassName(key.getClass().getName());
+					keyInfo.setClassFieldName(BuilderUtil.createClassFieldName(key, null, null));
+					
 					handleCollection(keyInfo);
 				}
 				else if (TypeUtil.isMap(key))
 				{
 					keyInfo.setType(ObjectType.MAP);
 					
+					keyInfo.setClassName(key.getClass().getName());
+					keyInfo.setClassFieldName(BuilderUtil.createClassFieldName(key, null, null));
+					
 					handleMap(keyInfo);
 				}
 				else
 				{
 					keyInfo.setType(ObjectType.OBJECT);
+					
+					keyInfo.setClassName(key.getClass().getName());
+					keyInfo.setClassFieldName(BuilderUtil.createClassFieldName(key, null, null));
 					
 					handleFields(keyInfo);
 				}
@@ -512,7 +576,6 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 			{
 				valueInfo.setValue(value);
 	    		valueInfo.setContainingClassFieldName(info.getClassFieldName());
-				valueInfo.setClassName(value.getClass().getName());
 				valueInfo.getConstructorInfo().setHasDefaultConstructor(hasDefaultConstructor(value));
 	    		// no need to check for setter since is a part of an entry to a map, so would be put
 	    		// into the map instead
@@ -522,6 +585,9 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 		    	{
 					valueInfo.setType(ObjectType.SIMPLE);
 					valueInfo.setContainmentType(elementType);
+					
+					valueInfo.setClassName(value.getClass().getName());
+					valueInfo.setClassFieldName(BuilderUtil.createClassFieldName(value, null, null));
 		    	}
 		    	else if (TypeUtil.isArray(value))
 	    		{
@@ -530,6 +596,8 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 
 	    			// special handling for array class names
 					valueInfo.setClassName(ReflectionUtil.getArrayClassName(value));
+	    			String arrayType = value.getClass().getComponentType().getName();
+	    			valueInfo.setClassFieldName(BuilderUtil.createArrayClassFieldName(arrayType, null, null));
 
 	    			handleArray(valueInfo);
 	    		}
@@ -538,21 +606,30 @@ public class MetadataGenerationHandler implements ReflectionHandler {
 					valueInfo.setType(ObjectType.COLLECTION);
 					valueInfo.setContainmentType(elementType);
 					
-	    			handleCollection(valueInfo);
+					valueInfo.setClassName(value.getClass().getName());
+					valueInfo.setClassFieldName(BuilderUtil.createClassFieldName(value, null, null));
+	    			
+					handleCollection(valueInfo);
 	    		}
 	    		else if (TypeUtil.isMap(value))
 	    		{
 					valueInfo.setType(ObjectType.MAP);
 					valueInfo.setContainmentType(elementType);
 					
-	    			handleMap(valueInfo);
+					valueInfo.setClassName(value.getClass().getName());
+					valueInfo.setClassFieldName(BuilderUtil.createClassFieldName(value, null, null));
+	    			
+					handleMap(valueInfo);
 	    		}
 	    		else
 	    		{
 					valueInfo.setType(ObjectType.OBJECT);
 					valueInfo.setContainmentType(elementType);
 					
-	    			handleFields(valueInfo);
+					valueInfo.setClassName(value.getClass().getName());
+					valueInfo.setClassFieldName(BuilderUtil.createClassFieldName(value, null, null));
+	    			
+					handleFields(valueInfo);
 	    		}
 			}
 			else

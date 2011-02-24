@@ -31,18 +31,16 @@ public class ParameterizedConstructorGenerator extends BaseConstructorGenerator 
 
 	@Override
 	public void generateConstructor(StringBuilder builder, ObjectInfo info) {
-		String fieldIndex = String.valueOf(info.getClassFieldNameIndex());
-
 		builder.append(FormatConstants.newLine);
 
 		// create the constructor line
-		String classFieldName = getLineBuilder().createParameterizedConstructorLine(builder, info.getValue(), null, fieldIndex, info.getConstructorInfo().getConstructorParameters());
-		info.setClassFieldName(classFieldName);
+		String constructorLine = getLineBuilder().createParameterizedConstructorLine(info);
+		builder.append(constructorLine);
 		
 		// pass the newly created class field name to child objects
 		for (ObjectInfo fieldInfo : info.getFieldList())
 		{
-			fieldInfo.setContainingClassFieldName(classFieldName);
+			fieldInfo.setContainingClassFieldName(info.getFullFieldName());
 		}
 		
 		builder.append(FormatConstants.newLine);

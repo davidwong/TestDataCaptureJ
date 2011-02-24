@@ -18,8 +18,8 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.log;
 
-import static au.com.dw.testing.AssertUtil.assertEqualsAny;
-import static org.junit.Assert.assertEquals;
+import static au.com.dw.testing.AssertUtil.assertEqualsAnyWithoutFormatting;
+import static au.com.dw.testing.AssertUtil.assertEqualsWithoutFormatting;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -28,13 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-
-import org.apache.commons.lang.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import au.com.dw.testdatacapturej.log.FormatConstants;
-import au.com.dw.testdatacapturej.log.ObjectLogger;
 import au.com.dw.testdatacapturej.mock.classcheck.Holder;
 import au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Array;
 import au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat;
@@ -89,17 +85,12 @@ public class ConstructorParamTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_String nDCNS_String1 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_String(\"test\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(nDCNS_String1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_String nDCNS_String0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_String(\"test\");" +
+			"holder0.setTestField(nDCNS_String0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -118,17 +109,12 @@ public class ConstructorParamTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat nDCNS_BooleanFloat1 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat(true, 10.1f);" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(nDCNS_BooleanFloat1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat nDCNS_BooleanFloat0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat(true, 10.1f);" +
+			"holder0.setTestField(nDCNS_BooleanFloat0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -150,21 +136,14 @@ public class ConstructorParamTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int nDCNS_Int1 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int nDCNS_Int0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			"nDCNS_Int1.setNoSetterField(2);" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(nDCNS_Int1);" +
-			SystemUtils.LINE_SEPARATOR;
+			"nDCNS_Int0.setNoSetterField(2);" +
+			"holder0.setTestField(nDCNS_Int0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -185,19 +164,13 @@ public class ConstructorParamTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_LongChar nDCNS_LongChar1 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_LongChar(7L);" +
-			SystemUtils.LINE_SEPARATOR +
-			"nDCNS_LongChar1.setNoSetterField2('a');" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(nDCNS_LongChar1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_LongChar nDCNS_LongChar0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_LongChar(7L);" +
+			"nDCNS_LongChar0.setNoSetterField2('a');" +
+			"holder0.setTestField(nDCNS_LongChar0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -219,21 +192,14 @@ public class ConstructorParamTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Double nDCNS_Double1 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Double();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Double nDCNS_Double0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Double();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			"nDCNS_Double1.setNoSetterField(60.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(nDCNS_Double1);" +
-			SystemUtils.LINE_SEPARATOR;
+			"nDCNS_Double0.setNoSetterField(60.1d);" +
+			"holder0.setTestField(nDCNS_Double0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -255,21 +221,14 @@ public class ConstructorParamTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Integer nDCNS_Integer1 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Integer();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Integer nDCNS_Integer0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Integer();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			"nDCNS_Integer1.setNoSetterField(6);" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(nDCNS_Integer1);" +
-			SystemUtils.LINE_SEPARATOR;
+			"nDCNS_Integer0.setNoSetterField(6);" +
+			"holder0.setTestField(nDCNS_Integer0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -289,34 +248,20 @@ public class ConstructorParamTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setText(\"aaa\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setNumber(1);" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setCharacter('a');" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setBool(true);" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setLongNumber(100L);" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setPrimitiveFraction(0.1f);" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setFraction(100.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object nDCNS_Object2 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object(simpleDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(nDCNS_Object2);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
+			"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
+			"simpleDataHolder0.setText(\"aaa\");" +
+			"simpleDataHolder0.setNumber(1);" +
+			"simpleDataHolder0.setCharacter('a');" +
+			"simpleDataHolder0.setBool(true);" +
+			"simpleDataHolder0.setLongNumber(100L);" +
+			"simpleDataHolder0.setPrimitiveFraction(0.1f);" +
+			"simpleDataHolder0.setFraction(100.1d);" +
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object nDCNS_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object(simpleDataHolder0);" +
+			"holder0.setTestField(nDCNS_Object0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -343,46 +288,25 @@ public class ConstructorParamTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"java.util.HashSet hashSet0 = new java.util.HashSet();" +
-			SystemUtils.LINE_SEPARATOR +
 			"hashSet0.add(100L);" +
-			SystemUtils.LINE_SEPARATOR +
 			"hashSet0.add(200L);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"java.util.ArrayList arrayList1 = new java.util.ArrayList();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setText(\"aaa\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setNumber(1);" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setCharacter('a');" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setBool(true);" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setLongNumber(100L);" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setPrimitiveFraction(0.1f);" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setFraction(100.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"arrayList1.add(simpleDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Collection nDCNS_Collection2 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Collection(hashSet0, arrayList1);" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(nDCNS_Collection2);" +
-			SystemUtils.LINE_SEPARATOR;
+			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
+			"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
+			"simpleDataHolder0.setText(\"aaa\");" +
+			"simpleDataHolder0.setNumber(1);" +
+			"simpleDataHolder0.setCharacter('a');" +
+			"simpleDataHolder0.setBool(true);" +
+			"simpleDataHolder0.setLongNumber(100L);" +
+			"simpleDataHolder0.setPrimitiveFraction(0.1f);" +
+			"simpleDataHolder0.setFraction(100.1d);" +
+			"arrayList0.add(simpleDataHolder0);" +
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Collection nDCNS_Collection0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Collection(hashSet0, arrayList0);" +
+			"holder0.setTestField(nDCNS_Collection0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -409,46 +333,25 @@ public class ConstructorParamTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(holder));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setText(\"aaa\");" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setNumber(1);" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setCharacter('a');" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setBool(true);" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setLongNumber(100L);" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setPrimitiveFraction(0.1f);" +
-			SystemUtils.LINE_SEPARATOR +
-			"simpleDataHolder1.setFraction(100.1d);" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = simpleDataHolder1;" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"double[] doubleArray1 = new double[2];" +
-			SystemUtils.LINE_SEPARATOR +
-			"doubleArray1[0] = 30.1d;" +
-			SystemUtils.LINE_SEPARATOR +
-			"doubleArray1[1] = 40.1d;" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Array nDCNS_Array2 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Array(objectArray0, doubleArray1);" +
-			SystemUtils.LINE_SEPARATOR +
-			"holder0.setTestField(nDCNS_Array2);" +
-			SystemUtils.LINE_SEPARATOR;
+			"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
+			"simpleDataHolder0.setText(\"aaa\");" +
+			"simpleDataHolder0.setNumber(1);" +
+			"simpleDataHolder0.setCharacter('a');" +
+			"simpleDataHolder0.setBool(true);" +
+			"simpleDataHolder0.setLongNumber(100L);" +
+			"simpleDataHolder0.setPrimitiveFraction(0.1f);" +
+			"simpleDataHolder0.setFraction(100.1d);" +
+			"objectArray0[0] = simpleDataHolder0;" +
+			"double[] doubleArray0 = new double[2];" +
+			"doubleArray0[0] = 30.1d;" +
+			"doubleArray0[1] = 40.1d;" +
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Array nDCNS_Array0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Array(objectArray0, doubleArray0);" +
+			"holder0.setTestField(nDCNS_Array0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -477,86 +380,44 @@ public class ConstructorParamTest extends BaseReflectionTest {
     		
     		Collection<String> expectedValues = new ArrayList<String>();
     		
-    		String expected1 = SystemUtils.LINE_SEPARATOR +
-    		"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-    		SystemUtils.LINE_SEPARATOR +
-    		SystemUtils.LINE_SEPARATOR +
+    		String expected1 = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
     		"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-    		SystemUtils.LINE_SEPARATOR +
-    		SystemUtils.LINE_SEPARATOR +
-    		"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setText(\"aaa\");" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setNumber(1);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setCharacter('a');" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setBool(true);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setLongNumber(100L);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setPrimitiveFraction(0.1f);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setFraction(100.1d);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"treeMap0.put(\"key1\", simpleDataHolder1);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		SystemUtils.LINE_SEPARATOR +
-    		"java.util.HashMap hashMap1 = new java.util.HashMap();" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"hashMap1.put(\"key1\", 'a');" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"hashMap1.put(\"key2\", 'b');" +
-    		SystemUtils.LINE_SEPARATOR +
-    		SystemUtils.LINE_SEPARATOR +
-    		"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Map nDCNS_Map2 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Map(treeMap0, hashMap1);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"holder0.setTestField(nDCNS_Map2);" +
-    		SystemUtils.LINE_SEPARATOR;
+    		"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
+    		"simpleDataHolder0.setText(\"aaa\");" +
+    		"simpleDataHolder0.setNumber(1);" +
+    		"simpleDataHolder0.setCharacter('a');" +
+    		"simpleDataHolder0.setBool(true);" +
+    		"simpleDataHolder0.setLongNumber(100L);" +
+    		"simpleDataHolder0.setPrimitiveFraction(0.1f);" +
+    		"simpleDataHolder0.setFraction(100.1d);" +
+    		"treeMap0.put(\"key1\", simpleDataHolder0);" +
+    		"java.util.HashMap hashMap0 = new java.util.HashMap();" +
+    		"hashMap0.put(\"key1\", 'a');" +
+    		"hashMap0.put(\"key2\", 'b');" +
+    		"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Map nDCNS_Map0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Map(treeMap0, hashMap0);" +
+    		"holder0.setTestField(nDCNS_Map0);";
     		expectedValues.add(expected1);
 
-    		String expected2 = SystemUtils.LINE_SEPARATOR +
-    		"au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
-    		SystemUtils.LINE_SEPARATOR +
-    		SystemUtils.LINE_SEPARATOR +
+    		String expected2 = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
     		"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-    		SystemUtils.LINE_SEPARATOR +
-    		SystemUtils.LINE_SEPARATOR +
-    		"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setText(\"aaa\");" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setNumber(1);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setCharacter('a');" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setBool(true);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setLongNumber(100L);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setPrimitiveFraction(0.1f);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"simpleDataHolder1.setFraction(100.1d);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"treeMap0.put(\"key1\", simpleDataHolder1);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		SystemUtils.LINE_SEPARATOR +
-    		"java.util.HashMap hashMap1 = new java.util.HashMap();" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"hashMap1.put(\"key2\", 'b');" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"hashMap1.put(\"key1\", 'a');" +
-    		SystemUtils.LINE_SEPARATOR +
-    		SystemUtils.LINE_SEPARATOR +
-    		"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Map nDCNS_Map2 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Map(treeMap0, hashMap1);" +
-    		SystemUtils.LINE_SEPARATOR +
-    		"holder0.setTestField(nDCNS_Map2);" +
-    		SystemUtils.LINE_SEPARATOR;
+    		"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
+    		"simpleDataHolder0.setText(\"aaa\");" +
+    		"simpleDataHolder0.setNumber(1);" +
+    		"simpleDataHolder0.setCharacter('a');" +
+    		"simpleDataHolder0.setBool(true);" +
+    		"simpleDataHolder0.setLongNumber(100L);" +
+    		"simpleDataHolder0.setPrimitiveFraction(0.1f);" +
+    		"simpleDataHolder0.setFraction(100.1d);" +
+    		"treeMap0.put(\"key1\", simpleDataHolder0);" +
+    		"java.util.HashMap hashMap0 = new java.util.HashMap();" +
+    		"hashMap0.put(\"key2\", 'b');" +
+    		"hashMap0.put(\"key1\", 'a');" +
+    		"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Map nDCNS_Map0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Map(treeMap0, hashMap0);" +
+    		"holder0.setTestField(nDCNS_Map0);";
     		expectedValues.add(expected2);
     		
     		System.out.println(result);
-    		assertEqualsAny(expectedValues, result);
+    		assertEqualsAnyWithoutFormatting(expectedValues, result);
     	} catch (Exception e) {
     		e.printStackTrace();
     		fail();

@@ -18,24 +18,17 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.reflection;
 
-
-import static org.junit.Assert.assertEquals;
+import static au.com.dw.testing.AssertUtil.assertEqualsWithoutFormatting;
 import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.Map;
 
-
-import org.apache.commons.lang.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import au.com.dw.testdatacapturej.log.ObjectLogger;
 import au.com.dw.testdatacapturej.mock.dataholder.TestData;
-import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
-import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
-
-
 
 /**
  * Tests for nesting grouping classes, e.g. collections, arrays, maps.
@@ -72,19 +65,13 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.TreeSet treeSet0 = new java.util.TreeSet();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.TreeSet treeSet0 = new java.util.TreeSet();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
 			"objectArray0[0] = null;" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeSet0.add(objectArray0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"treeSet0.add(objectArray0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -104,17 +91,12 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashSet hashSet0 = new java.util.HashSet();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.HashSet hashSet0 = new java.util.HashSet();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[0];" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashSet0.add(objectArray0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"hashSet0.add(objectArray0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -134,19 +116,13 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
 			"int[] intArray0 = new int[1];" +
-			SystemUtils.LINE_SEPARATOR +
 			"intArray0[0] = 1;" +
-			SystemUtils.LINE_SEPARATOR +
-			"linkedHashSet0.add(intArray0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"linkedHashSet0.add(intArray0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -166,26 +142,16 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder[] innerDataHolderArray0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolderArray0[0] = innerDataHolder0;" +
-			SystemUtils.LINE_SEPARATOR +			
-			"arrayList0.add(innerDataHolderArray0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"arrayList0.add(innerDataHolderArray0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -205,35 +171,20 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder[] innerDataHolderArray0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder[2];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolderArray0[0] = innerDataHolder0;" +
-			SystemUtils.LINE_SEPARATOR +			
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"two\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder1.setImNumber(2.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolderArray0[1] = innerDataHolder1;" +
-			SystemUtils.LINE_SEPARATOR +			
-			"arrayList0.add(innerDataHolderArray0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"arrayList0.add(innerDataHolderArray0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -256,17 +207,12 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedList linkedList0 = new java.util.LinkedList();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"java.util.ArrayList arrayList1 = new java.util.ArrayList();" +
-			SystemUtils.LINE_SEPARATOR +
-			"linkedList0.add(arrayList1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "java.util.LinkedList linkedList0 = new java.util.LinkedList();" +
+			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
+			"linkedList0.add(arrayList0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -286,19 +232,13 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashSet hashSet0 = new java.util.HashSet();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"java.util.TreeSet treeSet1 = new java.util.TreeSet();" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeSet1.add(null);" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashSet0.add(treeSet1);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "java.util.HashSet hashSet0 = new java.util.HashSet();" +
+			"java.util.TreeSet treeSet0 = new java.util.TreeSet();" +
+			"treeSet0.add(null);" +
+			"hashSet0.add(treeSet0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -318,26 +258,16 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"java.util.ArrayList arrayList1 = new java.util.ArrayList();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
+			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
-			"arrayList1.add(innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +			
-			"linkedHashSet0.add(arrayList1);" +
-			SystemUtils.LINE_SEPARATOR;
+			"arrayList0.add(innerDataHolder0);" +
+			"linkedHashSet0.add(arrayList0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -357,35 +287,20 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"java.util.ArrayList arrayList1 = new java.util.ArrayList();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
+			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
-			"arrayList1.add(innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +			
-			SystemUtils.LINE_SEPARATOR +
+			"arrayList0.add(innerDataHolder0);" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"two\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder1.setImNumber(2.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
-			"arrayList1.add(innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +			
-			"linkedHashSet0.add(arrayList1);" +
-			SystemUtils.LINE_SEPARATOR;
+			"arrayList0.add(innerDataHolder1);" +
+			"linkedHashSet0.add(arrayList0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -408,17 +323,12 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedList linkedList0 = new java.util.LinkedList();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedList linkedList0 = new java.util.LinkedList();" +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			"linkedList0.add(hashMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"linkedList0.add(hashMap0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -438,19 +348,13 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashSet hashSet0 = new java.util.HashSet();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.HashSet hashSet0 = new java.util.HashSet();" +
 			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
 			"treeMap0.put(\"key1\", null);" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashSet0.add(treeMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"hashSet0.add(treeMap0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -470,26 +374,16 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
 			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"linkedHashMap0.put(\"key1\", innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +			
-			"linkedHashSet0.add(linkedHashMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"linkedHashSet0.add(linkedHashMap0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -509,35 +403,20 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
 			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"linkedHashMap0.put(\"key1\", innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +			
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"two\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder1.setImNumber(2.0d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"linkedHashMap0.put(\"key2\", innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +			
-			"linkedHashSet0.add(linkedHashMap0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"linkedHashSet0.add(linkedHashMap0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -560,19 +439,13 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.lang.Object[] objectArray1 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
 			"objectArray1[0] = null;" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = objectArray1;" +
-			SystemUtils.LINE_SEPARATOR;
+			"objectArray0[0] = objectArray1;";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -592,17 +465,12 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.lang.Object[] objectArray1 = new java.lang.Object[0];" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = objectArray1;" +
-			SystemUtils.LINE_SEPARATOR;
+			"objectArray0[0] = objectArray1;";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -622,26 +490,16 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.lang.Object[] objectArray1 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"objectArray1[0] = innerDataHolder0;" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = objectArray1;" +
-			SystemUtils.LINE_SEPARATOR;
+			"objectArray0[0] = objectArray1;";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -661,35 +519,20 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.lang.Object[] objectArray1 = new java.lang.Object[2];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"objectArray1[0] = innerDataHolder0;" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"two\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder1.setImNumber(2.0d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"objectArray1[1] = innerDataHolder1;" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = objectArray1;" +
-			SystemUtils.LINE_SEPARATOR;
+			"objectArray0[0] = objectArray1;";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -712,17 +555,12 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = arrayList0;" +
-			SystemUtils.LINE_SEPARATOR;
+			"objectArray0[0] = arrayList0;";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -742,19 +580,13 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.TreeSet treeSet0 = new java.util.TreeSet();" +
-			SystemUtils.LINE_SEPARATOR +
 			"treeSet0.add(null);" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = treeSet0;" +
-			SystemUtils.LINE_SEPARATOR;
+			"objectArray0[0] = treeSet0;";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -774,26 +606,16 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
 			"arrayList0.add(innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = arrayList0;" +
-			SystemUtils.LINE_SEPARATOR;
+			"objectArray0[0] = arrayList0;";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -813,35 +635,20 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
 			"arrayList0.add(innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"two\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder1.setImNumber(2.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
 			"arrayList0.add(innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = arrayList0;" +
-			SystemUtils.LINE_SEPARATOR;
+			"objectArray0[0] = arrayList0;";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -864,17 +671,12 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = hashMap0;" +
-			SystemUtils.LINE_SEPARATOR;
+			"objectArray0[0] = hashMap0;";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -894,19 +696,13 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
 			"treeMap0.put(\"key1\", null);" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = treeMap0;" +
-			SystemUtils.LINE_SEPARATOR;
+			"objectArray0[0] = treeMap0;";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -926,26 +722,16 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"linkedHashMap0.put(\"key1\", innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = linkedHashMap0;" +
-			SystemUtils.LINE_SEPARATOR;
+			"objectArray0[0] = linkedHashMap0;";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -965,35 +751,20 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"linkedHashMap0.put(\"key1\", innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"two\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder1.setImNumber(2.0d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"linkedHashMap0.put(\"key2\", innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
-			"objectArray0[0] = linkedHashMap0;" +
-			SystemUtils.LINE_SEPARATOR;
+			"objectArray0[0] = linkedHashMap0;";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1016,19 +787,13 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.HashMap hashMap0 = new java.util.HashMap();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
 			"objectArray0[0] = null;" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(\"key1\", objectArray0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"hashMap0.put(\"key1\", objectArray0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1048,17 +813,12 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[0];" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(\"key1\", objectArray0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"treeMap0.put(\"key1\", objectArray0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1078,19 +838,13 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"int[] intArray0 = new int[1];" +
-			SystemUtils.LINE_SEPARATOR +
 			"intArray0[0] = 1;" +
-			SystemUtils.LINE_SEPARATOR +
-			"linkedHashMap0.put(\"key1\", intArray0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"linkedHashMap0.put(\"key1\", intArray0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1110,26 +864,16 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
 			"objectArray0[0] = innerDataHolder0;" +
-			SystemUtils.LINE_SEPARATOR +
-			"linkedHashMap0.put(\"key1\", objectArray0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"linkedHashMap0.put(\"key1\", objectArray0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1149,35 +893,20 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[2];" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
 			"objectArray0[0] = innerDataHolder0;" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"two\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder1.setImNumber(2.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
 			"objectArray0[1] = innerDataHolder1;" +
-			SystemUtils.LINE_SEPARATOR +
-			"linkedHashMap0.put(\"key1\", objectArray0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"linkedHashMap0.put(\"key1\", objectArray0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1200,17 +929,12 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.HashMap hashMap0 = new java.util.HashMap();" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(\"key1\", arrayList0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"hashMap0.put(\"key1\", arrayList0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1230,19 +954,13 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
 			"java.util.TreeSet treeSet0 = new java.util.TreeSet();" +
-			SystemUtils.LINE_SEPARATOR +
 			"treeSet0.add(null);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(\"key1\", treeSet0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"treeMap0.put(\"key1\", treeSet0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1262,26 +980,16 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"java.util.LinkedList linkedList0 = new java.util.LinkedList();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
 			"linkedList0.add(innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +
-			"linkedHashMap0.put(\"key1\", linkedList0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"linkedHashMap0.put(\"key1\", linkedList0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1301,35 +1009,20 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"java.util.LinkedList linkedList0 = new java.util.LinkedList();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
 			"linkedList0.add(innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"two\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder1.setImNumber(2.0d);" +
-			SystemUtils.LINE_SEPARATOR +			
 			"linkedList0.add(innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
-			"linkedHashMap0.put(\"key1\", linkedList0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"linkedHashMap0.put(\"key1\", linkedList0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1352,17 +1045,12 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.HashMap hashMap0 = new java.util.HashMap();" +
 			"java.util.HashMap hashMap1 = new java.util.HashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			"hashMap0.put(\"key1\", hashMap1);" +
-			SystemUtils.LINE_SEPARATOR;
+			"hashMap0.put(\"key1\", hashMap1);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1382,19 +1070,13 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
 			"java.util.TreeMap treeMap1 = new java.util.TreeMap();" +
-			SystemUtils.LINE_SEPARATOR +
 			"treeMap1.put(\"innerkey\", null);" +
-			SystemUtils.LINE_SEPARATOR +
-			"treeMap0.put(\"key1\", treeMap1);" +
-			SystemUtils.LINE_SEPARATOR;
+			"treeMap0.put(\"key1\", treeMap1);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1414,26 +1096,16 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"java.util.LinkedHashMap linkedHashMap1 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"linkedHashMap1.put(\"innerkey\", innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +
-			"linkedHashMap0.put(\"key1\", linkedHashMap1);" +
-			SystemUtils.LINE_SEPARATOR;
+			"linkedHashMap0.put(\"key1\", linkedHashMap1);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -1453,35 +1125,20 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"java.util.LinkedHashMap linkedHashMap1 = new java.util.LinkedHashMap();" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder0.setImText(\"one\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder0.setImNumber(1.0d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"linkedHashMap1.put(\"innerkey\", innerDataHolder0);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder innerDataHolder1 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder();" +
-			SystemUtils.LINE_SEPARATOR +
 			"innerDataHolder1.setImText(\"two\");" +
-			SystemUtils.LINE_SEPARATOR +			
 			"innerDataHolder1.setImNumber(2.0d);" +
-			SystemUtils.LINE_SEPARATOR +
 			"linkedHashMap1.put(\"innerkey2\", innerDataHolder1);" +
-			SystemUtils.LINE_SEPARATOR +
-			"linkedHashMap0.put(\"key1\", linkedHashMap1);" +
-			SystemUtils.LINE_SEPARATOR;
+			"linkedHashMap0.put(\"key1\", linkedHashMap1);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

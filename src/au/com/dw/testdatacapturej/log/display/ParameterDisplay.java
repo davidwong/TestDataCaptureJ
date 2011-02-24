@@ -42,7 +42,7 @@ public class ParameterDisplay extends BaseFieldDisplay {
 			}
 			else
 			{
-				builder.append(info.getClassFieldName());
+				builder.append(info.getFullFieldName());
 			}
 			
 			// just store the value in the parent class

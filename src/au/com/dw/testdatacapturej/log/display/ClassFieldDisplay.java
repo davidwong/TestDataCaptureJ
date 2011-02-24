@@ -45,7 +45,7 @@ public class ClassFieldDisplay extends BaseFieldDisplay {
 				// same as BaseFieldDisplay.generateSetter() except don't have new line here
 				
 				builder.append(info.getContainingClassFieldName());
-				builder.append(getLineBuilder().createSetterLine(info.getFieldName(), info.getClassFieldName(), literal));
+				builder.append(getLineBuilder().createSetterLine(info.getFieldName(), info.getFullFieldName(), literal));
 				builder.append(FormatConstants.newLine);
 			}
 		}

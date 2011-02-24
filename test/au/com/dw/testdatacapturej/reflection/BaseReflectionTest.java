@@ -29,8 +29,6 @@ import au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder;
 import au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder;
 import au.com.dw.testdatacapturej.mock.dataholder.TestData;
 
-
-
 /**
  * Test data generator for the various types of fields to be tested. To be used as a base class for the
  * proper test classes so that they can use the same test data.
@@ -138,9 +136,9 @@ public class BaseReflectionTest {
 	
 	// test data for Collection interface
 
-	protected Collection createEmptyCollection()
+	protected Collection<?> createEmptyCollection()
 	{
-		Collection collection = new HashSet();
+		Collection<?> collection = new HashSet<Object>();
 
 		return collection;
 	}

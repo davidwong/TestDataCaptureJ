@@ -18,15 +18,12 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.log;
 
-import static org.junit.Assert.assertEquals;
+import static au.com.dw.testing.AssertUtil.assertEqualsWithoutFormatting;
 import static org.junit.Assert.fail;
 
-import org.apache.commons.lang.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import au.com.dw.testdatacapturej.log.FormatConstants;
-import au.com.dw.testdatacapturej.log.ObjectLogger;
 import au.com.dw.testdatacapturej.mock.classcheck.Holder;
 import au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat;
 import au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int;
@@ -77,15 +74,11 @@ public class ConstructorParamNestedTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(new NDCNS_Object(booleanFloatFieldObject)));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat nDCNS_BooleanFloat0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat(true, 10.1f);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object nDCNS_Object1 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object(nDCNS_BooleanFloat0);" +
-			SystemUtils.LINE_SEPARATOR;
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat nDCNS_BooleanFloat0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat(true, 10.1f);" +
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object nDCNS_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object(nDCNS_BooleanFloat0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -109,19 +102,13 @@ public class ConstructorParamNestedTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(new NDCNS_UnconfiguredObject(booleanFloatFieldObject)));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject nDCNS_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject nDCNS_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat nDCNS_BooleanFloat1 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat(true, 10.1f);" +
-			SystemUtils.LINE_SEPARATOR +
-			"nDCNS_UnconfiguredObject0.setNoSetterField(nDCNS_BooleanFloat1);" +
-			SystemUtils.LINE_SEPARATOR;
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat nDCNS_BooleanFloat0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat(true, 10.1f);" +
+			"nDCNS_UnconfiguredObject0.setNoSetterField(nDCNS_BooleanFloat0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -145,19 +132,13 @@ public class ConstructorParamNestedTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(new NDCNS_Object(intFieldObject)));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int nDCNS_Int0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int nDCNS_Int0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
 			"nDCNS_Int0.setNoSetterField(2);" +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object nDCNS_Object1 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object(nDCNS_Int0);" +
-			SystemUtils.LINE_SEPARATOR;
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object nDCNS_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object(nDCNS_Int0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
@@ -181,23 +162,15 @@ public class ConstructorParamNestedTest extends BaseReflectionTest {
 			logger.logObject(builder, handler.handle(new NDCNS_UnconfiguredObject(intFieldObject)));
 			String result = builder.toString();
 			
-			String expected = SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject nDCNS_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject();" +
-			SystemUtils.LINE_SEPARATOR +
+			String expected = "au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject nDCNS_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject();" +
 			constructorComment +
-			SystemUtils.LINE_SEPARATOR +
-			SystemUtils.LINE_SEPARATOR +
-			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int nDCNS_Int1 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int();" +
-			SystemUtils.LINE_SEPARATOR +
+			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int nDCNS_Int0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int();" +
 			constructorComment2 +
-			SystemUtils.LINE_SEPARATOR +
-			"nDCNS_Int1.setNoSetterField(2);" +
-			SystemUtils.LINE_SEPARATOR +
-			"nDCNS_UnconfiguredObject0.setNoSetterField(nDCNS_Int1);" +
-			SystemUtils.LINE_SEPARATOR;
+			"nDCNS_Int0.setNoSetterField(2);" +
+			"nDCNS_UnconfiguredObject0.setNoSetterField(nDCNS_Int0);";
 			
 			System.out.println(result);
-			assertEquals(expected, result);
+			assertEqualsWithoutFormatting(expected, result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();
