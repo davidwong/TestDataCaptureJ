@@ -28,7 +28,10 @@ import org.junit.Test;
 
 import au.com.dw.testdatacapturej.mock.dataholder.AllDataHolder;
 import au.com.dw.testdatacapturej.mock.dataholder.TestData;
+import au.com.dw.testdatacapturej.mock.type.reflection.DefaultAndParameterizedConstructorDataHolder;
+import au.com.dw.testdatacapturej.mock.type.reflection.DefaultConstructorOnlyDataHolder;
 import au.com.dw.testdatacapturej.mock.type.reflection.NoMethodDataHolder;
+import au.com.dw.testdatacapturej.mock.type.reflection.ParameterizedConstructorOnlyDataHolder;
 import au.com.dw.testdatacapturej.reflection.BaseReflectionTest;
 import au.com.dw.testdatacapturej.reflection.util.ReflectionUtil;
 
@@ -52,15 +55,32 @@ public class ReflectionUtilTest extends BaseReflectionTest {
 	@Test
 	public void hasDefaultConstructor()
 	{
-		AllDataHolder data = testData.createTestDataHolder();
-		assertTrue("has constructor", ReflectionUtil.hasDefaultConstructor(data));
-		
-		
-		NoMethodDataHolder noData = testData.createNoMethodDataHolder();
+		assertTrue("has default constructor", ReflectionUtil.hasDefaultConstructor(new DefaultConstructorOnlyDataHolder()));
+
+		assertTrue("has default constructor, parameterized constructor not used", ReflectionUtil.hasDefaultConstructor(new DefaultAndParameterizedConstructorDataHolder()));
+
 		// internally should throw NoSuchMethodException
-		assertFalse("no constructor", ReflectionUtil.hasDefaultConstructor(noData));
+		assertFalse("no default constructor", ReflectionUtil.hasDefaultConstructor(new ParameterizedConstructorOnlyDataHolder("test", testData.createTestDataHolder())));
 	}
-	
+
+	@Test
+	public void hasParameterizedConstructor()
+	{
+		// common fields in all test classes that would be used as constructor parameters, if a parameterized constructor
+		// were to exist
+		Class<?>[] parameterTypes = new Class<?>[2];
+		parameterTypes[0] = String.class;
+		parameterTypes[1] = Object.class;
+		
+		// internally should throw NoSuchMethodException
+		assertFalse("no parameterized constructor", ReflectionUtil.hasParameterizedConstructor(new DefaultConstructorOnlyDataHolder(), parameterTypes));
+
+		assertTrue("has parameterized constructor, although parameterized constructor not used", ReflectionUtil.hasParameterizedConstructor(new DefaultAndParameterizedConstructorDataHolder(), parameterTypes));
+
+		assertTrue("has parameterized constructor", ReflectionUtil.hasParameterizedConstructor(new ParameterizedConstructorOnlyDataHolder("test", testData.createTestDataHolder()), parameterTypes));
+
+	}
+
 	@Test
 	public void hasSetterMethod()
 	{

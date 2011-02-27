@@ -82,6 +82,42 @@ public class ReflectionUtil {
 	}
 
 	/**
+	 * Check if the class of an object has a default no parameter constructor.
+	 * 
+	 * @param object
+	 * @return
+	 */
+	public static boolean hasParameterizedConstructor(Object object, Class<?>[] parameterTypes)
+	{
+		return hasParameterizedConstructor(object.getClass(), parameterTypes);
+	}
+	
+	/**
+	 * Check if a class has a default no parameter constructor.
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	public static boolean hasParameterizedConstructor(Class<?> clazz, Class<?>[] parameterTypes)
+	{
+		boolean hasParameterizedConstructor = false;
+		
+		try {
+			Constructor<?> constructor = clazz.getDeclaredConstructor(parameterTypes);
+			if (constructor != null)
+			{
+				hasParameterizedConstructor = true;
+			}
+		} catch (NoSuchMethodException nsme) {
+			// no need to do anything, since this is what we are checking for
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return hasParameterizedConstructor;
+	}
+	
+	/**
 	 * Check if an object has a setter method.
 	 * 
 	 * @param object

@@ -16,42 +16,19 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.display;
-
-import au.com.dw.testdatacapturej.log.FormatConstants;
-import au.com.dw.testdatacapturej.meta.ObjectInfo;
+package au.com.dw.testdatacapturej.mock.type.reflection;
 
 /**
- * Display for a constructor parameter.
+ * Test data with default constructor only and no parameterized constructor.
  * 
  * @author David Wong
  *
  */
-public class ParameterDisplay extends BaseFieldDisplay {
+public class DefaultConstructorOnlyDataHolder {
+	private String field1;
+	private Object field2;
 	
-	@Override
-	public String log(ObjectInfo info)
-	{
-		StringBuilder builder = new StringBuilder();
-
-		if (!info.isInitalObject())
-		{
-			if (info.isSimpleType())
-			{
-				getLineBuilder().interpretValue(builder, info.getValue(), false);
-			}
-			else
-			{
-				builder.append(info.getFullFieldName());
-			}
-			
-			// store the value in the parent class for use in generating a parameterized
-			// constructor line
-			ObjectInfo parentInfo = info.getParentInfo();
-			parentInfo.getConstructorInfo().addConstructorParameter(builder.toString());
-		}
-		
-		// don't actually log anything
-		return FormatConstants.EMPTY_STRING;
+	public DefaultConstructorOnlyDataHolder() {
 	}
+		
 }

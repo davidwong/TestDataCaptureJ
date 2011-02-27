@@ -181,7 +181,7 @@ public class ObjectInfo {
 	
 	/** Info for handling generation of constructor line, should never be null */
 	private ConstructorInfo constructorInfo = new ConstructorInfo(true,
-			new ArrayList<String>(), new ArrayList<String>());
+			new ArrayList<String>(), new ArrayList<String>(), new ArrayList<Class<?>>());
 
 	/** Nested ObjectInfo for the key, if object is a map entry */
 	private ObjectInfo keyInfo;

@@ -86,15 +86,34 @@ public class ConstructorInfo {
 	 */
 	private List<String> constructorParameters;
 	
+	/**
+	 * This is a placeholder for the types of the parameters that would be passed to a parameterized
+	 * constructor line. The use for this would be to check that the parameterized constructor for
+	 * the constructor line actually exists in the class, and would be passed to
+	 * ReflectionUtil.hasParameterizedConstructor().
+	 * 
+	 * This check is currently not implemented since there may be many permutations to check since for
+	 * each parameter, not only would the class type of the parameter have to be checked, but also
+	 * every superclass of the parameter and every interface that the parameter implements. The specific
+	 * type for the parameter could be specified in the XML configuration, but since the configuration
+	 * is manually done by the user anyway, might as well leave it to the user to check that the
+	 * constructor to be configured does exist.
+	 * 
+	 * @see au.com.dw.testdatacapturej.reflection.util.ReflectionUtil
+	 */
+	private List<Class<?>> constructorParameterTypes;
+	
 	/** If the object is a field, PLACEHOLDER for alternative name for the constructor - not implemented yet */
 	private String alternateConstructorName;
 
 	public ConstructorInfo(boolean hasDefaultConstructor,
 			List<String> constructorParamFieldNames,
-			List<String> constructorParameters) {
+			List<String> constructorParameters,
+			List<Class<?>> constructorParameterTypes) {
 		this.hasDefaultConstructor = hasDefaultConstructor;
 		this.constructorParamFieldNames = constructorParamFieldNames;
 		this.constructorParameters = constructorParameters;
+		this.constructorParameterTypes = constructorParameterTypes;
 	}
 
 	public boolean hasDefaultConstructor() {
@@ -123,6 +142,14 @@ public class ConstructorInfo {
 
 	public void addConstructorParameter(String constructorParameter) {
 		this.constructorParameters.add(constructorParameter);
+	}
+
+	public List<Class<?>> getConstructorParameterTypes() {
+		return constructorParameterTypes;
+	}
+
+	public void addConstructorParameterType(Class<?> constructorParameterType) {
+		constructorParameterTypes.add(constructorParameterType);
 	}
 
 	public String getAlternateConstructorName() {

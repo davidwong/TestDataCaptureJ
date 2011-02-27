@@ -94,7 +94,10 @@ public class BaseFieldDisplay implements FieldDisplay {
 			if (!constructorParams.isEmpty())
 			{
 				// generate constructor with parameters
-				gen = new ParameterizedConstructorGenerator();							
+				gen = new ParameterizedConstructorGenerator();
+				
+				// There is currently no class checking that the parameterized constructor for the
+				// constructor line actually exists.
 			}
 			else
 			{

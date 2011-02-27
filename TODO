@@ -19,8 +19,6 @@ a properties file for doing substitutions and configure in xml files)
 try to refactor it out and maybe do any formatting as a post-processing step or even not bother and let
 eclipse or another tool do the formatting afterwards
 
-- check that a parameterized constructor that is configured in xml files actually exists in the class
-
 - add error/warning messages to ObjectInfo, with option to display as comments
 
 - fix field name numbering so each class has it's own index (using map to store indices), at the moment
