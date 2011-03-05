@@ -1,8 +1,8 @@
 package au.com.dw.testdatacapturej.tutorial;
 
-public class CreateTestObject_Step3 {
+public class CreateTestObject_Step2_Edited {
 	
-	// Generated 12:58:21,953 
+	// Generated 12:55:46,937 
 	// org.springframework.samples.jpetstore.domain.Order.initOrder
 	public org.springframework.samples.jpetstore.domain.Account createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder() {
 
@@ -33,7 +33,8 @@ public class CreateTestObject_Step3 {
 
 	org.springframework.samples.jpetstore.domain.Cart cart0 = new org.springframework.samples.jpetstore.domain.Cart();
 
-	java.util.Collections$SynchronizedMap collections$SynchronizedMap0 = new java.util.Collections$SynchronizedMap();
+	//java.util.Collections$SynchronizedMap collections$SynchronizedMap0 = new java.util.Collections$SynchronizedMap();
+	java.util.Map collections$SynchronizedMap0 = java.util.Collections.synchronizedMap(new java.util.HashMap());
 	// Default constructor for java.util.Collections$SynchronizedMap does not exist.
 
 	org.springframework.samples.jpetstore.domain.CartItem cartItem1 = new org.springframework.samples.jpetstore.domain.CartItem();
@@ -57,7 +58,7 @@ public class CreateTestObject_Step3 {
 	product3.setName("Amazon Parrot");
 	product3.setDescription("<image src=\"../images/bird4.gif\">Great companion for up to 75 years");
 	item2.setProduct(product3);
-	item2.setQuantity(-4990005);
+	item2.setQuantity(-4990003);
 	cartItem1.setItem(item2);
 	cartItem1.setQuantity(2);
 	cartItem1.setInStock(false);
@@ -84,7 +85,7 @@ public class CreateTestObject_Step3 {
 	product6.setName("Manx");
 	product6.setDescription("<image src=\"../images/cat3.gif\">Great for reducing mouse populations");
 	item5.setProduct(product6);
-	item5.setQuantity(9993);
+	item5.setQuantity(9996);
 	cartItem4.setItem(item5);
 	cartItem4.setQuantity(3);
 	cartItem4.setInStock(true);
@@ -111,13 +112,13 @@ public class CreateTestObject_Step3 {
 	product9.setName("Iguana");
 	product9.setDescription("<image src=\"../images/lizard2.gif\">Friendly green friend");
 	item8.setProduct(product9);
-	item8.setQuantity(9997);
+	item8.setQuantity(9998);
 	cartItem7.setItem(item8);
 	cartItem7.setQuantity(1);
 	cartItem7.setInStock(true);
 	collections$SynchronizedMap0.put("EST-13", cartItem7);
 
-	cart0.setItemMap(collections$SynchronizedMap0);
+	//cart0.setItemMap(collections$SynchronizedMap0);
 
 	org.springframework.beans.support.PagedListHolder pagedListHolder10 = new org.springframework.beans.support.PagedListHolder();
 
@@ -144,7 +145,7 @@ public class CreateTestObject_Step3 {
 	product13.setName("Manx");
 	product13.setDescription("<image src=\"../images/cat3.gif\">Great for reducing mouse populations");
 	item12.setProduct(product13);
-	item12.setQuantity(9993);
+	item12.setQuantity(9996);
 	cartItem11.setItem(item12);
 	cartItem11.setQuantity(3);
 	cartItem11.setInStock(true);
@@ -171,7 +172,7 @@ public class CreateTestObject_Step3 {
 	product16.setName("Iguana");
 	product16.setDescription("<image src=\"../images/lizard2.gif\">Friendly green friend");
 	item15.setProduct(product16);
-	item15.setQuantity(9997);
+	item15.setQuantity(9998);
 	cartItem14.setItem(item15);
 	cartItem14.setQuantity(1);
 	cartItem14.setInStock(true);
@@ -198,7 +199,7 @@ public class CreateTestObject_Step3 {
 	product19.setName("Amazon Parrot");
 	product19.setDescription("<image src=\"../images/bird4.gif\">Great companion for up to 75 years");
 	item18.setProduct(product19);
-	item18.setQuantity(-4990005);
+	item18.setQuantity(-4990003);
 	cartItem17.setItem(item18);
 	cartItem17.setQuantity(2);
 	cartItem17.setInStock(false);
@@ -206,16 +207,21 @@ public class CreateTestObject_Step3 {
 
 	pagedListHolder10.setSource(arrayList0);
 
+	java.util.Date date20 = new java.util.Date(1279454122375L);
+	//pagedListHolder10.setRefreshDate(date20);
+
 	org.springframework.beans.support.MutableSortDefinition mutableSortDefinition21 = new org.springframework.beans.support.MutableSortDefinition();
 	mutableSortDefinition21.setProperty("");
 	mutableSortDefinition21.setIgnoreCase(true);
 	mutableSortDefinition21.setAscending(true);
 	mutableSortDefinition21.setToggleAscendingOnProperty(true);
 	pagedListHolder10.setSort(mutableSortDefinition21);
+	//pagedListHolder10.setSortUsed(null);
 	pagedListHolder10.setPageSize(4);
 	pagedListHolder10.setPage(0);
+	//pagedListHolder10.setNewPageSet(false);
 	pagedListHolder10.setMaxLinkedPages(10);
-	cart0.setItemList(pagedListHolder10);
+	//cart0.setItemList(pagedListHolder10);
 
 	return cart0;
 	}

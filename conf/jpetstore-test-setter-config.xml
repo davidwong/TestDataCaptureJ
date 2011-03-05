@@ -13,6 +13,10 @@
 			<field-name>newPageSet</field-name>
 			<alternative>ignore</alternative>
 		</field>
+		<field>
+			<field-name>sortUsed</field-name>
+			<alternative>ignore</alternative>
+		</field>
 	</setter>
 		
 </setter-config>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?oxygen RNGSchema="http://www.oasis-open.org/docbook/xml/5.0/rng/docbookxi.rng" type="xml"?>
-<article xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
   <title>TestDataCaptureJ: Tutorial</title>
-  
   <section>
     <title>Setup the Tutorial Application</title>
     <para>This tutorial will use the TestDataCaptureJ tool on a web application to demonstrate its
@@ -28,9 +28,11 @@
       <listitem>
         <para>Alternatively if you have a version of the Spring Framework that does not include the
           JPetStore sample, you can use Subversion to export a copy from the Spring Framework
-          version control repository.  Note that you have to put the JPetStore folder under the
+          version control repository. Note that you have to put the JPetStore folder under the
           samples folder of a Spring Framework 2.x distribution for the build files to work.</para>
-        <para><link xlink:href="https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/">https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/</link></para>
+        <para><link
+            xlink:href="https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/"
+            >https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/</link></para>
         <programlisting>D:\>svn export https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/ D:\tutorial\spring-framework-2.5.6.SEC01\samples\jpetstore
 A    D:\tutorial\jpetstore
 A    D:\tutorial\jpetstore\build.bat
@@ -79,21 +81,20 @@ Exported revision 17168.</programlisting>
           the checkout process to make sure it runs successfully.<link
             xlink:href="http://localhost:8080/jpetstore/">http://localhost:8080/jpetstore/</link>
           (replace localhost with your server name if you are not running Tomcat on your local
-          machine)</para>  
-        <para>       
-        <inlinemediaobject>
+          machine)</para>
+        <para>
+          <inlinemediaobject>
             <imageobject>
               <imagedata fileref="images/tutorial_jpetstore-url.jpg"/>
             </imageobject>
-        </inlinemediaobject>
-        </para> 
+          </inlinemediaobject>
+        </para>
       </listitem>
       <listitem>
         <para>Stop the Tomcat server.</para>
       </listitem>
     </itemizedlist>
   </section>
-  
   <section>
     <title>Setup TestDataCaptureJ for the Tutorial</title>
     <para>Now we need to setup the TestDataCaptureJ tool for the JPetStore application.</para>
@@ -102,10 +103,12 @@ Exported revision 17168.</programlisting>
       test the creation of an order from the shopping cart items.</para>
     <itemizedlist>
       <listitem>
-        <para>In the file <filename>org.springframework.samples.jpetstore.domain.Order.java</filename> there is a method that creates an order from the contents of
-          the shopping cart. The initOrder() method has the cart as one of its parameters, and this
-          would be a good place to capture the cart data as it should contain all the necessary
-          information that we need as this stage of the checkout process.</para>
+        <para>In the file
+            <filename>org.springframework.samples.jpetstore.domain.Order.java</filename> there is a
+          method that creates an order from the contents of the shopping cart. The initOrder()
+          method has the cart as one of its parameters, and this would be a good place to capture
+          the cart data as it should contain all the necessary information that we need as this
+          stage of the checkout process.</para>
       </listitem>
       <listitem>
         <para>Edit <filename>conf/META-INF/aop.xml</filename> in the TestDataCaptureJ project in
@@ -131,8 +134,8 @@ Exported revision 17168.</programlisting>
 .
 .
 &lt;/aspectj></programlisting>
-       <para>The changes involve adding a &lt;concrete-aspect> tag to the xml file nested inside the
-          &lt;aspects> tag.<itemizedlist>
+        <para>The changes involve adding a &lt;concrete-aspect> tag to the xml file nested inside
+          the &lt;aspects> tag.<itemizedlist>
             <listitem>
               <para>The 'name' attribute can be any valid java class name you choose, here we have
                 used 'au.dom.dw.testdatacapturej.aspect.TestSpringPetStoreTrace'.</para>
@@ -171,8 +174,8 @@ Exported revision 17168.</programlisting>
             <filename>tutorial/conf/META-INF/aop.xml</filename>.</para>
       </listitem>
       <listitem>
-        <para>Configure the <filename>conf/log4j.xml</filename> file for the name and location of the generated file that we
-          want.</para>
+        <para>Configure the <filename>conf/log4j.xml</filename> file for the name and location of
+          the generated file that we want.</para>
         <para>Fragment of <filename>'conf/log4j.xml'</filename>:</para>
         <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
@@ -238,14 +241,12 @@ Exported revision 17168.</programlisting>
           </itemizedlist></para>
       </listitem>
       <listitem>
-        <para>In the TestDataCaptureJ project in Eclipse, export the project as a jar with AspectJ
-          support to {TOMCAT_HOME}/shared/lib.</para>
-        <remark>See the <link xlink:href="setup.html">setup page</link> for details on doing this step.</remark>
-      </listitem>
-      <listitem>
         <para>Make the changes to catalina.bat in {TOMCAT_HOME}/bin so that the AspectJ load-time
           weaving will be done.</para>
-        <para><remark>It is a good idea to make a backup of catalina.bat in your Tomcat installation before making changes to it.</remark></para>
+        <para>
+          <remark>It is a good idea to make a backup of catalina.bat in your Tomcat installation
+            before making changes to it.</remark>
+        </para>
         <para>Fragment of <filename>'bin/catalina.bat'</filename> :</para>
         <programlisting>.
 .
@@ -268,9 +269,37 @@ set JAVA_OPTS=%JAVA_OPTS% %ASPECTJ_WEAVING%
       </listitem>
     </itemizedlist>
   </section>
-  
   <section>
     <title>The Tutorial Application - 1st Run</title>
+    <para>Before the 1st run of the tutorial application, do the following in the TestDataCaptureJ
+      project in Eclipse:<itemizedlist>
+        <listitem>
+          <para>Edit the configuration file <filename>'conf/configuration.properties'</filename> so
+            that there are no custom configuration files used:</para>
+          <para>As an example see
+              <filename>'tutorial/conf/step.1.configuration.properties'</filename> :</para>
+          <programlisting># config files for constructor configuration
+
+constructor.config.files=
+
+# config files for setter method configuration
+
+setter.config.files=
+
+# config files for collection adder configuration
+
+collection.config.files=</programlisting>
+          <para>This ensures that the TestDataCaptureJ tool will run without any custom
+            configurations for the generated logs.</para>
+          <remark>See the <link xlink:href="customization.html">customization page</link> for
+            details of the custom configurations that are available.</remark>
+        </listitem>
+        <listitem>
+          <para>Export the project as a jar with AspectJ support to {TOMCAT_HOME}/shared/lib.</para>
+          <remark>See the <link xlink:href="setup.html">setup page</link> for details on doing this
+            step.</remark>
+        </listitem>
+      </itemizedlist></para>
     <para>Start the app server, check the log or console output to make sure it starts without
       errors. Then run the JPetStore application, what we want to do is to buy some pets and then go
       through the checkout process.</para>
@@ -332,6 +361,27 @@ account0.setBannerName("&lt;image src=\"../images/banner_dogs.gif\">");
 return account0;
 }
 
+public org.springframework.samples.jpetstore.domain.Cart createParam2Cart_org_springframework_samples_jpetstore_domain_Order_initOrder() {
+
+org.springframework.samples.jpetstore.domain.Cart cart0 = new org.springframework.samples.jpetstore.domain.Cart();
+.
+.
+.</programlisting>
+    <para>As you can see, the generated log contains code for 2 methods that create objects of the
+      class 'org.springframework.samples.jpetstore.domain.Account' and
+      'org.springframework.samples.jpetstore.domain.Cart', as these were the parameter types for the
+      'initOrder()' method for the Joinpoint that was intercepted.</para>
+    <programlisting>package org.springframework.samples.jpetstore.domain;
+.
+.
+.
+public class Order implements Serializable {
+.
+.
+.
+  /* Public Methods */
+
+  public void initOrder(Account account, Cart cart) {
 .
 .
 .</programlisting>
@@ -365,33 +415,14 @@ return account0;
             the JPetStore project to include the test directory as a source folder.</para>
         </listitem>
         <listitem>
-          <para>Edit the configuration file <filename>'conf/configuration.properties'</filename> so
-            that there are no custom configuration files used:</para>
-          <para>As an example see
-              <filename>'tutorial/conf/step.1.configuration.properties'</filename> :</para>
-          <programlisting># config files for constructor configuration
-
-constructor.config.files=
-
-# config files for setter method configuration
-
-setter.config.files=
-
-# config files for collection adder configuration
-
-collection.config.files=</programlisting>
-          <para>This ensures that the TestDataCaptureJ tool will run without any custom
-            configurations for the generated logs.</para>
-          <remark>See the <link xlink:href="customization.html">customization page</link> for details of the custom configurations that are available.</remark>
-        </listitem>
-        <listitem>
-          <para>Create a class file, containing an empty class, under the test directory.</para>
+          <para>Create a class file, containing an empty class, under the test directory. Let's name
+            the class 'CreateTestObject'.</para>
           <para>As an example see
               <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Empty.java'</filename>
             :</para>
           <programlisting>package au.com.dw.testdatacapturej.tutorial;
 
-public class CreateTestObject_Empty {
+public class CreateTestObject {
 	
 }</programlisting>
         </listitem>
@@ -405,7 +436,7 @@ public class CreateTestObject_Empty {
             :</para>
           <programlisting>package au.com.dw.testdatacapturej.tutorial;
 
-public class CreateTestObject_Step1 {
+public class CreateTestObject {
 	
 // Generated 18:09:20,250 
 // org.springframework.samples.jpetstore.domain.Order.initOrder
@@ -515,46 +546,111 @@ return cart0;
 }</programlisting>
         </listitem>
         <listitem>
-          <para>Create a unit test that uses the dummy class to test the data that was generated.
-            This is TutorialTest.java at LOCATION.</para>
-          <para>CODE HERE</para>
-          <para>We are using JUnit 4.x for the unit testing as that comes with Eclipse, but you can
-            also use TestNG if you have the TestNG plugin installed in Eclipse.</para>
+          <para>Since the 'CreateTestObject' class won't compile, for this tutorial make some manual
+            edits to it so that it will compile. This involves commenting out some of the lines that
+            are causing errors and inserting a line to create the field
+            'collections$SynchronizedMap0' based on the Cart class source (TestDataCaptureJ cannot
+            handle generating code for non-standard object creation, such as the
+            'java.util.Collections' wrapper methods).</para>
+          <programlisting>package au.com.dw.testdatacapturej.tutorial;
+
+public class CreateTestObject {
+.
+.
+.
+//java.util.Collections$SynchronizedMap collections$SynchronizedMap0 = new java.util.Collections$SynchronizedMap();
+java.util.Map collections$SynchronizedMap0 = java.util.Collections.synchronizedMap(new java.util.HashMap());
+.
+.
+.
+//cart0.setItemMap(collections$SynchronizedMap0);
+.
+.
+.
+//date8.setFastTime(1279213622453L);
+//date8.setCdate(null);
+//pagedListHolder4.setRefreshDate(date8);
+.
+.
+.
+//pagedListHolder4.setSortUsed(null);
+.
+.
+.
+//pagedListHolder4.setNewPageSet(false);
+.
+.
+.
+//cart0.setItemList(pagedListHolder4);
+.
+.
+.
+}
+</programlisting>
+          <para>As an example see
+              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Step1_Edited.java'</filename>
+            :</para>
         </listitem>
         <listitem>
-          <para>Run the unit test, NAME.</para>
+          <para>Create a unit test case that uses the dummy class to test the data that was
+            generated.</para>
+          <para>As an example see
+              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/TutorialTest.java'</filename>
+            :</para>
+          <programlisting>.
+.
+.
+public class TutorialTest {
+
+	@Test
+	public void testInitOrderCart()
+	{
+		// Create the object that contains the pasted generated code
+		CreateTestObject createTestObject = new CreateTestObject();
+		
+		// invoke the generated method
+		Cart cart = createTestObject.createParam2Cart_org_springframework_samples_jpetstore_domain_Order_initOrder();
+		
+		// test the generated data
+		assertNotNull("cart exists", cart);
+		
+		assertTrue("cart has corrent number of items" + cart.getNumberOfItems(), cart.getNumberOfItems() == 3);
+		
+		assertTrue("cart contains specific item id", cart.containsItemId("FL-DSH-01"));
+		
+	}
+}</programlisting>
+          <para>We are using JUnit 4.x for the unit testing as that comes with Eclipse, but you can
+            also use TestNG if you have the TestNG plugin installed in the Eclipse IDE.</para>
+        </listitem>
+        <listitem>
+          <para>Run the unit test 'testInitOrderCart()'.</para>
           <para>Although the test case should run using the generated code, we have had to comment
-            out some lines that did not compile for various reasons. Now we can try to fix some of
-            these issues.As we see this first run has generated code that did not compile for
-            various reasons, we can try to fix some of these errors.</para>
+            out some lines that did not compile for various reasons and so the test should fail. Now
+            we can try to fix some of these issues.</para>
         </listitem>
       </itemizedlist></para>
   </section>
-  
   <section>
     <title>The Tutorial Application - 2nd Run</title>
     <para>The second error we encountered was with the java.util.Date field. If we look at the
-      source or the javadoc API for java.util.Date, then we can see that the reason the error was
-      caused problems are:</para>
+      source code for 'java.util.Date', then we can see that the reason the error was caused
+      problems are:</para>
     <itemizedlist>
       <listitem>
-        <para>The fields NAMES do not have setter methods, and the NAME field is actually meant to
-          be transient. Therefore the generated setter methods for these fields do not actually
-          exist.</para>
-        <para>CODE HERE</para>
+        <para>The fields 'fastTime' and 'cDate' do not have setter methods, and the 'cDate' field is
+          actually meant to be transient. Therefore the generated setter methods for these fields do
+          not actually exist.</para>
+        <para>SOURCE CODE HERE</para>
       </listitem>
       <listitem>
-        <para>The no-argument constructor for java.util.Date will actually set the internal state to
-          the current date and time at which the object was created, instead of the time in the NAME
-          field.</para>
+        <para>The no-argument constructor for 'java.util.Date' will actually set the internal state
+          to the current date and time at which the object was created, instead of the time in the
+          'fastTime' field.</para>
       </listitem>
     </itemizedlist>
-    <para> To get around these problems we need to do some configuration for the TestDataCaptureJ
-      tool.</para>
-    <para>IMAGE HERE (API)</para>
-    <para>EXPLANATION HERE</para>
-    <para>Now we can run the tutorial application again with the updated configuration.
-      <itemizedlist>
+    <para>To get around these problems we need to run the tutorial application again with some
+      custom configurations included. <itemizedlist>
         <listitem>
           <para>Stop the Tomcat server if it is still running, but make sure the JPetStore database
             server is still running.</para>
@@ -592,22 +688,23 @@ collection.config.files=</programlisting>
         </listitem>
         <listitem>
           <para>Run the JPetStore as before, buying some pets and then going through the checkout
-            process.</para>
+            process. Check that the generated code has been created in the log file.</para>
         </listitem>
         <listitem>
-          <para>As before, create another empty class file, containing an empty class, in the test
-            directory.</para>
+          <para>As before, either create another empty class file for 'CreateTestObject' and paste
+            the contents of the new log file, containing the generated code into it OR just paste
+            over the generated log in the 'CreateTestObject' class from the previous tutorial
+            run.</para>
         </listitem>
         <listitem>
-          <para>Copy and paste the contents of the new log file, containing the generated code, into
-            the empty class. For the tutorial we are copying the contents of 'TutorialTest2.java'
-            into the empty class.</para>
+          <para>For the tutorial, as an example look at 'TutorialTest2.java', your log should look
+            similar to this.</para>
           <para>As an example see
               <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Step2.java'</filename>
             :</para>
           <programlisting>package au.com.dw.testdatacapturej.tutorial;
 
-public class CreateTestObject_Step2 {
+public class CreateTestObject {
 	
 	// Generated 12:55:46,937 
 	// org.springframework.samples.jpetstore.domain.Order.initOrder
@@ -643,10 +740,9 @@ public class CreateTestObject_Step2 {
 .
 .</programlisting>
         </listitem>
-        <listitem>          
+        <listitem>
           <para>Once again this file will not compile properly due to errors that we found in the
             first run of the tutorial.</para>
-
           <para>However notice that there are fewer errors now because the previous error we had
             with the java.util.Date field doesn't exist any more. The configuration for
             TestDataCaptureJ has fixed this problem so that the java.util.Date object is created
@@ -654,7 +750,7 @@ public class CreateTestObject_Step2 {
           <programlisting>.
 .
 .
-	java.util.Date date20 = new java.util.Date(1279454122375L);
+java.util.Date date20 = new java.util.Date(1279454122375L);
 .
 .
 .</programlisting>
@@ -668,10 +764,15 @@ date8.setCdate(null);
 .
 .
 .</programlisting>
-          <para>If we look at the  xml configuration in the file
+          <para>If we look at the xml configuration in the file
               <filename>'conf/constructor-config.xml'</filename>, we find that the configuration for
             the class 'java.util.Date' is specifying that we want to set the value of the field
-            'fastTime' from a constructor instead of a setter method.</para>
+            'fastTime' from a constructor instead of a setter method. That is, when an object of the
+            class 'java.util.Date' is to be created in the generated log, instead of using the
+            default no-argument constructor [new java.util.Date()], it will instead generate a
+            constructor line that will use the value of the field 'fastTime' as a parameter, e.g.
+            [new java.util.Date(1279454122375L)]. In addition, it will not generate a setter method
+            line for the field 'fastTime'.</para>
           <para>Fragment of <filename>'conf/constructor-config.xml'</filename>:</para>
           <programlisting>.
 .
@@ -682,8 +783,9 @@ date8.setCdate(null);
 		&lt;/argument>
 	&lt;/constructor>.
 .
+.
 .</programlisting>
-          <para>In the  xml configuration in the file <filename>'conf/setter-config.xml'</filename>,
+          <para>In the xml configuration in the file <filename>'conf/setter-config.xml'</filename>,
             we find that the configuration for the class 'java.util.Date' is specifying that we want
             to ignore the field 'cdate' when it comes to generating setter methods for that class
             (i.e. no setter method will be generated for that particular field).</para>
@@ -698,15 +800,24 @@ date8.setCdate(null);
 		&lt;/field>
 	&lt;/setter>.
 .
+.
 .</programlisting>
         </listitem>
         <listitem>
-          <para>We've fixed one of the errors, now we can try to fix some of the others.</para>
+          <para>Of course while we've fixed one of the errors, the other errors will still stop the
+            'CreateTestObject' class from compiling. If you like you can do another manual edit of
+            the 'CreateTestObject' class to make it compile and then re-run the test case again.
+            Once again the test should fail when run.</para>
+          <para>As an example see
+              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Step2_Edited.java'</filename>
+            .</para>
+        </listitem>
+        <listitem>
+          <para>Now we can try to fix some of the other errors.</para>
         </listitem>
       </itemizedlist>
     </para>
   </section>
-  
   <section>
     <title>The Tutorial Application - 3rd Run</title>
     <para>Another error we encountered was with the
@@ -715,9 +826,10 @@ date8.setCdate(null);
     <para>If we look at the Spring source code, then we can see that the problem is that the
       'refreshDate' and 'newPageSet' fields in the
       'org.springframework.beans.support.PagedListHolder' class do not have setter methods (i.e.
-      there is no 'setRefreshDate()' or 'setNewPageSet()' method defined in the class.</para>
-    <para>Fragment of <filename>'PageListHolder.java'</filename> from the Spring Framework
-      source:</para>
+      there is no 'setRefreshDate()', 'setNewPageSet()' or 'setSortUsed()' method defined in the
+      class.</para>
+    <para>Fragment of <filename>'org.springframework.beans.support.PageListHolder.java'</filename>
+      from the Spring Framework source:</para>
     <programlisting>package org.springframework.beans.support;
 .
 .
@@ -790,43 +902,173 @@ collection.config.files=</programlisting>
         </listitem>
         <listitem>
           <para>Run the JPetStore as before, buying some pets and then going through the checkout
-            process.</para>
+            process. Check that the generated code has been created in the log file.</para>
         </listitem>
         <listitem>
-          <para>Create another dummy class file, containing an empty class, at the correct location
-            in the test directory.</para>
+          <para>As before, either create another empty class file for 'CreateTestObject' and paste
+            the contents of the new log file, containing the generated code into it OR just paste
+            over the generated log in the 'CreateTestObject' class from the previous tutorial
+            run.</para>
         </listitem>
         <listitem>
-          <para>Copy and paste the contents of the log file, NAME, containing the generated code
-            into the new dummy class.</para>
+          <para>For the tutorial, as an example look at 'TutorialTest3.java', your log should look
+            similar to this.</para>
         </listitem>
         <listitem>
-          <para>Once again the dummy file will not compile properly, so we will need to do some
-            manual editing again.</para>
+          <para>Once again the 'CreateTestObject' class file will not compile properly, but also
+            notice that the number of errors has been reduced again. Have a look at the
+            configuration file 'jpetstore-test-setter-config.xml' to see what has changed.</para>
+          <para>Fragment of <filename>'conf/jpetstore-test-setter-config.xml'</filename>:</para>
+          <programlisting>.
+.
+.
+	&lt;setter class="org.springframework.beans.support.PagedListHolder">
+		&lt;field>
+			&lt;field-name>refreshDate&lt;/field-name>
+			&lt;alternative>ignore&lt;/alternative>
+		&lt;/field>
+		&lt;field>
+			&lt;field-name>newPageSet&lt;/field-name>
+			&lt;alternative>ignore&lt;/alternative>
+		&lt;/field>
+		&lt;field>
+			&lt;field-name>sortUsed&lt;/field-name>
+			&lt;alternative>ignore&lt;/alternative>
+		&lt;/field>
+	&lt;/setter>
+.
+.
+.</programlisting>
+          <para>Since we have decided that the class
+            'org.springframework.beans.support.PagedListHolder' is not relevant to our testing, the
+            additional custom configuration has removed the errors associated with this class from
+            the generated log.</para>
+        </listitem>
+      </itemizedlist></para>
+    <para>Unfortunately that still leaves several errors in the 'CreateTestObject' class that cannot
+      be currently be fixed by TestDataCaptureJ, these are 3 generated lines that are preventing the
+      file from compiling:</para>
+    <programlisting>package au.com.dw.testdatacapturej.tutorial;
+
+public class CreateTestObject {
+.
+.
+.	
+	java.util.Collections$SynchronizedMap collections$SynchronizedMap0 = new java.util.Collections$SynchronizedMap();
+.
+.
+.
+	cart0.setItemMap(collections$SynchronizedMap0);
+.
+.
+.
+	cart0.setItemList(pagedListHolder10);
+.
+.
+.
+}</programlisting>
+    <para>As an example see
+        <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Step3.java'</filename>
+      :</para>
+    <para>Of course we could continue manually editing the class to make it compile (as in the
+      example
+        <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Step3_Edited.java'</filename>
+      ), but the test case would still fail.</para>
+    <para> If we look at the source code for 'org.springframework.samples.jpetstore.domain.Cart' we
+      can see why:<programlisting>package org.springframework.samples.jpetstore.domain;
+.
+.
+.
+public class Cart implements Serializable {
+
+  /* Private Fields */
+
+  private final Map itemMap = Collections.synchronizedMap(new HashMap());
+	
+  private final PagedListHolder itemList = new PagedListHolder();
+
+.
+.
+.
+  public void addItem(Item item, boolean isInStock) {
+    CartItem cartItem = (CartItem) itemMap.get(item.getItemId());
+    if (cartItem == null) {
+      cartItem = new CartItem();
+      cartItem.setItem(item);
+      cartItem.setQuantity(0);
+      cartItem.setInStock(isInStock);
+      itemMap.put(item.getItemId(), cartItem);
+      itemList.getSource().add(cartItem);
+    }
+    cartItem.incrementQuantity();
+  }
+.
+.
+.</programlisting><itemizedlist>
+        <listitem>
+          <para>There is no setter method in the 'org.springframework.samples.jpetstore.domain.Cart'
+            class for the field 'itemMap', i.e. no 'setItemMap()' method.</para>
         </listitem>
         <listitem>
-          <para>The first error will occur at this line:</para>
-          <para>CODE HERE</para>
-          <para>This is the error we have encountered before for the NAME field, so do the manual
-            edit as before.</para>
-          <para>CODE HERE</para>
+          <para>Similarly there is no setter for the field 'itemList', i.e. no 'setItemList()'
+            method.</para>
         </listitem>
         <listitem>
-          <para>The dummy class should now compile properly, notice that the previous error we had
-            with the NAME field doesn't exist. The configuration for TestGen has fixed this problem
-            so that the setter method for the NAME field has not been generated.</para>
-          <para>CODE HERE</para>
+          <para>The only way to add the items to the 'itemMap' collection is through the 'addItem()'
+            method. Unfortunately this is not a straightforward adder method and has side
+            effects.</para>
         </listitem>
-        <listitem>
-          <para>Edit your unit test case to use the new dummy file and run it.</para>
-          <para>Unfortunately there is currently no workaround with the error with the NAME field,
-            so it will require some manual editing each time the test data is generated. However if
-            you need to generated lots of test data going through the checkout process with
-            different combinations of pets in the shopping cart, at least TestGen has done most of
-            the work for you.</para>
-        </listitem>
-      </itemizedlist>
-    </para>
+      </itemizedlist></para>
+    <para>This shows the limitations of TestDataCaptureJ, we can generate code based on standard
+      conventions and some common patterns, but there is no way to predict every possible way that a
+      class can be designed.</para>
+    <section>
+      <title>Where to go from here?</title>
+      <para>If this was a real project we would need to do some manual changes to make the test case
+        run properly, this may involve:<itemizedlist>
+          <listitem>
+            <para>Changing the source code for 'org.springframework.samples.jpetstore.domain.Cart'
+              to add the setter methods that were generated (generally a bad idea).</para>
+          </listitem>
+          <listitem>
+            <para>Hacking the generated code, perhaps to invoke the 'addItem()' method.</para>
+          </listitem>
+          <listitem>
+            <para>Changing the cart class to a custom cart class that is just used for testing and
+              is the same as 'org.springframework.samples.jpetstore.domain.Cart' except for the
+              addition of the setter methods required.</para>
+          </listitem>
+        </itemizedlist></para>
+      <para>In several real-life projects in which I have used the TestDataCaptureJ tool, for most
+        objects such as shopping carts or baskets, I have been able to use the generated code with
+        little or no manual editing required. Most of these classes tend to be data objects that
+        follow standard Javabean conventions for setter methods. In fact for the tutorial, if we had
+        wanted to test the 'org.springframework.samples.jpetstore.domain.Account' class instead of
+        the 'org.springframework.samples.jpetstore.domain.Cart' class, then we could have used the
+        generated code without alteration.</para>
+      <para>Example test case from
+          <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/TutorialTest.java'</filename>:</para>
+      <programlisting>.
+.
+.
+	@Test
+	public void testInitOrderAccount()
+	{
+		// Create the object that contains the pasted generated code
+		CreateTestObject createTestObject = new CreateTestObject();
+		
+		// invoke the generated method
+		Account account = createTestObject.createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder();
+		
+		// test the generated data
+		assertNotNull("account exists", account);
+		
+		assertEquals("account for specific user", "j2ee", account.getUsername());
+		
+	}
+.
+.
+.</programlisting>
+    </section>
   </section>
-  
 </article>

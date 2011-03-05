@@ -208,7 +208,6 @@ mutableSortDefinition21.setIgnoreCase(true);
 mutableSortDefinition21.setAscending(true);
 mutableSortDefinition21.setToggleAscendingOnProperty(true);
 pagedListHolder10.setSort(mutableSortDefinition21);
-pagedListHolder10.setSortUsed(null);
 pagedListHolder10.setPageSize(4);
 pagedListHolder10.setPage(0);
 pagedListHolder10.setMaxLinkedPages(10);

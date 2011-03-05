@@ -21,9 +21,6 @@ eclipse or another tool do the formatting afterwards
 
 - add error/warning messages to ObjectInfo, with option to display as comments
 
-- fix field name numbering so each class has it's own index (using map to store indices), at the moment
-the index is on the type (e.g. object or collection or array or map)
-
 - all class names in the log are fully qualified, the logging may be more readable if import statements
 were generated (e.g. each class name is stored in a Set, and then import statements are generated
 at the end)
@@ -54,10 +51,8 @@ comments are present or if setters are generated for null fields
 - probably need more detailed comments about what the tests are doing and the purpose of the mock
 test objects and also about configuring the test aspects
 
-- change all assert tests on logged output to use assertEqualsWithoutFormatting() instead of
-assertEquals()
 
 Documentation:
 -------------
 
-- finish the tutorial page
+- update doc for using logback instead of log4j

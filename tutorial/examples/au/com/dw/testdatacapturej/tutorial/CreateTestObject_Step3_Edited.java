@@ -1,6 +1,6 @@
 package au.com.dw.testdatacapturej.tutorial;
 
-public class CreateTestObject_Step3 {
+public class CreateTestObject_Step3_Edited {
 	
 	// Generated 12:58:21,953 
 	// org.springframework.samples.jpetstore.domain.Order.initOrder
@@ -33,7 +33,8 @@ public class CreateTestObject_Step3 {
 
 	org.springframework.samples.jpetstore.domain.Cart cart0 = new org.springframework.samples.jpetstore.domain.Cart();
 
-	java.util.Collections$SynchronizedMap collections$SynchronizedMap0 = new java.util.Collections$SynchronizedMap();
+	//java.util.Collections$SynchronizedMap collections$SynchronizedMap0 = new java.util.Collections$SynchronizedMap();
+	java.util.Map collections$SynchronizedMap0 = java.util.Collections.synchronizedMap(new java.util.HashMap());
 	// Default constructor for java.util.Collections$SynchronizedMap does not exist.
 
 	org.springframework.samples.jpetstore.domain.CartItem cartItem1 = new org.springframework.samples.jpetstore.domain.CartItem();
@@ -117,7 +118,7 @@ public class CreateTestObject_Step3 {
 	cartItem7.setInStock(true);
 	collections$SynchronizedMap0.put("EST-13", cartItem7);
 
-	cart0.setItemMap(collections$SynchronizedMap0);
+	//cart0.setItemMap(collections$SynchronizedMap0);
 
 	org.springframework.beans.support.PagedListHolder pagedListHolder10 = new org.springframework.beans.support.PagedListHolder();
 
@@ -215,7 +216,7 @@ public class CreateTestObject_Step3 {
 	pagedListHolder10.setPageSize(4);
 	pagedListHolder10.setPage(0);
 	pagedListHolder10.setMaxLinkedPages(10);
-	cart0.setItemList(pagedListHolder10);
+	//cart0.setItemList(pagedListHolder10);
 
 	return cart0;
 	}
