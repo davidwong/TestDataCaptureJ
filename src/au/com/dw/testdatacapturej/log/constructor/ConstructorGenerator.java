@@ -29,7 +29,8 @@ import au.com.dw.testdatacapturej.meta.ObjectInfo;
 public interface ConstructorGenerator {
 
 	/**
-	 * Generate the constructor line for test code generation.
+	 * Generate the constructor line for an object. The test code generated should be able to be used to
+	 * instantiate the object.
 	 * 
 	 * @param builder
 	 * @param info

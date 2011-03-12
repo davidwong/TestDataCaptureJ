@@ -18,8 +18,6 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.aspect;
 
-import au.com.dw.testdatacapturej.log.LogHolder;
-
 /**
  * SubAspect of Trace where the pointcuts are for unit test cases instead of a real classes.
  * The output is also just logged to System.out instead of a file.
@@ -54,9 +52,7 @@ public aspect TraceTest extends Trace {
 	   && if(TraceTest.debugOn);
 
 
-	/**
-	 * Default logging method.
-	 */
+	@Override
 	protected void doLog(String logContents) {
 		System.out.println(logContents);
 	}

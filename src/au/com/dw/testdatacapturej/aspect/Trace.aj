@@ -44,7 +44,7 @@ import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
  * subaspect.
  * 
  * Note that there are separate pointcuts for logging of parameters and for logging of return values.
- * Since both must be overridden in a concrete subaspect, if only one is required then just do a dummy
+ * Since both must be overridden in a concrete subaspect, if only one is required then just do a empty
  * pointcut for the one that is not required.
  *
  * @author David Wong
@@ -60,10 +60,13 @@ public abstract aspect Trace {
 	}
 
 	/**
-	 * Override to provide actual logging.
+	 * The actual logging to the logging framework.
+	 * 
+	 * @param logContents The contents of the log to send to the logging framework
 	 */
 	protected abstract void doLog(String logContents);
-
+	//Override to provide actual logging.
+	
 	/**
 	 * Any logging config required before an object is actually logged.
 	 * 
@@ -71,6 +74,7 @@ public abstract aspect Trace {
 	 */
 	protected void preLog(LogHolder log)
 	{
+		// default do-nothing implementation
 	}
 
 	/**
@@ -80,8 +84,15 @@ public abstract aspect Trace {
 	 */
 	protected void postLog(LogHolder log)
 	{
+		// default do-nothing implementation
 	}
 
+	/**
+	 * Log the generated code for an object. Just a template method pattern method to allow setting
+	 * up of pre- and post-conditions.
+	 * 
+	 * @param log
+	 */
 	private void log(LogHolder log)
 	{
 		preLog(log);
@@ -89,6 +100,11 @@ public abstract aspect Trace {
 		postLog(log);
 	}
 	
+	/**
+	 * Log the generated code for multiple objects.
+	 * 
+	 * @param logs
+	 */
 	private void log(Collection<LogHolder> logs)
 	{
 		for (LogHolder log : logs)

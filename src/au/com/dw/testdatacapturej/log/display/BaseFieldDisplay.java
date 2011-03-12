@@ -44,11 +44,8 @@ public class BaseFieldDisplay implements FieldDisplay {
 
 	private LineBuilder lineBuilder = new LineBuilder();
 
-	/**
-	 * Default preLog() creates a constructor line of the appropriate type, if required.
-	 * 
-	 * Simple types don't need to be constructed.
-	 * Arrays use a different constructor format.
+	/* (non-Javadoc)
+	 * @see au.com.dw.testdatacapturej.log.display.FieldDisplay#preLog(au.com.dw.testdatacapturej.meta.ObjectInfo)
 	 */
 	public String preLog(ObjectInfo info) {
 		StringBuilder builder = new StringBuilder();
@@ -65,10 +62,14 @@ public class BaseFieldDisplay implements FieldDisplay {
 		return builder.toString();
 	}
 
-	/**
-	 * Default do-nothing log().
+	/* (non-Javadoc)
+	 * @see au.com.dw.testdatacapturej.log.display.FieldDisplay#log(au.com.dw.testdatacapturej.meta.ObjectInfo)
 	 */
-	public String log(ObjectInfo info) { return FormatConstants.EMPTY_STRING; }
+	public String log(ObjectInfo info)
+	{
+		// default do-nothing log
+		return FormatConstants.EMPTY_STRING;
+	}
 
 	/**
 	 * Generate a constructor line, delegates the actual generation to an implemention of ConstructorGenerator.

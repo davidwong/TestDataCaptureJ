@@ -64,8 +64,8 @@ public class TestData {
         AllDataHolder inner = createInnerDataHolder();
         data.setInner(inner);
         
-        data.setStaticText("static-aaa");
-        data.setStaticObject(new InnerDataHolder("immutable-1", 1.0));
+        AllDataHolder.setStaticText("static-aaa");
+        AllDataHolder.setStaticObject(new InnerDataHolder("immutable-1", 1.0));
 
         Collection collection = new HashSet();
         collection.add("collection-1");
@@ -190,8 +190,8 @@ public class TestData {
         data.setPrimitiveFraction(100.1f);
         data.setFraction(new Double(100.2));
         
-        data.setStaticText("static-zzz");
-        data.setStaticObject(new InnerDataHolder("immutable-inner-1", 100.0));
+        AllDataHolder.setStaticText("static-zzz");
+        AllDataHolder.setStaticObject(new InnerDataHolder("immutable-inner-1", 100.0));
 
         Collection collection = new HashSet();
         collection.add("collection-inner-1");

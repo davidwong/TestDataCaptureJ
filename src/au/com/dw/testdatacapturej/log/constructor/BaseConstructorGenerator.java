@@ -31,12 +31,18 @@ public abstract class BaseConstructorGenerator implements ConstructorGenerator {
 
 	private LineBuilder lineBuilder = new LineBuilder();
 
+	/* (non-Javadoc)
+	 * @see au.com.dw.testdatacapturej.log.constructor.ConstructorGenerator#generateConstructor(java.lang.StringBuilder, au.com.dw.testdatacapturej.meta.ObjectInfo)
+	 */
 	public abstract void generateConstructor(StringBuilder builder, ObjectInfo info);
 	
-	/**
-	 * Default do-nothing adaptor method.
+	/* (non-Javadoc)
+	 * @see au.com.dw.testdatacapturej.log.constructor.ConstructorGenerator#addConstructorComment(java.lang.StringBuilder, au.com.dw.testdatacapturej.meta.ObjectInfo)
 	 */
-	public void addConstructorComment(StringBuilder builder, ObjectInfo info) {}
+	public void addConstructorComment(StringBuilder builder, ObjectInfo info)
+	{
+		// Default do-nothing adaptor method.
+	}
 
 	public LineBuilder getLineBuilder() {
 		return lineBuilder;

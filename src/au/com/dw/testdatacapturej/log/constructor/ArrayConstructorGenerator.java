@@ -18,8 +18,6 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.log.constructor;
 
-import java.lang.reflect.Array;
-
 import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
@@ -35,11 +33,6 @@ public class ArrayConstructorGenerator extends BaseConstructorGenerator {
 	@Override
 	public void generateConstructor(StringBuilder builder, ObjectInfo info) {
 		builder.append(FormatConstants.newLine);
-		
-		// extra info required for an array constructor as opposed to an object constructor
-		Object array = info.getValue();
-		String arrayType = array.getClass().getComponentType().getName();
-		int initialSize = Array.getLength(array);
 		
 		// create the constructor line
 		String constructorLine = getLineBuilder().createArrayConstructorLine(info);

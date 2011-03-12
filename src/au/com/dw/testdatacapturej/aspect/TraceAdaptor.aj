@@ -42,13 +42,13 @@ import org.slf4j.MDC;
  *  </concrete-aspect>
  *  
  * Since there are separate pointcuts for logging of parameters and for logging of return values, if only
- * one is required then just do a dummy pointcut for the other one that is not required when subclassing
+ * one is required then just do a empty pointcut for the other one that is not required when subclassing
  * this adaptor.
  * e.g.
  *
  *	<concrete-aspect name="au.com.dw.testdatacapturej.aspect.DummyTestTrace"
  *                           extends="au.com.dw.testdatacapturej.aspect.TraceAdaptor">
- *            <pointcut name="loggedReturnOperations" expression="[pointcut that doesn't match anything]"/>
+ *            <pointcut name="loggedReturnOperations" expression="if(false)"/>
  *  </concrete-aspect>
  *    
  * @author David Wong
@@ -56,20 +56,20 @@ import org.slf4j.MDC;
 public abstract aspect TraceAdaptor extends Trace {
 	private Logger logger = LoggerFactory.getLogger(LoggingConstants.TRACE_LOGGER);
 
+	@Override
 	protected void preLog(LogHolder log)
 	{
 		String key = log.getFileKey();
 		MDC.put("traceClass", key);
 	}
 	
+	@Override
 	protected void postLog(LogHolder log)
 	{
 		MDC.remove("traceClass");
 	}
 	
-	/**
-	 * Default logging method.
-	 */
+	@Override
 	protected void doLog(String logContents) {
 		logger.info(logContents);
 	}

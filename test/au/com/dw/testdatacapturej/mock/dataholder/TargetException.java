@@ -22,10 +22,12 @@ package au.com.dw.testdatacapturej.mock.dataholder;
  * Exception to use for targeting methods to be invoked.
  * e.g. for pointcuts looking for a particular exception or to test logging exceptions thrown.
  * 
- * @author t-davidw
+ * @author David Wong
  *
  */
 public class TargetException extends Exception {
+
+	private static final long serialVersionUID = 1L;
 
 	public TargetException() {
 	}

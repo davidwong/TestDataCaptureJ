@@ -21,7 +21,6 @@ package au.com.dw.testdatacapturej.adder;
 import static au.com.dw.testing.AssertUtil.assertEqualsWithoutFormatting;
 import static org.junit.Assert.fail;
 
-import org.apache.commons.lang.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +29,6 @@ import au.com.dw.testdatacapturej.mock.adder.CollectionClassHolder;
 import au.com.dw.testdatacapturej.mock.adder.CollectionHolder;
 import au.com.dw.testdatacapturej.mock.adder.CollectionHolderWithSetter;
 import au.com.dw.testdatacapturej.mock.adder.CollectionHolder_Unconfigured;
-import au.com.dw.testdatacapturej.mock.classcheck.Holder;
 import au.com.dw.testdatacapturej.mock.dataholder.TestData;
 import au.com.dw.testdatacapturej.reflection.BaseReflectionTest;
 import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
@@ -51,15 +49,12 @@ public class CollectionAdderMethodTest extends BaseReflectionTest {
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
 	private StringBuilder builder;
-	
-	private Holder holder;
-	
+		
 	@Before
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
 		builder = new StringBuilder();
-		holder = new Holder();
 	}
  
     /**

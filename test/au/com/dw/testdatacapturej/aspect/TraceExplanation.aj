@@ -18,17 +18,13 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.aspect;
 
-import org.slf4j.MDC;
-
-import au.com.dw.testdatacapturej.log.LogHolder;
-
 /**
  * Aspect which is used for the examples for the explanation page in the documentation.
  * 
- * Actually a subAspect of Trace where the pointcut is for a JUnit test instead of a real class.
+ * Actually a subAspect of Trace where the pointcut is for a unit test instead of a real class.
  * The output is also just logged to System.out instead of a file.
  * 
- * Run the JUnit tests that are used as examples for the explanation page. The pointcuts are pointing
+ * Run the unit tests that are used as examples for the explanation page. The pointcuts are pointing
  * the test cases that will generate test data to be used as samples (output to the console so that can
  * be copied as program listings for the documentation). Make sure the debugOn flag is set to true.
  * 
@@ -54,9 +50,7 @@ public aspect TraceExplanation extends Trace {
 	   && if(TraceExplanation.debugOn);
 
 
-	/**
-	 * Default logging method.
-	 */
+	@Override
 	protected void doLog(String logContents) {
 		System.out.println(logContents);
 	}

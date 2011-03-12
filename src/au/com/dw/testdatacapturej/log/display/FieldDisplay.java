@@ -31,6 +31,11 @@ public interface FieldDisplay {
 
 	/**
 	 * Pre-requisite logging before the child objects of the object are logged.
+	 * e.g. to create a constructor line of the appropriate type for an object, if required.
+	 * 
+	 * Note:
+	 * - Simple types don't need to be constructed.
+	 * - Arrays use a different constructor format than other objects.
 	 * 
 	 * @param info
 	 * @return
