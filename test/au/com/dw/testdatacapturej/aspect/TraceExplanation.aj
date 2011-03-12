@@ -18,15 +18,21 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.aspect;
 
-import au.com.dw.testdatacapturej.test.ParamTest;
-import au.com.dw.testdatacapturej.test.ReturnTest;
+import org.slf4j.MDC;
+
+import au.com.dw.testdatacapturej.log.LogHolder;
 
 /**
- * SubAspect of Trace where the pointcut is for a JUnit test instead of a real class.
+ * Aspect which is used for the examples for the explanation page in the documentation.
+ * 
+ * Actually a subAspect of Trace where the pointcut is for a JUnit test instead of a real class.
  * The output is also just logged to System.out instead of a file.
  * 
- * Run the JUnit test that the pointcut is pointing to and the test data should be generated and output
- * to the console.
+ * Run the JUnit tests that are used as examples for the explanation page. The pointcuts are pointing
+ * the test cases that will generate test data to be used as samples (output to the console so that can
+ * be copied as program listings for the documentation). Make sure the debugOn flag is set to true.
+ * 
+ * @author David Wong
  */
 public aspect TraceExplanation extends Trace {
 	
@@ -34,24 +40,25 @@ public aspect TraceExplanation extends Trace {
 	private final static boolean debugOn = true;
  
 	/**
-	 * Which test methods to log
+	 * Which test methods to log for handling parameters
 	 */
 	protected pointcut loggedParamOperations()
 	: execution(* au.com.dw.testdatacapturej.explanation.*Test.joinPointParam*(..))
 	   && if(TraceExplanation.debugOn);
 
 	/**
-	 * Which test methods to log
+	 * Which test methods to log for handling return values
 	 */
 	protected pointcut loggedReturnOperations()
 	: execution(* au.com.dw.testdatacapturej.explanation.*Test.joinPointReturn*())
 	   && if(TraceExplanation.debugOn);
-	
+
+
 	/**
 	 * Default logging method.
 	 */
-	protected void log(String msg) {
-		System.out.println(msg);
+	protected void doLog(String logContents) {
+		System.out.println(logContents);
 	}
 
 }

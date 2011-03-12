@@ -18,11 +18,16 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.aspect;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 
+import au.com.dw.testdatacapturej.builder.FileNameKeyBuilder;
 import au.com.dw.testdatacapturej.builder.MethodBuilder;
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogHolder;
 import au.com.dw.testdatacapturej.log.ObjectLogger;
 import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
 import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
@@ -57,7 +62,40 @@ public abstract aspect Trace {
 	/**
 	 * Override to provide actual logging.
 	 */
-	protected abstract void log(String msg);
+	protected abstract void doLog(String logContents);
+
+	/**
+	 * Any logging config required before an object is actually logged.
+	 * 
+	 * @param log
+	 */
+	protected void preLog(LogHolder log)
+	{
+	}
+
+	/**
+	 * Any logging config required after an object is logged.
+	 * 
+	 * @param log
+	 */
+	protected void postLog(LogHolder log)
+	{
+	}
+
+	private void log(LogHolder log)
+	{
+		preLog(log);
+		doLog(log.getLog());
+		postLog(log);
+	}
+	
+	private void log(Collection<LogHolder> logs)
+	{
+		for (LogHolder log : logs)
+		{
+			log(log);
+		}
+	}
 
 	/**
 	 * Override to determine which methods are to be logged to generate test data from parameters.
@@ -92,74 +130,113 @@ public abstract aspect Trace {
 	/**
 	 * Format the trace message for method parameters.
 	 */
-	protected String createParameterMessage(JoinPoint joinPoint, String methodName) {
-		StringBuilder message = new StringBuilder();
+	protected Collection<LogHolder> createParameterMessage(JoinPoint joinPoint, String methodName) {
 		Object[] arguments = joinPoint.getArgs();
+		Collection<LogHolder> logs = new ArrayList<LogHolder>();
+		FileNameKeyBuilder keyBuilder = new FileNameKeyBuilder();
+		String fileKey = null;
 		
 		if (arguments.length == 0)
 		{
+			StringBuilder logBuilder = new StringBuilder();
+			
 			// this shouldn't happen if the pointcut is correct, but do a sanity check in case
-			message.append(FormatConstants.commentLinePrefix + "No parameters for " + methodName);
+			logBuilder.append(FormatConstants.commentLinePrefix + "No parameters for " + methodName);
+			
+			fileKey = keyBuilder.createParameterFileKey(methodName, 0, "None");
+			
+			LogHolder log = new LogHolder(fileKey, logBuilder.toString());
+			logs.add(log);
 		}
 		else
 		{
-			// add a comment to track the method name
-			message.append(FormatConstants.commentLinePrefix + methodName + "\n");
 			
 			MethodBuilder methodBuilder = new MethodBuilder();
 			
 			for (int length = arguments.length, i = 0; i < length; ++i) {
 				Object argument = arguments[i];
-	
+				int paramNum = i+1;
+				StringBuilder logBuilder = new StringBuilder();
+				
+				// add a comment to track the method name and parameter number
+				logBuilder.append(FormatConstants.commentLinePrefix);
+				logBuilder.append(methodName);
+				logBuilder.append(":Parameter");
+				logBuilder.append(paramNum);
+				logBuilder.append(FormatConstants.newLine);
+				
 				if (argument != null)
 				{
 					// start of method
-					message.append(methodBuilder.createMethodLine(methodName, argument, i+1));
+					logBuilder.append(methodBuilder.createMethodLine(methodName, argument, i+1));
 					
 					// method body
-					logObject(message, argument);
+					logObject(logBuilder, methodName, argument);
 					resetLogNameCounters();
 					
 					// end of method
-					message.append(methodBuilder.createMethodCompletion(argument));
+					logBuilder.append(methodBuilder.createMethodCompletion(argument));
+
+					fileKey = keyBuilder.createParameterFileKey(methodName, paramNum, argument.getClass().getName());
 				}
 				else
 				{
 					// null parameter
-					message.append(FormatConstants.commentLinePrefix + "Parameter " + (i+1) + " is null.");
+					logBuilder.append(FormatConstants.commentLinePrefix + "Parameter " + (i+1) + " is null.");
+					
+					fileKey = keyBuilder.createParameterFileKey(methodName, paramNum, "Null");
 				}
+
+
+				LogHolder log = new LogHolder(fileKey, logBuilder.toString());
+				logs.add(log);				
 			}
 		}
-		return message.toString();
+		return logs;
 	}
 
 	/**
 	 * Format the trace message for method return value.
 	 */
-	protected String createReturnMessage(JoinPoint joinPoint, String methodName, Object returnValue) {
-		StringBuilder message = new StringBuilder();
+	protected LogHolder createReturnMessage(JoinPoint joinPoint, String methodName, Object returnValue) {
+		StringBuilder logBuilder = new StringBuilder();
+		FileNameKeyBuilder keyBuilder = new FileNameKeyBuilder();
+		String fileKey = null;
 		
 		if (returnValue != null)
 		{
-			MethodBuilder methodBuilder = new MethodBuilder();
+			// add a comment to track the method name
+			logBuilder.append(FormatConstants.commentLinePrefix);
+			logBuilder.append(methodName);
+			logBuilder.append(":Return");
+			logBuilder.append(FormatConstants.newLine);
 
 			// start of method
-			message.append(methodBuilder.createMethodLine(methodName, returnValue, 0));
+			MethodBuilder methodBuilder = new MethodBuilder();
+			logBuilder.append(methodBuilder.createMethodLine(methodName, returnValue, 0));
 			
 			// method body
-			logObject(message, returnValue);
+			logObject(logBuilder, methodName, returnValue);
 			resetLogNameCounters();
 			
 			// end of method
-			message.append(methodBuilder.createMethodCompletion(returnValue));
+			logBuilder.append(methodBuilder.createMethodCompletion(returnValue));
+
+			fileKey = keyBuilder.createReturnFileKey(methodName, returnValue.getClass().getName());
 		}
 		else
 		{
 			// null return value
-			message.append(FormatConstants.commentLinePrefix + "Return value for " + methodName + " is null");
+			logBuilder.append(FormatConstants.commentLinePrefix);
+			logBuilder.append("Return value for ");
+			logBuilder.append(methodName);
+			logBuilder.append(" is null");
+
+			fileKey = keyBuilder.createReturnFileKey(methodName, "Null");
 		}
 			
-		return message.toString();
+		LogHolder log = new LogHolder(fileKey, logBuilder.toString());
+		return log;
 	}
 	
 	/**
@@ -168,14 +245,14 @@ public abstract aspect Trace {
 	 * @param message
 	 * @param object
 	 */
-	protected void logObject(StringBuilder message, Object object) {
+	protected void logObject(StringBuilder message, String methodName, Object object) {
 		try {
 			getObjectLogger().logObject(message, getReflectionHandler().handle(object));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Reset the numerical counters used as field name suffixes in the log. This should be done after
 	 * the logging of each initial object, i.e. parameter or return value

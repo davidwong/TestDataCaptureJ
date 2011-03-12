@@ -54,4 +54,10 @@ public class FormatConstants {
 	public static String arraySuffix = "[]";
 	
 	public final static String EMPTY_STRING = "";
+	
+	public final static String FILE_NAME_SEPARATOR = "-";
+	
+	public final static String PARAMETER = "Parameter";
+	
+	public final static String RETURN = "Return";
 }

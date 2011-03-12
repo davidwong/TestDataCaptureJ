@@ -1,0 +1,42 @@
+Unit Testing README
+-------------------
+
+The test directory contains unit tests for 3 purposes:
+
+1. Examples for the documentation, specifically for the explanation and customization pages, which are found in these packages:
+- au.com.dw.testdatacapturej.explanation
+- au.com.dw.testdatacapturej.mock.explanation
+In order for these to be run to generate sample output for the documentation, they also require the aspect file
+au.com.dw.testdatacapturej.aspect.TraceExplanation to have the pointcuts configured.
+
+(Note that examples for the tutorial are not included in the test directory since they are copied from another project
+that was setup for the sample web app. These should be located under the 'tutorial' directory somewhere.)
+
+2. Unit tests for the TestDataCaptureJ project. The 'au.com.dw.testdatacapturej.AllTests' test suite is setup to run all
+of the unit tests by including the 'AllTests' test suites in the sub-directories (excluding those that are used as
+examples for the documentation).
+
+3. Some of the unit tests are for checking the logging mechanism itself (i.e. that the logging framework is working correctly) and
+are not necessarily 'unit tests' since some may not have any asserts in them and will always pass). e.g. those in:
+- au.com.dw.testdatacapturej.test
+These means checking the logged result manually to ensure there are not error messages from the logging framework and the generated
+code has been logged to the correct location. These can also be used for testing the logging when running in a web app, for example.
+
+For these unit tests, there is a choice as to where the logging that is generated is to be output to. This is done by
+enabling/disabling the log tracing for the 2 aspects that are used with the unit tests so that only one
+of them is enabled when the tests are run. Both of the aspects should have the same pointcuts which are
+used to intercept the unit test cases.
+
+1. For logging output to the console, enable the aspect 'au.com.dw.testdatacapturej.aspect.TraceTest' but setting the
+'debugOn' flag to true.
+e.g.
+	private final static boolean debugOn = true;
+Also disable the aspect 'au.com.dw.testdatacapturej.aspect.TraceAdaptorTest' by setting the 'debugOn' flag to false
+for that class.
+
+2. For logging output to a file, enable the aspect 'au.com.dw.testdatacapturej.aspect.TraceAdaptorTest' but setting the
+'debugOn' flag to true.
+Also disable the aspect 'au.com.dw.testdatacapturej.aspect.TraceTest' by setting the 'debugOn' flag to false
+for that class.
+Configure the logging framework, so that the logger used by 'au.com.dw.testdatacapturej.aspect.TraceAdaptorTest' is pointing
+to the file location that you want.

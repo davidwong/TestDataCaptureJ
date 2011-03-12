@@ -18,9 +18,11 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.aspect;
 
+import au.com.dw.testdatacapturej.log.LogHolder;
 import au.com.dw.testdatacapturej.log.LoggingConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 /**
  * Adaptor for the Trace aspect to leave only the pointcut as abstract so that it can be defined in aop.xml.
@@ -54,11 +56,22 @@ import org.slf4j.LoggerFactory;
 public abstract aspect TraceAdaptor extends Trace {
 	private Logger logger = LoggerFactory.getLogger(LoggingConstants.TRACE_LOGGER);
 
+	protected void preLog(LogHolder log)
+	{
+		String key = log.getFileKey();
+		MDC.put("traceClass", key);
+	}
+	
+	protected void postLog(LogHolder log)
+	{
+		MDC.remove("traceClass");
+	}
+	
 	/**
 	 * Default logging method.
 	 */
-	protected void log(String msg) {
-		logger.info(msg);
+	protected void doLog(String logContents) {
+		logger.info(logContents);
 	}
 
 }

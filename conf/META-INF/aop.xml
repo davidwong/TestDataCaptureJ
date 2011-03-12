@@ -7,7 +7,7 @@
 	<concrete-aspect name="au.com.dw.testdatacapturej.aspect.TestSpringPetStoreTrace"
                             extends="au.com.dw.testdatacapturej.aspect.TraceAdaptor">
              <pointcut name="loggedParamOperations" expression="execution(* org.springframework.samples.jpetstore.*.Order.initOrder(..))"/>
-             <pointcut name="loggedReturnOperations" expression="execution(* dummy.noSuchMethod(..))"/>
+             <pointcut name="loggedReturnOperations" expression="if(false)"/>
    </concrete-aspect>
     
 <!-- For web testing 

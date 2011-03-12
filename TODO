@@ -25,14 +25,12 @@ eclipse or another tool do the formatting afterwards
 were generated (e.g. each class name is stored in a Set, and then import statements are generated
 at the end)
 
-- eliminate need for a dummy pointcut in aop.xml when we only want either a parameter or a return value, but
-not both
-
 - make the algorithm that generates methods names in the log configurable 
 e.g. public au.com.dw.testdatacapturej.mock.explanation.Customer createParam1Customer_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomer() {
 
 - doesn't currently handle static fields, should it?
 
+- test for varargs
 
 Unit Tests:
 ----------

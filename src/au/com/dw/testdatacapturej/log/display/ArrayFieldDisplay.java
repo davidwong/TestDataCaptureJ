@@ -28,16 +28,6 @@ import au.com.dw.testdatacapturej.meta.ObjectInfo;
  */
 public class ArrayFieldDisplay extends BaseFieldDisplay {
 
-	/**
-	 * Display a field for test data generation.
-	 * 
-	 * @param classFieldName Field name of the class (not class name) that contains the field
-	 * @param index Optional index for arrays
-	 * @param fieldName
-	 * @param fieldValue
-	 * @param literal Whether the fieldValue param is interpreted as a literal string
-	 * @return
-	 */
 	@Override
 	public String log(ObjectInfo info) {
 		StringBuilder builder = new StringBuilder();

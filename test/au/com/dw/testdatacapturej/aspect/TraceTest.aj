@@ -18,40 +18,47 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.aspect;
 
-import au.com.dw.testdatacapturej.test.ParamTest;
-import au.com.dw.testdatacapturej.test.ReturnTest;
+import au.com.dw.testdatacapturej.log.LogHolder;
 
 /**
- * SubAspect of Trace where the pointcut is for a JUnit test instead of a real class.
+ * SubAspect of Trace where the pointcuts are for unit test cases instead of a real classes.
  * The output is also just logged to System.out instead of a file.
  * 
- * Run the JUnit test that the pointcut is pointing to and the test data should be generated and output
+ * Run the unit tests that the pointcuts are pointing to and the test data should be generated and output
  * to the console.
+ * 
+ * To use this aspect, make sure the debugOn flag is set to true (and that the debugOn flag of the TraceAdaptorTest aspect
+ * is set to false).
+ * 
+ * @see au.com.dw.testdatacapturej.aspect.TraceAdaptorTest
+ * 
+ * @author David Wong
  */
 public aspect TraceTest extends Trace {
 	
 	// debug flag to enable/disable aspectj weaving
-	private final static boolean debugOn = true;
+	private final static boolean debugOn = false;
  
 	/**
-	 * Which test methods to log
+	 * Which test methods to log for parameters
 	 */
 	protected pointcut loggedParamOperations()
 	: execution(* au.com.dw.testdatacapturej.test.*.*ParamTest(..))
 	   && if(TraceTest.debugOn);
 
 	/**
-	 * Which test methods to log
+	 * Which test methods to log for return values
 	 */
 	protected pointcut loggedReturnOperations()
 	: execution(* au.com.dw.testdatacapturej.test.*.*ReturnTest(..))
 	   && if(TraceTest.debugOn);
-	
+
+
 	/**
 	 * Default logging method.
 	 */
-	protected void log(String msg) {
-		System.out.println(msg);
+	protected void doLog(String logContents) {
+		System.out.println(logContents);
 	}
 
 }
