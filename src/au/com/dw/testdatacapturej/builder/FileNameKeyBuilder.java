@@ -18,6 +18,9 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.builder;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import au.com.dw.testdatacapturej.log.FormatConstants;
 
 /**
@@ -26,12 +29,17 @@ import au.com.dw.testdatacapturej.log.FormatConstants;
  * 
  * The methods are used to generate the file name key field of LogHolder.
  * 
+ * Note that timestamps are added here, instead of in the logging framework configuration, because
+ * haven't worked out how to make it work with a sifting appender.
+ * 
  * @see au.com.dw.testdatacapturej.log.LogHolder
  * 
  * @author David Wong
  *
  */
 public class FileNameKeyBuilder {
+	
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
 	
 	/**
 	 * Create the file name logging key to be used to store the logging for a method parameter.
@@ -41,7 +49,7 @@ public class FileNameKeyBuilder {
 	 * @param paramType Fully qualified class name for the logged object, or an alternative if no available, e.g. 'Null'
 	 * @return
 	 */
-	public String createParameterFileKey(String methodName, int paramNum, String paramType)
+	public String createParameterFileKey(String methodName, int paramNum, String paramType, boolean addTimeStamp)
 	{
 		StringBuilder keyBuilder = new StringBuilder();
 		
@@ -54,6 +62,11 @@ public class FileNameKeyBuilder {
 		}	
 		keyBuilder.append(FormatConstants.FILE_NAME_SEPARATOR);
 		keyBuilder.append(paramType);
+		if (addTimeStamp)
+		{
+			keyBuilder.append(FormatConstants.FILE_NAME_SEPARATOR);
+			keyBuilder.append(dateFormat.format(new Date()));
+		}
 		
 		return keyBuilder.toString();
 	}
@@ -65,7 +78,7 @@ public class FileNameKeyBuilder {
 	 * @param returnType Fully qualified class name for the logged object, or an alternative if no available, e.g. 'Null'
 	 * @return
 	 */
-	public String createReturnFileKey(String methodName, String returnType)
+	public String createReturnFileKey(String methodName, String returnType, boolean addTimeStamp)
 	{
 		StringBuilder keyBuilder = new StringBuilder();
 		
@@ -74,6 +87,11 @@ public class FileNameKeyBuilder {
 		keyBuilder.append(FormatConstants.RETURN);
 		keyBuilder.append(FormatConstants.FILE_NAME_SEPARATOR);
 		keyBuilder.append(returnType);
+		if (addTimeStamp)
+		{
+			keyBuilder.append(FormatConstants.FILE_NAME_SEPARATOR);
+			keyBuilder.append(dateFormat.format(new Date()));
+		}
 		
 		return keyBuilder.toString();
 	}

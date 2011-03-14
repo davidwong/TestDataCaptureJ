@@ -30,4 +30,10 @@ public class LoggingConstants {
 	 * Name of the logging library logger to use.
 	 */
 	public final static String TRACE_LOGGER = "au.com.dw.testdatacapturej-trace";
+	
+	/*
+	 * Name of the MDC key to use.
+	 */
+	public final static String LOGGER_MDC_KEY = "traceClass";
+	
 }

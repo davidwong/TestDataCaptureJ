@@ -14,6 +14,10 @@ statusListener(OnConsoleStatusListener)
 def CATALINA_HOME = System.getProperty("catalina.home")
 addInfo("CATALINA_HOME=${CATALINA_HOME}")
 
+// add a timestamp to the 'FILE' appender
+// not used for 'SIFT' as haven't worked out how to do that yet, so timestamp added in code instead
+def bySecond = timestamp("yyyyMMdd'T'HHmmss")
+
 // fall back appender to use for quick testing, e.g. for unit tests
 appender("CONSOLE", ConsoleAppender) {
 	encoder(PatternLayoutEncoder) {
@@ -23,7 +27,7 @@ appender("CONSOLE", ConsoleAppender) {
 
 // appender to use to put all logging into one file
 appender("FILE", FileAppender) {
-  file = "${CATALINA_HOME}/logs/Test.java"
+  file = "${CATALINA_HOME}/logs/Test-${bySecond}.java"
   encoder(PatternLayoutEncoder) {
     pattern = "// Generated %d%n%m%n"
   }

@@ -159,7 +159,7 @@ public abstract aspect Trace {
 			// this shouldn't happen if the pointcut is correct, but do a sanity check in case
 			logBuilder.append(FormatConstants.commentLinePrefix + "No parameters for " + methodName);
 			
-			fileKey = keyBuilder.createParameterFileKey(methodName, 0, "None");
+			fileKey = keyBuilder.createParameterFileKey(methodName, 0, "None", true);
 			
 			LogHolder log = new LogHolder(fileKey, logBuilder.toString());
 			logs.add(log);
@@ -193,14 +193,14 @@ public abstract aspect Trace {
 					// end of method
 					logBuilder.append(methodBuilder.createMethodCompletion(argument));
 
-					fileKey = keyBuilder.createParameterFileKey(methodName, paramNum, argument.getClass().getName());
+					fileKey = keyBuilder.createParameterFileKey(methodName, paramNum, argument.getClass().getName(), true);
 				}
 				else
 				{
 					// null parameter
 					logBuilder.append(FormatConstants.commentLinePrefix + "Parameter " + (i+1) + " is null.");
 					
-					fileKey = keyBuilder.createParameterFileKey(methodName, paramNum, "Null");
+					fileKey = keyBuilder.createParameterFileKey(methodName, paramNum, "Null", true);
 				}
 
 
@@ -238,7 +238,7 @@ public abstract aspect Trace {
 			// end of method
 			logBuilder.append(methodBuilder.createMethodCompletion(returnValue));
 
-			fileKey = keyBuilder.createReturnFileKey(methodName, returnValue.getClass().getName());
+			fileKey = keyBuilder.createReturnFileKey(methodName, returnValue.getClass().getName(), true);
 		}
 		else
 		{
@@ -248,7 +248,7 @@ public abstract aspect Trace {
 			logBuilder.append(methodName);
 			logBuilder.append(" is null");
 
-			fileKey = keyBuilder.createReturnFileKey(methodName, "Null");
+			fileKey = keyBuilder.createReturnFileKey(methodName, "Null", true);
 		}
 			
 		LogHolder log = new LogHolder(fileKey, logBuilder.toString());
