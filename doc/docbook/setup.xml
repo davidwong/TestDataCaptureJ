@@ -39,10 +39,20 @@
             <listitem>
               <para>Apache commons-logging</para>
             </listitem>
-            <listitem>
-              <para>Log4j</para>
-            </listitem>
           </itemizedlist></para>
+      </listitem>
+
+      <listitem>
+        <para>Logging framework jars: <itemizedlist>
+          <listitem>
+            <para>LogBack</para>
+            <remark>The use of Log4j is deprecated for the project, but can still be used instead of
+                LogBack if required.</remark>
+          </listitem>
+          <listitem>
+            <para>Groovy (for Groovy configuration file in LogBack)</para>
+          </listitem>
+        </itemizedlist></para>
       </listitem>
       
       <listitem>
@@ -115,17 +125,19 @@
           Eclipse by adding a &lt;concrete-aspect> tag to the xml file nested inside the
           &lt;aspects> tag. Following the template in the listing below, you need to:<itemizedlist>
             <listitem>
-              <para>create a valid dummy class name  for the 'name' attribute</para>
+              <para>Create a valid Java class name for the 'name' attribute.</para>
             </listitem>
             <listitem>
-              <para>create an AspectJ pointcut expression for the 'pointcut' element named
+              <para>Create an AspectJ pointcut expression for the 'pointcut' element named
                 'loggedParamOperations', if the object you want to capture is a parameter of a
-                method</para>
+                method. If a parameter is not required then insert an empty pointcut expression,
+                e.g. 'if(false)'.</para>
             </listitem>
             <listitem>
-              <para>create an AspectJ pointcut expression for the 'pointcut' element named
+              <para>Create an AspectJ pointcut expression for the 'pointcut' element named
                 'loggedReturnOperations', if the object you want to capture is a return value of a
-                method</para>
+                method. If a return value is not required then insert an empty pointcut expression,
+                e.g. 'if(false)'.</para>
             </listitem>
           </itemizedlist></para>
         <para>Fragment of <filename>'conf/META-INF/aop.xml'</filename>:</para>
@@ -153,6 +165,59 @@
 &lt;/aspectj></programlisting>
           <para>Have a look at the tutorial for an example.</para>
         </listitem>
+      <listitem>
+        <para>Configure the LogBack configuration file <filename>conf/logback.groovy</filename>.
+          There is a choice whether to have every logged object intercepted by the AspectJ pointcuts
+          logged to separate files, or to have all the logging sent to one file.</para>
+        <para>In order to have the logging of each intercepted object sent to separate files, which
+          is the default, configure the logger 'au.com.dw.testdatacapturej-trace' to use the 'SIFT'
+          appender. Then configure the location that you want in the sift appender.</para>
+        <programlisting>.
+.
+.      
+appender("SIFT", GSiftingAppender) {
+  discriminator(MDCBasedDiscriminator) {
+    key="traceClass"
+    defaultValue = "unknownValue"
+  }
+  sift {
+    appender("FILE-${traceClass}", FileAppender) {
+      file = "<emphasis role="bold"><emphasis role="italic">[Insert logging location]</emphasis></emphasis>/${traceClass}.java"
+      encoder(PatternLayoutEncoder) {
+        pattern = "// Generated %d%n%m%n"
+      }
+    }
+  }
+}
+.
+.
+.
+logger("au.com.dw.testdatacapturej-trace", INFO, ["SIFT"], false)
+.
+.
+.</programlisting>
+        <para>If you want all the test data logging to go to a single file, then configure the
+          logger 'au.com.dw.testdatacapturej-trace' to use the 'FILE' appender instead. Then
+          configure the location and log file name you want in the file appender.</para>
+        <programlisting>.
+.
+.      
+appender("FILE", FileAppender) {
+  file = "<emphasis role="bold"><emphasis role="italic">[Insert logging location and file name]</emphasis></emphasis>"
+  encoder(PatternLayoutEncoder) {
+    pattern = "// Generated %d%n%m%n"
+  }
+}
+.
+.
+.
+logger("au.com.dw.testdatacapturej-trace", INFO, ["FILE"], false)
+.
+.
+.</programlisting>
+        <remark>Note that LogBack Groovy cofiguration file may be setup for a particular app server
+          (i.e. Tomcat) and may need further configuration is another server is being used.</remark>
+      </listitem>
 
         <listitem>
           <para>Configure the file <filename>conf/log4j.xml</filename> to set the name and location
@@ -243,59 +308,30 @@
         </listitem>
   </itemizedlist>
     <section>
-      <title>Setup for Tomcat 6.x</title>
-      <para>Note: {TOMCAT_HOME} refers to the location where you have installed Tomcat.<itemizedlist>
-          <listitem>
-            <para>Copy the <filename>conf/log4j.xml</filename>  file and the log4j-xxx.jar file to
-              {TOMCAT_HOME}/lib, since we require Log4J to do the actual logging of the captured
-              test data.</para>
-          </listitem>
-          <listitem>
-            <para>Copy the AspectJ runtime jars needed for load time weaving to {TOMCAT_HOME}/lib.
-              These are aspectjrt.jar and aspectjweaver.jar.<inlinemediaobject>
-                <imageobject>
-                  <imagedata fileref="images/tomcat-lib.jpg"/>
-                </imageobject>
-              </inlinemediaobject></para>
-          </listitem>
-          <listitem>
-            <para>Create a shared library directory in Tomcat at {TOMCAT_HOME}/shared/lib.</para>
-          </listitem>
-          <listitem>
-            <para>Copy the dependency jars to the shared library directory at
-              {TOMCAT_HOME}/shared/lib. These are:<itemizedlist>
-                <listitem>
-                  <para>commons-collections-xxx.jar</para>
-                </listitem>
-                <listitem>
-                  <para>commons-configuration-xxx.jar</para>
-                </listitem>
-                <listitem>
-                  <para>commons-lang-xxx.jar</para>
-                </listitem>
-                <listitem>
-                  <para>commons-logging.jar</para>
-                </listitem>
-              </itemizedlist></para>
-          </listitem>
-          <listitem>
-            <para>Copy the capture jar that you have generated to {TOMCAT_HOME}/shared/lib.
-                <remark>Hint: you can just export the jar directly to this location when you
-                generate it without having to do this step.<inlinemediaobject>
+      <title>Setup for Tomcat 6.x, 7.x</title>
+      <remark>Note: {TOMCAT_HOME} in this documentation refers to the location where you have
+        installed Tomcat, and is NOT an environmental variable.</remark>
+      <section>
+        <title> AspectJ runtimes</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <para>Copy the AspectJ runtime jars needed for load time weaving to {TOMCAT_HOME}/lib.
+                These are aspectjrt.jar and aspectjweaver.jar.<inlinemediaobject>
                   <imageobject>
-                    <imagedata fileref="images/tomcat-shared-lib.jpg"/>
+                    <imagedata fileref="images/tomcat-lib.jpg"/>
                   </imageobject>
-                </inlinemediaobject></remark></para>
-          </listitem>
-          <listitem>
-            <para>Make the changes to catalina.bat in {TOMCAT_HOME}/bin so that the AspectJ
-              load-time weaving will be done. </para>
-            <para>
-              <remark>Hint: It is a good idea to make a backup of catalina.bat in your Tomcat
-                installation before making changes to it.</remark>
-            </para>
-            <para>Fragment of <filename>'bin/catalina.bat'</filename> :</para>
-            <programlisting>.
+                </inlinemediaobject></para>
+            </listitem>
+            <listitem>
+              <para>Make the changes to catalina.bat in {TOMCAT_HOME}/bin so that the AspectJ
+                load-time weaving will be done. </para>
+              <para>
+                <remark>Hint: It is a good idea to make a backup of catalina.bat in your Tomcat
+                  installation before making changes to it.</remark>
+              </para>
+              <para>Fragment of <filename>'bin/catalina.bat'</filename> :</para>
+              <programlisting>.
 .
 .
 set ASPECTJ_WEAVING=-javaagent:%CATALINA_BASE%\lib\aspectjweaver.jar -Xmx1024m
@@ -303,24 +339,225 @@ set JAVA_OPTS=%JAVA_OPTS% %ASPECTJ_WEAVING%
 .
 .
 .</programlisting>
-            <para>The changes involve adding the ASPECTJ_WEAVING variable to the file, and then
-              adding that variable to be included in the JAVA_OPTS variable. There is a section in
-                <filename>'bin/catalina.bat'</filename> where the JAVA_OPTS variable is set, so a
-              good place to add our changes is at the end of this section. Note that the
-              ASPECTJ_WEAVING variable must point to the location where you have copied
-              aspectjweaver.jar to your Tomcat installation.</para>
-            <para>An example of an edited file can be found in the TestGen project at
-                <filename>tutorial/tomcat/bin/catalina.bat</filename>, n. Note this this example
-              file is from an installation of Tomcat 6.0.26, so may vary slightly from your copy of
-              catalina.bat if you have installed a different version of Tomcat.</para>
+              <para>The changes involve adding the ASPECTJ_WEAVING variable to the file, and then
+                adding that variable to be included in the JAVA_OPTS variable. There is a section in
+                  <filename>'bin/catalina.bat'</filename> where the JAVA_OPTS variable is set, so a
+                good place to add our changes is at the end of this section. Note that the
+                ASPECTJ_WEAVING variable must point to the location where you have copied
+                aspectjweaver.jar to your Tomcat installation.</para>
+              <para>An example of an edited file can be found in the TestGen project at
+                  <filename>tutorial/tomcat/bin/catalina.bat</filename>, n. Note this this example
+                file is from an installation of Tomcat 6.0.26, so may vary slightly from your copy
+                of catalina.bat if you have installed a different version of Tomcat.</para>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      
+      <section>
+        <title>Dependency files</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <para>The dependency jars need to be in the classpath of the application that you are
+                testing. There are several ways of doing this in Tomcat:<itemizedlist>
+                  <listitem>
+                    <para>When a web application in war file format is first run in the
+                      {TOMCAT_HOME}/webapps directory, it will be expanded into a new directory.
+                      Underneath this web application directory, jar files can be copied to the
+                      'WEB-INF/lib' directory.</para>
+                  </listitem>
+                  <listitem>
+                    <para>If you do not want to alter the structure of the web application to be
+                      tested, you can setup a shared library in Tomcat, for example create a new
+                      directory at {TOMCAT_HOME}/shared/lib and configure it to be used as a shared
+                      library directory. Note however this means the jar files there will be shared
+                      by the other web applications as well.</para>
+                    <remark>See the Tomcat documentation about setting up shared library directories.</remark>
+                  </listitem>
+                </itemizedlist></para>
+            </listitem>
+            <listitem>
+              <para>Copy the dependency jars to the location to be included in the web application
+                classpath. These are:<itemizedlist>
+                  <listitem>
+                    <para>commons-collections-xxx.jar</para>
+                  </listitem>
+                  <listitem>
+                    <para>commons-configuration-xxx.jar</para>
+                  </listitem>
+                  <listitem>
+                    <para>commons-lang-xxx.jar</para>
+                  </listitem>
+                  <listitem>
+                    <para>commons-logging.jar</para>
+                  </listitem>
+                </itemizedlist></para>
+            </listitem>
+            <listitem>
+              <para>Copy the capture jar that you have generated to the location to be included in
+                the web application classpath. <remark>Hint: you can just export the jar directly to
+                  this location when you generate it without having to do this step.<inlinemediaobject>
+                    <imageobject>
+                      <imagedata fileref="images/tomcat-shared-lib.jpg"/>
+                    </imageobject>
+                  </inlinemediaobject></remark></para>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+
+      <section>
+        <title>Logging framework</title>
+        <para>The TestDataCaptureJ project currently uses LogBack as the logging framework to do the
+          actual logging of the captured test data. The advantage of using LogBack is that it has a
+          sift appender that allows each test data object to be logged to a separate file.</para>
+        <itemizedlist>
+          <listitem>
+            <para>Copy the LogBack jars to the location to be included in the web application
+              classpath (where the dependency jars were copied to). These are:<itemizedlist>
+                <listitem>
+                  <para>logback-core-xxx.jar</para>
+                </listitem>
+                <listitem>
+                  <para>logback-classic-xxx.jar</para>
+                </listitem>
+                <listitem>
+                  <para>slf4j-api-xxx.jar</para>
+                </listitem>
+                <listitem>
+                  <para>groovy-all-xxx.jar</para>
+                  <remark>Note that the Groovy jar is only required because the the LogBack
+                    configuration is in Groovy format. If you decide to use the LogBack xml format
+                    instead then the Groovy jar is no longer needed.</remark>
+                </listitem>
+              </itemizedlist></para>
           </listitem>
-        </itemizedlist></para>
+        </itemizedlist>
+      </section>
+      
     </section>
+
     <section>
       <title>Setup for JBoss 4.x</title>
       <para>TODO</para>
     </section>
 
+    <section>
+      <title>Using Log4J as the Logging Framework (deprecated)</title>
+      <para>Although TestDataCaptureJ uses LogBack as the logging framework, , it is still possible
+        to use Log4J instead, although that is deprecated for this project so that it will not be
+        used in future development. Should you want to use Log4J instead of LogBack, then make the
+        following changes. Note however this means all the generated logging will go to a single
+        file.</para>
+      <para>Changes to the TestDataCaptureJ project in Eclipse : <itemizedlist>
+          <listitem>
+            <para>Copy the file <filename>tutorial/deprecated/log4j.xml</filename> to the 'conf'
+              directory.</para>
+          </listitem>
+          <listitem>
+            <para>Copy the file <filename>tutorial/deprecated/log4j-xxx.jar</filename> to the 'lib'
+              directory.</para>
+          </listitem>
+          <listitem>
+            <para>In the library page of the build path configuration, remove the LogBack jars and
+              add the <filename>lib/log4j-xxx.jar</filename> instead.</para>
+          </listitem>
+          <listitem>
+            <para>Optionally delete the LogBack jars from the 'lib' directory.</para>
+          </listitem>
+          <listitem>
+            <para>Optionally delete the LogBack configuration file from the 'conf' directory.</para>
+          </listitem>
+          <listitem>
+            <para>Configure the file <filename>conf/log4j.xml</filename> to set the name and
+              location of the generated log file that you want. This log file should contain the
+              test data you're after.</para>
+            <para>Fragment of <filename>'conf/log4j.xml'</filename>:</para>
+            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+&lt;!-- ===================================================================== -->
+&lt;!--                                                                       -->
+&lt;!--  Log4j Configuration                                                  -->
+&lt;!--                                                                       -->
+&lt;!-- ===================================================================== -->
+
+&lt;log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+.
+.
+.
+        
+    &lt;appender name="au.com.dw.testdatacapturej-file"
+		class="org.apache.log4j.FileAppender">
+		&lt;param name="file" value="<emphasis role="bold"><emphasis role="italic">[Insert logging location and file name]</emphasis></emphasis>" />
+		&lt;param name="threshold" value="info" />
+		&lt;param name="immediateFlush" value="true" />
+		&lt;param name="append" value="false" />
+		&lt;layout class="org.apache.log4j.PatternLayout">
+			&lt;param name="ConversionPattern" value="// Generated %d{ABSOLUTE} %n%m%n" />
+		&lt;/layout>
+	&lt;/appender>
+.
+.
+.</programlisting>
+            <para>The changes involve editing the &lt;appender> tag named
+              'au.com.dw.testdatacapturej-file'. Just change the value for the &lt;param> tag for
+              'file' to a valid path on your local machine.</para>
+            <para>For example, in the tutorial, it is setup for use with Tomcat to
+              '${catalina.home}/logs/TutorialTest.java' so that the generated file will appear in
+              the 'logs' directory in your Tomcat installation.</para>
+            <para>Fragment of <filename>'tutorial/deprecated/log4j.xml'</filename>:</para>
+            <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+&lt;!-- ===================================================================== -->
+&lt;!--                                                                       -->
+&lt;!--  Log4j Configuration                                                  -->
+&lt;!--                                                                       -->
+&lt;!-- ===================================================================== -->
+
+&lt;log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+.
+.
+.
+        
+    &lt;appender name="au.com.dw.testdatacapturej-file"
+		class="org.apache.log4j.FileAppender">
+		&lt;param name="file" value="${catalina.home}/logs/TutorialTest.java" />
+		&lt;param name="threshold" value="info" />
+		&lt;param name="immediateFlush" value="true" />
+		&lt;param name="append" value="false" />
+		&lt;layout class="org.apache.log4j.PatternLayout">
+			&lt;param name="ConversionPattern" value="// Generated %d{ABSOLUTE} %n%m%n" />
+		&lt;/layout>
+	&lt;/appender>
+.
+.
+.</programlisting>
+          </listitem>
+          <listitem>
+            <para>Export the TestDataCaptureJ project as before.</para>
+          </listitem>
+        </itemizedlist></para>
+      <para>Changes to the test web application:<itemizedlist>
+          <listitem>
+            <para>Copy the file 'log4j-xxx.jar' to the location to be included in the web
+              application classpath (where the dependency jars were copied to).</para>
+          </listitem>
+          <listitem>
+            <para>Alternatively if there is potential for conflict if the test web application is
+              already using Log4J, then it is possible to copy the
+                <filename>conf/log4j.xml</filename> file and the log4j-xxx.jar file to
+              {TOMCAT_HOME}/lib instead.<inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="images/tomcat-lib.jpg"/>
+                </imageobject>
+              </inlinemediaobject></para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+    
     <section>
       <title>Next:</title>
       <para><link xlink:href="run.html">Running the application</link></para>

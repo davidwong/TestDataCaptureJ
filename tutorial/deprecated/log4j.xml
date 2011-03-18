@@ -21,7 +21,7 @@
 
     <appender name="au.com.dw.testdatacapturej-file"
 		class="org.apache.log4j.FileAppender">
-		<param name="file" value="${catalina.home}/logs/Test.java" />
+		<param name="file" value="${catalina.home}/logs/TutorialTest.java" />
 		<param name="threshold" value="info" />
 		<param name="immediateFlush" value="true" />
 		<param name="append" value="false" />

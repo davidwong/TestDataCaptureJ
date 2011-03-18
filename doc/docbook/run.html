@@ -4,8 +4,7 @@
           errors. There should also be some extra logging to indicate that the AspectJ load time
           weaving has occurred.</p></li><li class="listitem"><p>Run the test application past the point at which you want to capture the test data. This means that the
       code at which you setup the AspectJ pointcut in aop.xml should have run.</p></li><li class="listitem"><p>Check the location that you configured in log4j.xml to see that the log file you configured was created
-      and contains some content. The content should be some java code with methods creating java objects.</p><pre class="programlisting">// Generated 12:52:08,031 
-// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomer
+      and contains some content. The content should be some java code with methods creating java objects.</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomer:Parameter1
 public mock.explanation.Customer createParam1Customer_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomer() {
 
 mock.explanation.Customer customer0 = new mock.explanation.Customer();

@@ -124,7 +124,7 @@ public class Customer {
     <para>The TestDataCaptureJ tool should generate the following log if the Customer object
       containing some data was intercepted.</para>
     
-    <programlisting>// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomer
+    <programlisting>// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomer:Parameter1
 public au.com.dw.testdatacapturej.mock.explanation.Customer createParam1Customer_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomer() {
 
 au.com.dw.testdatacapturej.mock.explanation.Customer customer0 = new au.com.dw.testdatacapturej.mock.explanation.Customer();
@@ -134,7 +134,7 @@ customer0.setSurName("Smith");
 return customer0;
 }</programlisting>
     <para>We can examine the logging to see what the TestDataCaptureJ tool has generated for this
-      class (I've just manually added some line numbers to the logging): <programlisting>1. // au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomer
+      class (I've just manually added some line numbers to the logging): <programlisting>1. // au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomer:Parameter1
 2. public au.com.dw.testdatacapturej.mock.explanation.Customer createParam1Customer_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomer() {
 
 3. au.com.dw.testdatacapturej.mock.explanation.Customer customer0 = new au.com.dw.testdatacapturej.mock.explanation.Customer();
@@ -436,7 +436,7 @@ public class CustomerAddressesInCollection {
     <para>The TestDataCaptureJ tool should generate the following log if the
       CustomerAddressesInCollection object containing some data was intercepted.</para>
     
-    <programlisting>// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInCollection
+    <programlisting>// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInCollection:Parameter1
 public au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInCollection createParam1CustomerAddressesInCollection_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomerAddressesInCollection() {
 
 au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInCollection customerAddressesInCollection0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInCollection();
@@ -455,7 +455,7 @@ customerAddressesInCollection0.setAddresses(arrayList0);
 return customerAddressesInCollection0;
 }</programlisting>
     <para>We can examine the logging to see what the TestDataCaptureJ tool has generated for this
-      class (I've just manually added some line numbers to the logging): <programlisting>1.  // au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInCollection
+      class (I've just manually added some line numbers to the logging): <programlisting>1.  // au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInCollection:Parameter1
 2.  public au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInCollection createParam1CustomerAddressesInCollection_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomerAddressesInCollection() {
 
 3.  au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInCollection customerAddressesInCollection0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInCollection();
@@ -545,7 +545,7 @@ return customerAddressesInCollection0;
 }</programlisting>
     <para>The TestDataCaptureJ tool should generate the following log if the
       CustomerAddressesInArray object containing some data was intercepted.</para>
-    <programlisting>// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInArray
+    <programlisting>// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInArray:Parameter1
 public au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInArray createParam1CustomerAddressesInArray_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomerAddressesInArray() {
 
 au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInArray customerAddressesInArray0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInArray();
@@ -569,7 +569,7 @@ customerAddressesInArray0.setAddresses(objectArray0);
 return customerAddressesInArray0;
 }</programlisting>
     <para>We can examine the logging to see what the TestDataCaptureJ tool has generated for this
-      class (I've just manually added some line numbers to the logging): <programlisting>1.  // au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInArray
+      class (I've just manually added some line numbers to the logging): <programlisting>1.  // au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInArray:Parameter1
 2.  public au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInArray createParam1CustomerAddressesInArray_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomerAddressesInArray() {
 
 3.  au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInArray customerAddressesInArray0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInArray();
@@ -659,7 +659,7 @@ return customerAddressesInArray0;
 }</programlisting>
     <para>The TestDataCaptureJ tool should generate the following log if the CustomerAddressesInMap
       object containing some data was intercepted.</para>
-    <programlisting>// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInMap
+    <programlisting>// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInMap:Parameter1
 public au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInMap createParam1CustomerAddressesInMap_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomerAddressesInMap() {
 
 au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInMap customerAddressesInMap0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInMap();
@@ -683,7 +683,7 @@ customerAddressesInMap0.setAddresses(hashMap0);
 return customerAddressesInMap0;
 }</programlisting>
     <para>We can examine the logging to see what the TestDataCaptureJ tool has generated for this
-      class (I've just manually added some line numbers to the logging): <programlisting>1.  // au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInMap
+      class (I've just manually added some line numbers to the logging): <programlisting>1.  // au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomerAddressesInMap:Parameter1
 2.  public au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInMap createParam1CustomerAddressesInMap_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomerAddressesInMap() {
 
 3.  au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInMap customerAddressesInMap0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerAddressesInMap();

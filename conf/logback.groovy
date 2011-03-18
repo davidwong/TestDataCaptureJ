@@ -10,7 +10,7 @@ import static ch.qos.logback.classic.Level.*
 // for debugging the logging
 statusListener(OnConsoleStatusListener)
 
-// add a status message regarding the log location root
+// add a status message regarding the log location root for Tomcat
 def CATALINA_HOME = System.getProperty("catalina.home")
 addInfo("CATALINA_HOME=${CATALINA_HOME}")
 

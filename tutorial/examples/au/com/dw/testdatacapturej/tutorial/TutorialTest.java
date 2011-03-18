@@ -12,11 +12,11 @@ public class TutorialTest {
 	@Test
 	public void testInitOrderCart()
 	{
-		// Create the object that contains the pasted generated code
-		CreateTestObject createTestObject = new CreateTestObject();
+		// Create the object that contains the pasted generated code for the Cart
+		CreateTestCart createTestCart = new CreateTestCart();
 		
 		// invoke the generated method
-		Cart cart = createTestObject.createParam2Cart_org_springframework_samples_jpetstore_domain_Order_initOrder();
+		Cart cart = createTestCart.createParam2Cart_org_springframework_samples_jpetstore_domain_Order_initOrder();
 		
 		// test the generated data
 		assertNotNull("cart exists", cart);
@@ -30,11 +30,11 @@ public class TutorialTest {
 	@Test
 	public void testInitOrderAccount()
 	{
-		// Create the object that contains the pasted generated code
-		CreateTestObject createTestObject = new CreateTestObject();
+		// Create the object that contains the pasted generated code for the Account
+		CreateTestAccount createTestAccount = new CreateTestAccount();
 		
 		// invoke the generated method
-		Account account = createTestObject.createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder();
+		Account account = createTestAccount.createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder();
 		
 		// test the generated data
 		assertNotNull("account exists", account);

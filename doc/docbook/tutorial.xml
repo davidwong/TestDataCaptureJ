@@ -126,7 +126,7 @@ Exported revision 17168.</programlisting>
 	&lt;concrete-aspect name="au.dom.dw.testdatacapturej.aspect.TestSpringPetStoreTrace"
                             extends="au.dom.dw.testdatacapturej.aspect.TraceAdaptor">
              &lt;pointcut name="loggedParamOperations" expression="execution(* org.springframework.samples.jpetstore.*.Order.initOrder(..))"/>
-             &lt;pointcut name="loggedReturnOperations" expression="execution(* dummy.noSuchMethod(..))"/>
+             &lt;pointcut name="loggedReturnOperations" expression="if(false)"/>
     &lt;/concrete-aspect>
     
 &lt;/aspects>
@@ -166,66 +166,96 @@ Exported revision 17168.</programlisting>
             <listitem>
               <para>The &lt;pointcut> tag for 'loggedReturnOperations' is not used since we want to
                 intercept a parameter in this tutorial rather than a return value. Since the tag
-                needs to be defined to make the aspect class concrete, just choose a dummy pointcut
-                expression that points to a method that doesn't exist.</para>
+                needs to be defined to make the aspect class concrete, just use an empty
+                pointcut.</para>
             </listitem>
           </itemizedlist></para>
         <para>An example of an edited file can be found in the TestDataCaptureJ project at
             <filename>tutorial/conf/META-INF/aop.xml</filename>.</para>
       </listitem>
       <listitem>
-        <para>Configure the <filename>conf/log4j.xml</filename> file for the name and location of
-          the generated file that we want.</para>
-        <para>Fragment of <filename>'conf/log4j.xml'</filename>:</para>
-        <programlisting>&lt;?xml version="1.0" encoding="UTF-8"?>
-&lt;!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-
-&lt;!-- ===================================================================== -->
-&lt;!--                                                                       -->
-&lt;!--  Log4j Configuration                                                  -->
-&lt;!--                                                                       -->
-&lt;!-- ===================================================================== -->
-
-&lt;log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+        <para>Configure the <filename>conf/logback.groovy</filename> file for the location (and
+          possibly the name) of the generated file(s) that we want. This configuration file is setup
+          with 2 appenders, the default is the 'SIFT' appender which allows each intercepted object
+          to be logged to a separate file. If instead you want all the logging to go to a single
+          file, then just configure the logger 'au.com.dw.testdatacapturej-trace' to use the 'FILE'
+          appender instead, i.e. 'logger("au.com.dw.testdatacapturej-trace", INFO, ["FILE"],
+          false)'.</para>
+        <para>The log file locations are also currently setup for use with Tomcat as the app server,
+          by using </para>
+        <para>Fragment of <filename>'conf/logback.groovy'</filename>:</para>
+        <programlisting>.
+.
+.
+appender("FILE", FileAppender) {
+  file = "${CATALINA_HOME}/logs/Test-${bySecond}.java"
+  encoder(PatternLayoutEncoder) {
+    pattern = "// Generated %d%n%m%n"
+  }
+}
 .
 .
 .
-        
-    &lt;appender name="au.com.dw.testdatacapturej-file"
-		class="org.apache.log4j.FileAppender">
-		&lt;param name="file" value="${catalina.home}/logs/TutorialTest1.java" />
-		&lt;param name="threshold" value="info" />
-		&lt;param name="immediateFlush" value="true" />
-		&lt;param name="append" value="false" />
-		&lt;layout class="org.apache.log4j.PatternLayout">
-			&lt;param name="ConversionPattern" value="// Generated %d{ABSOLUTE} %n%m%n" />
-		&lt;/layout>
-	&lt;/appender>
+appender("SIFT", GSiftingAppender) {
+  discriminator(MDCBasedDiscriminator) {
+    key="traceClass"
+    defaultValue = "unknownValue"
+  }
+  sift {
+    appender("FILE-${traceClass}", FileAppender) {
+      file = "${CATALINA_HOME}/logs/${traceClass}.java"
+      encoder(PatternLayoutEncoder) {
+        pattern = "// Generated %d%n%m%n"
+      }
+    }
+  }
+}
+.
+.
+.
+// logger for the code generation logging
+logger("au.com.dw.testdatacapturej-trace", INFO, ["SIFT"], false)
 .
 .
 .</programlisting>
-        <para>The changes involve editing the &lt;appender> tag named
-          'au.com.dw.testdatacapturej-file'. Just change the value for the &lt;param> tag for 'file'
-          to a valid path on your local machine. In this example it has been set to
-          '${catalina.home}/logs/TutorialTest.java' so that the generated file will appear in the
-          'logs' directory in your Tomcat installation.</para>
-        <para>An example of an edited file can be found in the TestDataCaptureJ project at
-            <filename>tutorial/conf/log4j.xml</filename>.</para>
-      </listitem>
-      <listitem>
-        <para>Copy the log4j.xml file and the log4j-xxx.jar file to {TOMCAT_HOME}/lib, since we
-          require Log4J to do the actual logging of the test data.</para>
+        <para>Changing the location for the log files generated by the 'SIFT' appender means editing
+          the 'file' variable to a valid path on your local machine, e.g. 'file = [Your
+          location]/${traceClass}.java'. In this example it has been set so that the generated files
+          will appear in the 'logs' directory in your Tomcat installation. Note that the
+          '${traceClass}' expression must be kept since it is used in the MDC (Mapped Diagnostic
+          Context) for the logging framework and will also contain the file name of the log file
+          which is generated in the code.</para>
+        <para>Changing the location and/or name of the log file generated by the 'FILE' appender'
+          also means editing the 'file' variable to a valid path and file name on your local
+          machine.</para>
       </listitem>
       <listitem>
         <para>Copy the AspectJ runtime jars needed for load time weaving to {TOMCAT_HOME}/lib. These
           are aspectjrt.jar and aspectjweaver.jar.</para>
       </listitem>
       <listitem>
-        <para>Create a shared library directory in Tomcat at {TOMCAT_HOME}/shared/lib.</para>
+        <para>Decide where to put the TestDataCaptureJ and dependency jar files so that they are
+          included in the classpath of the JPetStore web application,. Two possible choices are
+          directly into the web app or setting up a Tomcat shared library directory.<itemizedlist>
+            <listitem>
+              <para>When the JPetStore application war file was first run by Tomcat, it will have
+                been expanded into its own directory, e.g.  from 'jpetstore.war' Tomcat would create
+                the directory '{TOMCAT_HOME}/webapps/jpetstore'. Additional jar files could then be
+                copied to '{TOMCAT_HOME}/webapps/jpetstore/WEB-INF/lib' to be included in the
+                classpath of the web application when it is run.</para>
+            </listitem>
+            <listitem>
+              <para>You can also setup a shared library directory in Tomcat, e.g.
+                {TOMCAT_HOME}/shared/lib or whatever location under the Tomcat installation that you
+                want. Any jar files copied here would be shared by the Tomcat web
+                applications.</para>
+              <remark>See the Tomcat documentation on setting up shared libraries.</remark>
+            </listitem>
+          </itemizedlist></para>
       </listitem>
       <listitem>
-        <para>Copy the dependency jars to the shared library directory at {TOMCAT_HOME}/shared/lib.
-          These are:<itemizedlist>
+        <para>Copy the dependency jars to the location to be included in the web application
+          classpath. These are:<itemizedlist>
             <listitem>
               <para>commons-collections-xxx.jar</para>
             </listitem>
@@ -237,6 +267,23 @@ Exported revision 17168.</programlisting>
             </listitem>
             <listitem>
               <para>commons-logging.jar</para>
+            </listitem>
+          </itemizedlist></para>
+      </listitem>
+      <listitem>
+        <para>Copy the logging framework jars to the location to be included in the web application
+          classpath. These are:<itemizedlist>
+            <listitem>
+              <para>logback-core-xxx.jar</para>
+            </listitem>
+            <listitem>
+              <para>logback-classic-xxx.jar</para>
+            </listitem>
+            <listitem>
+              <para>slf4j-api-xxx.jar</para>
+            </listitem>
+            <listitem>
+              <para>groovy-all-xxx.jar</para>
             </listitem>
           </itemizedlist></para>
       </listitem>
@@ -295,7 +342,8 @@ collection.config.files=</programlisting>
             details of the custom configurations that are available.</remark>
         </listitem>
         <listitem>
-          <para>Export the project as a jar with AspectJ support to {TOMCAT_HOME}/shared/lib.</para>
+          <para>Export the project as a jar with AspectJ support to the location to be included in
+            the web application classpath.</para>
           <remark>See the <link xlink:href="setup.html">setup page</link> for details on doing this
             step.</remark>
         </listitem>
@@ -331,11 +379,42 @@ collection.config.files=</programlisting>
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Now check that the log file for the test data has been created and contains the java code
-      to re-create the Cart object.</para>
-    <para>This is a sample from <filename>'tutorial/logs/TutorialTest1.java'</filename> :</para>
-    <programlisting>// Generated 12:52:08,031 
-// org.springframework.samples.jpetstore.domain.Order.initOrder
+    <para>Now check that the log file(s) for the test data has been created, and contains the java
+      code to re-create the Cart object.</para>
+    <remark>It is assumed that the default 'SIFT' appender is being
+      used for the tutorial, if this has been changed then you need to check the log file location
+      and name that you are using instead.</remark>
+    <para>If we look at the source code for the pointcut that was configured in
+        <filename>'conf/META-INF/aop.xml'</filename>, it is the parameters for the 'initOrder()'
+      method of the 'org.springframework.samples.jpetstore.domain.Order' class (&lt;pointcut
+      name="loggedParamOperations" expression="execution(*
+      org.springframework.samples.jpetstore.*.Order.initOrder(..))"/>). This method has 2
+      parameters, the Account and the Cart objects.</para>
+    <para>Excerpt from
+        <filename>'org/springframework/samples/jpetstore/domain/Order.java'</filename> :</para>
+    <programlisting>package org.springframework.samples.jpetstore.domain;
+.
+.
+.
+public class Order implements Serializable {
+.
+.
+.
+  /* Public Methods */
+
+  public void initOrder(Account account, Cart cart) {
+.
+.
+.</programlisting>
+    <para>As you can see, the generated log contains code for 2 methods that re-create objects of
+      the class 'org.springframework.samples.jpetstore.domain.Account' and
+      'org.springframework.samples.jpetstore.domain.Cart', as these were the parameter types for the
+      'initOrder()' method for the pointcut that was intercepted.</para>
+    <para>This is a sample from
+        <filename>'tutorial/logs/org.springframework.samples.jpetstore.domain.Order.initOrder-Parameter1-org.springframework.samples.jpetstore.domain.Account-20110314T174942.java'</filename>
+      :</para>
+    <programlisting>// Generated 2011-03-14 17:49:42,390
+// org.springframework.samples.jpetstore.domain.Order.initOrder:Parameter1
 public org.springframework.samples.jpetstore.domain.Account createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder() {
 
 org.springframework.samples.jpetstore.domain.Account account0 = new org.springframework.samples.jpetstore.domain.Account();
@@ -359,32 +438,21 @@ account0.setBannerOption(true);
 account0.setBannerName("&lt;image src=\"../images/banner_dogs.gif\">");
 
 return account0;
-}
-
+}</programlisting>
+    <para>This is a sample from
+        <filename>'tutorial/logs/org.springframework.samples.jpetstore.domain.Order.initOrder-Parameter2-org.springframework.samples.jpetstore.domain.Cart-20110314T174942.java'</filename>
+      :</para>
+    <programlisting>// Generated 2011-03-14 17:49:42,406
+// org.springframework.samples.jpetstore.domain.Order.initOrder:Parameter2
 public org.springframework.samples.jpetstore.domain.Cart createParam2Cart_org_springframework_samples_jpetstore_domain_Order_initOrder() {
 
 org.springframework.samples.jpetstore.domain.Cart cart0 = new org.springframework.samples.jpetstore.domain.Cart();
 .
 .
-.</programlisting>
-    <para>As you can see, the generated log contains code for 2 methods that create objects of the
-      class 'org.springframework.samples.jpetstore.domain.Account' and
-      'org.springframework.samples.jpetstore.domain.Cart', as these were the parameter types for the
-      'initOrder()' method for the Joinpoint that was intercepted.</para>
-    <programlisting>package org.springframework.samples.jpetstore.domain;
 .
-.
-.
-public class Order implements Serializable {
-.
-.
-.
-  /* Public Methods */
 
-  public void initOrder(Account account, Cart cart) {
-.
-.
-.</programlisting>
+return cart0;
+}</programlisting>
     <para>Now we can try out the code that we have generated to check that it has captured the data
       we want to test, and that we can run unit tests against that data. This involves writing some
       classes that will incorporate the generated log and some unit tests to test the objects
@@ -418,59 +486,55 @@ public class Order implements Serializable {
           <para>Create a class file, containing an empty class, under the test directory. Let's name
             the class 'CreateTestObject'.</para>
           <para>As an example see
-              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Empty.java'</filename>
+              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestCart_Empty.java'</filename>
             :</para>
           <programlisting>package au.com.dw.testdatacapturej.tutorial;
 
-public class CreateTestObject {
+public class CreateTestCart {
+	
+	// copy and paste generated method here
 	
 }</programlisting>
         </listitem>
         <listitem>
-          <para>Copy and paste the contents of the log file, containing the generated code, into the
-            empty class - this is the class that will (eventually) be used to create the test
-            object. For the tutorial we are copying the contents of 'TutorialTest1.java' into the
-            empty class.</para>
+          <para>Copy and paste the contents of the log file, containing the generated code for the
+            Cart object, into the empty class - this is the class that will (eventually) be used to
+            create the test object. For the tutorial we are copying the contents of the log file
+            containing the generated code for re-creating the Cart object, e.g.
+            'org.springframework.samples.jpetstore.domain.Order.initOrder-Parameter2-org.springframework.samples.jpetstore.domain.Cart-xxx.java',into
+            the empty class.</para>
           <para>As an example see
-              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Step1.java'</filename>
+              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestCart_Step1.java'</filename>
             :</para>
           <programlisting>package au.com.dw.testdatacapturej.tutorial;
 
-public class CreateTestObject {
+public class CreateTestCart {
 	
-// Generated 18:09:20,250 
-// org.springframework.samples.jpetstore.domain.Order.initOrder
-public org.springframework.samples.jpetstore.domain.Account createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder() {
-
-org.springframework.samples.jpetstore.domain.Account account0 = new org.springframework.samples.jpetstore.domain.Account();
-account0.setUsername("j2ee");
-account0.setPassword(null);
-account0.setEmail("yourname@yourdomain.com");
-account0.setFirstName("ABC");
-account0.setLastName("XYX");
-account0.setStatus("OK");
-account0.setAddress1("901 San Antonio Road");
-account0.setAddress2("MS UCUP02-206");
-account0.setCity("Palo Alto");
-account0.setState("CA");
-account0.setZip("94303");
-account0.setCountry("USA");
-account0.setPhone("555-555-5555");
-account0.setFavouriteCategoryId("DOGS");
-account0.setLanguagePreference("english");
-account0.setListOption(true);
-account0.setBannerOption(true);
-account0.setBannerName("&lt;image src=\"../images/banner_dogs.gif\">");
-
-return account0;
-}
-
 public org.springframework.samples.jpetstore.domain.Cart createParam2Cart_org_springframework_samples_jpetstore_domain_Order_initOrder() {
 
 org.springframework.samples.jpetstore.domain.Cart cart0 = new org.springframework.samples.jpetstore.domain.Cart();
+
+java.util.Collections$SynchronizedMap collections$SynchronizedMap0 = new java.util.Collections$SynchronizedMap();
+// Default constructor for java.util.Collections$SynchronizedMap does not exist.
+
+org.springframework.samples.jpetstore.domain.CartItem cartItem1 = new org.springframework.samples.jpetstore.domain.CartItem();
+
+org.springframework.samples.jpetstore.domain.Item item2 = new org.springframework.samples.jpetstore.domain.Item();
+item2.setItemId("EST-14");
+item2.setProductId("FL-DSH-01");
+item2.setListPrice(58.5d);
 .
 .
-.</programlisting>
+.
+pagedListHolder4.setPage(0);
+pagedListHolder4.setNewPageSet(false);
+pagedListHolder4.setMaxLinkedPages(10);
+cart0.setItemList(pagedListHolder4);
+
+return cart0;
+}
+
+}</programlisting>
         </listitem>
         <listitem>
           <para>When Eclipse tries to build the code for the class file (or if you have autobuild
@@ -546,7 +610,7 @@ return cart0;
 }</programlisting>
         </listitem>
         <listitem>
-          <para>Since the 'CreateTestObject' class won't compile, for this tutorial make some manual
+          <para>Since the 'CreateTestCart' class won't compile, for this tutorial make some manual
             edits to it so that it will compile. This involves commenting out some of the lines that
             are causing errors and inserting a line to create the field
             'collections$SynchronizedMap0' based on the Cart class source (TestDataCaptureJ cannot
@@ -554,7 +618,7 @@ return cart0;
             'java.util.Collections' wrapper methods).</para>
           <programlisting>package au.com.dw.testdatacapturej.tutorial;
 
-public class CreateTestObject {
+public class CreateTestCart {
 .
 .
 .
@@ -588,12 +652,12 @@ java.util.Map collections$SynchronizedMap0 = java.util.Collections.synchronizedM
 }
 </programlisting>
           <para>As an example see
-              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Step1_Edited.java'</filename>
+              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestCart_Step1_Edited.java'</filename>
             :</para>
         </listitem>
         <listitem>
-          <para>Create a unit test case that uses the dummy class to test the data that was
-            generated.</para>
+          <para>Create a unit test case that uses the 'CreateTestCart' class to test the data that
+            was generated.</para>
           <para>As an example see
               <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/TutorialTest.java'</filename>
             :</para>
@@ -605,11 +669,11 @@ public class TutorialTest {
 	@Test
 	public void testInitOrderCart()
 	{
-		// Create the object that contains the pasted generated code
-		CreateTestObject createTestObject = new CreateTestObject();
+		// Create the object that contains the pasted generated code for the Cart
+		CreateTestCart createTestCart = new CreateTestCart();
 		
 		// invoke the generated method
-		Cart cart = createTestObject.createParam2Cart_org_springframework_samples_jpetstore_domain_Order_initOrder();
+		Cart cart = createTestCart.createParam2Cart_org_springframework_samples_jpetstore_domain_Order_initOrder();
 		
 		// test the generated data
 		assertNotNull("cart exists", cart);
@@ -678,10 +742,10 @@ collection.config.files=</programlisting>
             explanation of customization for constructors and setter methods..</remark>
         </listitem>
         <listitem>
-          <para>Export the TestDataCaptureJ project as a jar with AspectJ support to
-            {TOMCAT_HOME}/shared/lib, over-writing the jar exported before from the previous run (or
-            if you export with a different file name for the jar, then the jar from the previous run
-            will have to be deleted)</para>
+          <para>Export the TestDataCaptureJ project as a jar with AspectJ support to the location to
+            be included in the web application classpath, over-writing the jar exported before from
+            the previous run (or if you export with a different file name for the jar, then the jar
+            from the previous run will have to be deleted)</para>
         </listitem>
         <listitem>
           <para>Start the Tomcat server.</para>
@@ -691,54 +755,13 @@ collection.config.files=</programlisting>
             process. Check that the generated code has been created in the log file.</para>
         </listitem>
         <listitem>
-          <para>As before, either create another empty class file for 'CreateTestObject' and paste
-            the contents of the new log file, containing the generated code into it OR just paste
-            over the generated log in the 'CreateTestObject' class from the previous tutorial
-            run.</para>
-        </listitem>
-        <listitem>
-          <para>For the tutorial, as an example look at 'TutorialTest2.java', your log should look
-            similar to this.</para>
+          <para>As before, either create another empty class file for 'CreateTestCart' and paste the
+            contents of the new log file, containing the generated code for the Cart object into it
+            OR just paste over the generated log in the 'CreateTestCart' class from the previous
+            tutorial run.</para>
           <para>As an example see
-              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Step2.java'</filename>
-            :</para>
-          <programlisting>package au.com.dw.testdatacapturej.tutorial;
-
-public class CreateTestObject {
-	
-	// Generated 12:55:46,937 
-	// org.springframework.samples.jpetstore.domain.Order.initOrder
-	public org.springframework.samples.jpetstore.domain.Account createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder() {
-
-	org.springframework.samples.jpetstore.domain.Account account0 = new org.springframework.samples.jpetstore.domain.Account();
-	account0.setUsername("j2ee");
-	account0.setPassword(null);
-	account0.setEmail("yourname@yourdomain.com");
-	account0.setFirstName("ABC");
-	account0.setLastName("XYX");
-	account0.setStatus("OK");
-	account0.setAddress1("901 San Antonio Road");
-	account0.setAddress2("MS UCUP02-206");
-	account0.setCity("Palo Alto");
-	account0.setState("CA");
-	account0.setZip("94303");
-	account0.setCountry("USA");
-	account0.setPhone("555-555-5555");
-	account0.setFavouriteCategoryId("DOGS");
-	account0.setLanguagePreference("english");
-	account0.setListOption(true);
-	account0.setBannerOption(true);
-	account0.setBannerName("&lt;image src=\"../images/banner_dogs.gif\">");
-
-	return account0;
-	}
-
-	public org.springframework.samples.jpetstore.domain.Cart createParam2Cart_org_springframework_samples_jpetstore_domain_Order_initOrder() {
-
-	org.springframework.samples.jpetstore.domain.Cart cart0 = new org.springframework.samples.jpetstore.domain.Cart();
-.
-.
-.</programlisting>
+              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestCart_Step2.java'</filename>
+            .</para>
         </listitem>
         <listitem>
           <para>Once again this file will not compile properly due to errors that we found in the
@@ -805,11 +828,11 @@ date8.setCdate(null);
         </listitem>
         <listitem>
           <para>Of course while we've fixed one of the errors, the other errors will still stop the
-            'CreateTestObject' class from compiling. If you like you can do another manual edit of
-            the 'CreateTestObject' class to make it compile and then re-run the test case again.
-            Once again the test should fail when run.</para>
+            'CreateTestCart' class from compiling. If you like you can do another manual edit of the
+            'CreateTestCart' class to make it compile and then re-run the test case again. Once
+            again the test should fail when run.</para>
           <para>As an example see
-              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestObject_Step2_Edited.java'</filename>
+              <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestCart_Step2_Edited.java'</filename>
             .</para>
         </listitem>
         <listitem>
@@ -893,9 +916,10 @@ collection.config.files=</programlisting>
             for the generated logs.</para>
         </listitem>
         <listitem>
-          <para>Export the TestDataCaptureJ project as a jar with AspectJ support to
-            {TOMCAT_HOME}/shared/lib. Once again if you are not over-writing the jar exported from
-            the previous run, then the jar from the previous run will have to be deleted.</para>
+          <para>Export the TestDataCaptureJ project as a jar with AspectJ support to the location to
+            be included in the web application classpath. Once again if you are not over-writing the
+            jar exported from the previous run, then the jar from the previous run will have to be
+            deleted.</para>
         </listitem>
         <listitem>
           <para>Start the Tomcat server.</para>
@@ -905,10 +929,10 @@ collection.config.files=</programlisting>
             process. Check that the generated code has been created in the log file.</para>
         </listitem>
         <listitem>
-          <para>As before, either create another empty class file for 'CreateTestObject' and paste
-            the contents of the new log file, containing the generated code into it OR just paste
-            over the generated log in the 'CreateTestObject' class from the previous tutorial
-            run.</para>
+          <para>As before, either create another empty class file for 'CreateTestCart' and paste the
+            contents of the new log file, containing the generated code for the Cart object into it
+            OR just paste over the generated log in the 'CreateTestCart' class from the previous
+            tutorial run.</para>
         </listitem>
         <listitem>
           <para>For the tutorial, as an example look at 'TutorialTest3.java', your log should look
@@ -1046,6 +1070,41 @@ public class Cart implements Serializable {
         wanted to test the 'org.springframework.samples.jpetstore.domain.Account' class instead of
         the 'org.springframework.samples.jpetstore.domain.Cart' class, then we could have used the
         generated code without alteration.</para>
+      <para>This would be done by copying the log file for the Account object into an empty class
+        named 'CreateTestAccount' and then creating a unit test case to test the generated data for
+        an account.</para>
+      <para>Source code from
+          <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/CreateTestAccount.java'</filename>:</para>
+      <programlisting>package au.com.dw.testdatacapturej.tutorial;
+
+public class CreateTestAccount {
+	
+	public org.springframework.samples.jpetstore.domain.Account createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder() {
+
+	org.springframework.samples.jpetstore.domain.Account account0 = new org.springframework.samples.jpetstore.domain.Account();
+	account0.setUsername("j2ee");
+	account0.setPassword(null);
+	account0.setEmail("yourname@yourdomain.com");
+	account0.setFirstName("ABC");
+	account0.setLastName("XYX");
+	account0.setStatus("OK");
+	account0.setAddress1("901 San Antonio Road");
+	account0.setAddress2("MS UCUP02-206");
+	account0.setCity("Palo Alto");
+	account0.setState("CA");
+	account0.setZip("94303");
+	account0.setCountry("USA");
+	account0.setPhone("555-555-5555");
+	account0.setFavouriteCategoryId("DOGS");
+	account0.setLanguagePreference("english");
+	account0.setListOption(true);
+	account0.setBannerOption(true);
+	account0.setBannerName("&lt;image src=\"../images/banner_dogs.gif\">");
+
+	return account0;
+	}
+
+}</programlisting>
       <para>Example test case from
           <filename>'tutorial/sample/au/com/dw/testdatacapturej/tutorial/TutorialTest.java'</filename>:</para>
       <programlisting>.

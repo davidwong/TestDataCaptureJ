@@ -22,8 +22,8 @@
 		<para>The purpose of this tool is to capture test data for unit testing in Java applications. It does this by intercepting method calls
 			in the application and logging the contents of objects that you want to use for unit testing. The format of the logged data is in a format
 			that can be readily used as test input for tests in JUnit or TestNG, for example.</para>
-		<programlisting>// Generated 12:52:08,031 
-// org.springframework.samples.jpetstore.domain.Order.initOrder
+		<programlisting>// Generated 2011-03-14 17:49:42,390
+// org.springframework.samples.jpetstore.domain.Order.initOrder:Parameter1
 public org.springframework.samples.jpetstore.domain.Account createParam1Account_org_springframework_samples_jpetstore_domain_Order_initOrder() {
 
 org.springframework.samples.jpetstore.domain.Account account0 = new org.springframework.samples.jpetstore.domain.Account();

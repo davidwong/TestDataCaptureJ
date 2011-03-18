@@ -22,8 +22,7 @@
       <para>Check the location that you configured in log4j.xml to see that the log file you configured was created
       and contains some content. The content should be some java code with methods creating java objects.</para>
       
-      <programlisting>// Generated 12:52:08,031 
-// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomer
+      <programlisting>// au.com.dw.testdatacapturej.explanation.ExplanationTest.joinPointParamForCustomer:Parameter1
 public mock.explanation.Customer createParam1Customer_au_com_dw_testdatacapturej_explanation_ExplanationTest_joinPointParamForCustomer() {
 
 mock.explanation.Customer customer0 = new mock.explanation.Customer();

@@ -58,7 +58,7 @@ public class CustomerMultipleConstructors {
       that it uses the no-argument constructor and the setter method for the fields. This is what
       the logging would look like if the configuration file
         <code class="filename">'conf/test-constructor-config.xml'</code> is not used (i.e. this is the
-      default code generated).</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerMultipleConstructors
+      default code generated).</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerMultipleConstructors:Parameter1
 public au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors createParam1CustomerMultipleConstructors_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerMultipleConstructors() {
 
 au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors customerMultipleConstructors0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors();
@@ -67,8 +67,8 @@ customerMultipleConstructors0.setSurName("Smith");
 
 return customerMultipleConstructors0;
 }</pre><p>However with the custom configuration in
-        <code class="filename">'conf/test-constructor-config.xml'</code> included,  we would generate code
-      that uses the other constructor that initializes the fields instead.</p><pre class="programlisting">1. // au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerMultipleConstructors
+        <code class="filename">'conf/test-constructor-config.xml'</code> included, we would generate code
+      that uses the other constructor that initializes the fields instead.</p><pre class="programlisting">1. // au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerMultipleConstructors:Parameter1
 2. public au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors createParam1CustomerMultipleConstructors_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerMultipleConstructors() {
 
 3. au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors customerMultipleConstructors0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerMultipleConstructors("John", "Smith");
@@ -160,7 +160,7 @@ public class CustomerImmutable {
 			
 &lt;/constructor-config&gt;</pre><p>If the custom configuration was not used, then the following code would be generated in the
       logging. Of course this code would not compile because the 'CustomerImmutable' class doesn't
-      have the setters 'setFirstName(..)' and 'setSurName(..)'.</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerImmutable
+      have the setters 'setFirstName(..)' and 'setSurName(..)'.</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerImmutable:Parameter1
 public au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable createParam1CustomerImmutable_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerImmutable() {
 
 au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable customerImmutable0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable();
@@ -170,7 +170,7 @@ customerImmutable0.setSurName("Jones");
 
 return customerImmutable0;
 }</pre><p>However with the custom configuration included, the correct code is generated setting the
-      value of the fields in the constructor.</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerImmutable
+      value of the fields in the constructor.</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerImmutable:Parameter1
 public au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable createParam1CustomerImmutable_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerImmutable() {
 
 au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable customerImmutable0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerImmutable("Mary", "Jones");
@@ -239,7 +239,7 @@ return customerImmutable0;
 setter.config.files=setter-config.xml, test-setter-config.xml
 .
 .
-.</pre><p>The generated log will not have a 'setFullName(..)' method:</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerFullName
+.</pre><p>The generated log will not have a 'setFullName(..)' method:</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerFullName:Parameter1
 public au.com.dw.testdatacapturej.mock.explanation.CustomerFullName createParam1CustomerFullName_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerFullName() {
 
 au.com.dw.testdatacapturej.mock.explanation.CustomerFullName customerFullName0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerFullName();
@@ -262,7 +262,7 @@ return customerFullName0;</pre></div><div class="section" title="Collection Adde
       'customer', instead add elements to the collection requires using the adder method
       'addCustomer()'.</p><p>Running the TestDataCaptureJ tool on this class would generate the following code, which
       would not work since it is trying to use a setter method named 'setCustomers()' which, of
-      course, doesn't exist in the 'CustomerListing' class.</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerListing
+      course, doesn't exist in the 'CustomerListing' class.</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerListing:Parameter1
 public au.com.dw.testdatacapturej.mock.explanation.CustomerListing createParam1CustomerListing_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerListing() {
 
 au.com.dw.testdatacapturej.mock.explanation.CustomerListing customerListing0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerListing();
@@ -303,7 +303,7 @@ return customerListing0;
 collection.config.files=test-collection-config.xml
 .
 .
-.</pre><p>Now when TestDataCaptureJ is run, it should generate the following logging:</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerListing
+.</pre><p>Now when TestDataCaptureJ is run, it should generate the following logging:</p><pre class="programlisting">// au.com.dw.testdatacapturej.explanation.CustomizationTest.joinPointParamForCustomerListing:Parameter1
 public au.com.dw.testdatacapturej.mock.explanation.CustomerListing createParam1CustomerListing_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerListing() {
 
 au.com.dw.testdatacapturej.mock.explanation.CustomerListing customerListing0 = new au.com.dw.testdatacapturej.mock.explanation.CustomerListing();
