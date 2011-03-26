@@ -478,6 +478,24 @@ return customerListing0;
     <para>Now the generated code correctly uses the adder method defined in the XML
       configuration.</para>
   </section>
+  
+  <section>
+    <title>Coded Configurations</title>
+    <para>Some of the log generation is handled in the code and is not currently configurable. To
+      change the logging generated for these elements would, obviously, require code changes.<itemizedlist>
+        <listitem>
+          <para>The generated name of the method that re-creates the test data object is handled in
+            'au.com.dw.testdatacapturej.builder.MethodBuilder', e.g.
+            'createParam1CustomerMultipleConstructors_au_com_dw_testdatacapturej_explanation_CustomizationTest_joinPointParamForCustomerMultipleConstructors()'.</para>
+        </listitem>
+        <listitem>
+          <para>When using the default 'SIFT' appender in the logging framework configuration, the
+            name of the file to log to for each object in handled in
+            'au.com.dw.testdatacapturej.builder.FileNameKeyBuilder', e.g.
+            'org.springframework.samples.jpetstore.domain.Order.initOrder-Parameter1-org.springframework.samples.jpetstore.domain.Account-20110314T174942.java'.</para>
+        </listitem>
+      </itemizedlist></para>
+  </section>
   <section>
     <title>Next:</title>
     <para><link xlink:href="tutorial.html">Tutorial</link></para>

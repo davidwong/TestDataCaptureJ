@@ -30,7 +30,7 @@ e.g. public au.com.dw.testdatacapturej.mock.explanation.Customer createParam1Cus
 
 - doesn't currently handle static fields, should it?
 
-- test for varargs
+- fix for varargs in the intercepted method
 
 Unit Tests:
 ----------
@@ -52,12 +52,6 @@ test objects and also about configuring the test aspects
 
 Documentation:
 -------------
-
-- redo images for setup page
-
-- redo tomcat for setup / tutorial page for putting jars in classpath as well as shared lib
-
-- update doc for using logback instead of log4j
 
 - setup for JBoss AS
 

@@ -56,14 +56,17 @@
       </listitem>
       
       <listitem>
-        <para>Apache Tomcat 6.x or JBoss AS 4.x for testing in a web application or for trying the
-          tutorial example.</para>
+        <para>Apache Tomcat 6.x, 7.x or JBoss AS 4.x for testing in a web application or for trying
+          the tutorial example. These are the application servers that have been tested on so
+          far.</para>
       </listitem>
     </itemizedlist>
     
-    <para>
-      To go through the tutorial you will also need the Spring JPetStore sample application. <link xlink:href="https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/">https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/</link>
-    </para>
+    <para> To go through the tutorial you will also need the Spring JPetStore sample application.
+      This can downloaded as part of the Spring Framework download or from <link
+        xlink:href="https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/"
+        >https://src.springframework.org/svn/spring-maintenance/trunk/samples/jpetstore/</link>
+      .</para>
     
   </section>
   
@@ -287,7 +290,11 @@ logger("au.com.dw.testdatacapturej-trace", INFO, ["FILE"], false)
             <imageobject>
               <imagedata fileref="images/generate_jar-export-1.jpg"/>
             </imageobject>
-          </inlinemediaobject><inlinemediaobject>
+          </inlinemediaobject>
+          <remark>Hint: In the 'JAR Package Specification' dialog, you can edit the resources to
+            export to only include the files needed for runtime, e.g. leave out source code, build
+            files, etc.</remark>
+          <inlinemediaobject>
             <imageobject>
               <imagedata fileref="images/generate_jar-export-2.jpg"/>
             </imageobject>
@@ -396,8 +403,13 @@ set JAVA_OPTS=%JAVA_OPTS% %ASPECTJ_WEAVING%
             </listitem>
             <listitem>
               <para>Copy the capture jar that you have generated to the location to be included in
-                the web application classpath. <remark>Hint: you can just export the jar directly to
-                  this location when you generate it without having to do this step.<inlinemediaobject>
+                the web application classpath, either in the web application or in the Tomcat shared
+                  directory.<remark>Hint: you can just export the jar directly to this location when
+                  you generate it without having to do this step.<inlinemediaobject>
+                    <imageobject>
+                      <imagedata fileref="images/tomcat-webapps-lib.jpg"/>
+                    </imageobject>
+                  </inlinemediaobject><inlinemediaobject>
                     <imageobject>
                       <imagedata fileref="images/tomcat-shared-lib.jpg"/>
                     </imageobject>
@@ -468,6 +480,45 @@ set JAVA_OPTS=%JAVA_OPTS% %ASPECTJ_WEAVING%
           </listitem>
           <listitem>
             <para>Optionally delete the LogBack configuration file from the 'conf' directory.</para>
+          </listitem>
+          <listitem>
+            <para>In the source code, change the import statements and logging code for the classes
+              that utilized the logging framework. This means replacing the dependencies on slf4j
+              with the log4j equivalents.</para>
+            <para>Fragment of
+                <filename>'src/au/com/dw/testdatacapturej/aspect/TraceAdaptor'</filename> using
+              LogBack:</para>
+            <programlisting>package au.com.dw.testdatacapturej.aspect;
+
+import au.com.dw.testdatacapturej.log.LogHolder;
+import au.com.dw.testdatacapturej.log.LoggingConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+.
+.
+.
+public abstract aspect TraceAdaptor extends Trace {
+	private Logger logger = LoggerFactory.getLogger(LoggingConstants.TRACE_LOGGER);
+.
+.
+.</programlisting>
+            <para>Fragment of
+                <filename>'src/au/com/dw/testdatacapturej/aspect/TraceAdaptor'</filename> using
+              Log4J:</para>
+            <programlisting>package au.com.dw.testdatacapturej.aspect;
+
+import au.com.dw.testdatacapturej.log.LogHolder;
+import au.com.dw.testdatacapturej.log.LoggingConstants;
+import org.apache.log4j.Logger;
+.
+.
+.
+public abstract aspect TraceAdaptor extends Trace {
+	private Logger _logger = Logger.getLogger(LoggingConstants.TRACE_LOGGER);
+.
+.
+.</programlisting>
           </listitem>
           <listitem>
             <para>Configure the file <filename>conf/log4j.xml</filename> to set the name and
@@ -551,7 +602,7 @@ set JAVA_OPTS=%JAVA_OPTS% %ASPECTJ_WEAVING%
                 <filename>conf/log4j.xml</filename> file and the log4j-xxx.jar file to
               {TOMCAT_HOME}/lib instead.<inlinemediaobject>
                 <imageobject>
-                  <imagedata fileref="images/tomcat-lib.jpg"/>
+                  <imagedata fileref="images/tomcat-lib-log4j.jpg"/>
                 </imageobject>
               </inlinemediaobject></para>
           </listitem>

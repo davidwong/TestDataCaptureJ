@@ -539,8 +539,19 @@ return cart0;
         <listitem>
           <para>When Eclipse tries to build the code for the class file (or if you have autobuild
             configured for the project) after the log contents have been pasted in, then you will
-            see that it will not compile and has some errors.</para>
-          <para>IMAGE HERE</para>
+            see that it will not compile and has some errors.<inlinemediaobject>
+              <imageobject>
+                <imagedata fileref="images/tutorial_eclipse-compile1.jpg"/>
+              </imageobject>
+            </inlinemediaobject></para>
+          <figure>
+            <title>tutorial_eclipse-compile2.jpg</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/tutorial_eclipse-compile2.jpg"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
         </listitem>
         <listitem>
           <para>The first error that stops the file compiling will occur at this line:</para>
@@ -704,8 +715,11 @@ public class TutorialTest {
       <listitem>
         <para>The fields 'fastTime' and 'cDate' do not have setter methods, and the 'cDate' field is
           actually meant to be transient. Therefore the generated setter methods for these fields do
-          not actually exist.</para>
-        <para>SOURCE CODE HERE</para>
+          not actually exist.<inlinemediaobject>
+            <imageobject>
+              <imagedata fileref="images/tutorial_java-api-Date.jpg"/>
+            </imageobject>
+          </inlinemediaobject></para>
       </listitem>
       <listitem>
         <para>The no-argument constructor for 'java.util.Date' will actually set the internal state
@@ -844,10 +858,13 @@ date8.setCdate(null);
   <section>
     <title>The Tutorial Application - 3rd Run</title>
     <para>Another error we encountered was with the
-      'org.springframework.beans.support.PagedListHolder' field in the Cart class. </para>
-    <para>IMAGE HERE</para>
-    <para>If we look at the Spring source code, then we can see that the problem is that the
-      'refreshDate' and 'newPageSet' fields in the
+      'org.springframework.beans.support.PagedListHolder' field in the Cart class. <inlinemediaobject>
+        <imageobject>
+          <imagedata fileref="images/tutorial_eclipse-compile3.jpg"/>
+        </imageobject>
+      </inlinemediaobject></para>
+    <para>If we look at the Spring framework source code, then we can see that the problem is that
+      the 'refreshDate' and 'newPageSet' fields in the
       'org.springframework.beans.support.PagedListHolder' class do not have setter methods (i.e.
       there is no 'setRefreshDate()', 'setNewPageSet()' or 'setSortUsed()' method defined in the
       class.</para>

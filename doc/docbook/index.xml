@@ -4,7 +4,7 @@
 
 	<info>
 		<title>TestDataCaptureJ Documentation</title>
-		<releaseinfo>version 0.9</releaseinfo>
+		<releaseinfo>version 1.0</releaseinfo>
 		<authorgroup>
 			<author>
 				<personname>David Wong</personname>
@@ -47,10 +47,7 @@ account0.setBannerOption(true);
 account0.setBannerName("&lt;image src=\"../images/banner_dogs.gif\">");
 
 return account0;
-}
-.
-.
-.</programlisting>
+}</programlisting>
 		<para>The generated logging could then be pasted into a Java class, and the generated methods
 			invoked to recreate the object containing the data you want to test. That test object
 			could then be used in unit tests for JUnit, TestNG, etc.</para>

@@ -746,7 +746,7 @@ return customerAddressesInMap0;
   </section>
    
   <section>
-    <title>Some general observations</title>
+    <title>Some general observations, and exceptions</title>
     <para>
       <itemizedlist>
         <listitem>
@@ -756,12 +756,15 @@ return customerAddressesInMap0;
         <listitem>
           <para>For complex objects such as Object, Collection, Array and Map, the field names for
             classes of these types are all suffixed by a number to keep them unique (e.g. address1,
-            address2, etc). Internally there is an index counter for each of these types, and that
-            is used for the numerical suffix.</para>
-          <para>e.g. If there were 3 Collection objects that need to be generated, even if they were
-            of different implementation types they would use the same index. So, an ArrayList, a
-            TreeSet and a List implemented by an ArrayList would have the field names: arrayList0,
-            treeSet1, arrayList2.</para>
+            address2, address3, etc). Internally there is an index counter for each of the classes,
+            and that is used for the numerical suffix.</para>
+        </listitem>
+        <listitem>
+          <para>Currently does not handle varargs for parameters in the intercepted method properly,
+            e.g. 'someMethod(Object... args)'.</para>
+        </listitem>
+        <listitem>
+          <para>Currently does not log static fields for intercepted objects.</para>
         </listitem>
       </itemizedlist>
     </para>
