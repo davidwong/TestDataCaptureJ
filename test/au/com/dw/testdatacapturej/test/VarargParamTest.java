@@ -36,10 +36,13 @@ import au.com.dw.testdatacapturej.mock.dataholder.TestData;
  * If running from eclipse IDE with AJDT, then also verify first that the inner methods are properly advised
  * by the trace test aspects.
  * 
+ * This is basically a copy of the ParamTest test case, but with the intercepted methods having varargs as
+ * the parameters.
+ * 
  * @author David Wong
  *
  */
-public class ParamTest {
+public class VarargParamTest {
 
 	private AllDataHolder data;
 
@@ -53,76 +56,76 @@ public class ParamTest {
 
     /**
      * This is just the wrapper to run the unit test, the required test output should be from the
-     * parameter from innerSingleParamTest().
+     * parameter from innerSingleVarargParamTest().
      * 
      * Test for a single parameter only.
      * 
      * @throws TargetException
      */
     @Test
-    public void singleParamWrapperTest() throws TargetException
+    public void singleVarargParamWrapperTest() throws TargetException
     {
-    	innerSingleParamTest(data);
+    	innerSingleVarargParamTest(data);
     }
 
-    public void innerSingleParamTest(AllDataHolder holder) throws TargetException
+    public void innerSingleVarargParamTest(Object... args) throws TargetException
     {
     }
 
     /**
      * This is just the wrapper to run the unit test, the required test output should be from the
-     * parameter from nullInnerParamTest().
+     * parameter from nullInnerVarargParamTest().
      * 
      * Test for a single parameter that is null.
      * 
      * @throws TargetException
      */
     @Test
-    public void nullParamWrapperTest() throws TargetException
+    public void nullVarargParamWrapperTest() throws TargetException
     {
-    	nullInnerParamTest(null);
+    	nullInnerVarargParamTest(null);
     }
 
-    public void nullInnerParamTest(AllDataHolder holder) throws TargetException
+    public void nullInnerVarargParamTest(Object... args) throws TargetException
     {
     }
     
     /**
      * This is just the wrapper to run the unit test, the required test output should be from the
-     * parameter from multipleInnerParamTest().
+     * parameter from multipleInnerVarargParamTest().
      * 
      * Test for multiple parameters.
      * 
      * @throws TargetException
      */
     @Test
-    public void multipleParamWrapperTest() throws TargetException
+    public void multipleVarargParamWrapperTest() throws TargetException
     {
     	TestData testData = new TestData();
     	AllDataHolder data2 = testData.createTestDataHolder2();
     	
-    	multipleInnerParamTest(data, data2);
+    	multipleInnerVarargParamTest(data, data2);
     }
 
-    public void multipleInnerParamTest(AllDataHolder holder, AllDataHolder holder2) throws TargetException
+    public void multipleInnerVarargParamTest(Object... args) throws TargetException
     {
     }
     
     /**
      * This is just the wrapper to run the unit test, the required test output should be from the
-     * parameter from multipleAndNullInnerParamTest().
+     * parameter from multipleAndNullInnerVarargParamTest().
      * 
      * Test for multiple parameters, of which one is null.
      * 
      * @throws TargetException
      */
     @Test
-    public void multipleAndNullParamWrapperTest() throws TargetException
+    public void multipleAndNullVarargParamWrapperTest() throws TargetException
     {
-    	multipleAndNullInnerParamTest(data, null);
+    	multipleAndNullInnerVarargParamTest(data, null);
     }
 
-    public void multipleAndNullInnerParamTest(AllDataHolder holder, AllDataHolder holder2) throws TargetException
+    public void multipleAndNullInnerVarargParamTest(Object... args) throws TargetException
     {
     }
    
