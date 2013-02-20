@@ -10,8 +10,8 @@
     
     <itemizedlist>
       <listitem>
-        <para>Eclipse IDE 3.4+
-          <link xlink:href="http://www.eclipse.org">http://www.eclipse.org</link></para>
+        <para>Eclipse Java IDE (Juno 4.2) <link xlink:href="http://www.eclipse.org"
+            >http://www.eclipse.org</link></para>
       </listitem>
       
       <listitem>
@@ -56,9 +56,8 @@
       </listitem>
       
       <listitem>
-        <para>Apache Tomcat 6.x, 7.x or JBoss AS 4.x for testing in a web application or for trying
-          the tutorial example. These are the application servers that have been tested on so
-          far.</para>
+        <para>Apache Tomcat 6.x or 7.x for testing in a web application or for trying the tutorial
+          example. These are the application servers that have been tested on so far.</para>
       </listitem>
     </itemizedlist>
     
@@ -451,11 +450,6 @@ set JAVA_OPTS=%JAVA_OPTS% %ASPECTJ_WEAVING%
     </section>
 
     <section>
-      <title>Setup for JBoss 4.x</title>
-      <para>TODO</para>
-    </section>
-
-    <section>
       <title>Using Log4J as the Logging Framework (deprecated)</title>
       <para>Although TestDataCaptureJ uses LogBack as the logging framework, , it is still possible
         to use Log4J instead, although that is deprecated for this project so that it will not be
@@ -609,11 +603,17 @@ public abstract aspect TraceAdaptor extends Trace {
         </itemizedlist></para>
     </section>
     
+  </section>
+  
+    <section>
+      <title>Alternative - Build with the Application</title>
+      <para>Here we are using load time weaving for the aspects since that means no change is required to the application that you want to generate the test data for.</para>
+      <para>However you can also do compile time weaving by including the TestDataCaptureJ jar in the build process for the application, and then just run the application. In this case the TestDataCaptureJ jar (and its dependencies) would need to be in the aspectpath of the AspectJ compiler.</para>
+    </section>
+    
     <section>
       <title>Next:</title>
       <para><link xlink:href="run.html">Running the application</link></para>
     </section>
-
-  </section>
 
 </article>

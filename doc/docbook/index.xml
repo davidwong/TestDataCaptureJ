@@ -4,14 +4,14 @@
 
 	<info>
 		<title>TestDataCaptureJ Documentation</title>
-		<releaseinfo>version 1.0</releaseinfo>
+		<releaseinfo>version 1.0.1</releaseinfo>
 		<authorgroup>
 			<author>
 				<personname>David Wong</personname>
 			</author>
 		</authorgroup>
 		<copyright>
-			<year>2010, 2011</year>
+			<year>2010, 2011, 2013</year>
 			<holder>David Wong</holder>
 		</copyright>
 	</info>
