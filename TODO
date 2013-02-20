@@ -53,6 +53,4 @@ test objects and also about configuring the test aspects
 Documentation:
 -------------
 
-- setup for JBoss AS
-
 - how to put xml examples in comments into javadoc / ajdoc
