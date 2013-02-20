@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,31 +16,28 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.display;
-
-import au.com.dw.testdatacapturej.meta.ObjectInfo;
+package au.com.dw.testdatacapturej.log;
 
 /**
- * Display for an collection field.
+ * Interface for factories that create output generators for text fragments.
+ * 
+ * Implementation should create generators that output text for different
+ * programming languages.
  * 
  * @author David Wong
  *
  */
-public class CollectionFieldDisplay extends BaseFieldDisplay {
+public interface OutputGeneratorFactory {
 
-	@Override
-	public String log(ObjectInfo info) {
-		StringBuilder builder = new StringBuilder();
-		
-		// check if configured to ignore a field for setter method generation or if
-		// the collection fields uses an adder method in it's containing class instead
-		// of a setter to add elements
-		if (!info.isSetterIgnoreType() && !info.getSetterAdderInfo().isUsesAdder())
-		{
-			generateSetter(builder, info);
-		}
-       	
-		return builder.toString();
-	}
-
+	public FieldGenerator getArrayFieldGenerator();
+	public FieldGenerator getCollectionFieldGenerator();
+	public FieldGenerator getMapFieldGenerator();
+	public FieldGenerator getSimpleFieldGenerator();
+	public FieldGenerator getClassFieldGenerator();
+	
+	public FieldGenerator getCollectionElementGenerator();
+	public FieldGenerator getArrayElementGenerator();
+	public FieldGenerator getMapEntryGenerator();
+	public FieldGenerator getAddedElementGenerator();
+	
 }

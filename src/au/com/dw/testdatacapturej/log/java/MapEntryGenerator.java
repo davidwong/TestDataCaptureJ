@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,29 +16,30 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.display;
+package au.com.dw.testdatacapturej.log.java;
 
+import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Display for a map field.
- *
- * NOTE: currently same as CollectionFieldDisplay
+ * Display for a map entry.
+ * e.g. field.put(key, value);
  * 
  * @author David Wong
  *
  */
-public class MapFieldDisplay extends BaseFieldDisplay {
+public class MapEntryGenerator extends BaseFieldGenerator {
 
 	@Override
-	public String log(ObjectInfo info) {
+	public String log(ObjectInfo info) 
+	{
 		StringBuilder builder = new StringBuilder();
+
+		boolean literal = !info.isSimpleType();
+		boolean keyLiteral = !info.getKeyInfo().isSimpleType();
 		
-		// check if configured to ignore a field for setter method generation
-		if (!info.isSetterIgnoreType())
-		{
-			generateSetter(builder, info);
-		}
+		builder.append(getLineBuilder().createMapPutLine(info.getContainingClassFieldName(), info.getKeyInfo().getFullFieldName(), info.getFullFieldName(), info.getKeyInfo().getValue(), info.getValue(), keyLiteral, literal));
+		builder.append(FormatConstants.newLine);
        	
 		return builder.toString();
 	}

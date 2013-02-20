@@ -16,39 +16,32 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.display;
+package au.com.dw.testdatacapturej.log.java;
 
-import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Display for an object field.
- * e.g. class.setField(value);
+ * Interface for classes that generate test code for a constructor.
  * 
  * @author David Wong
  *
  */
-public class ClassFieldDisplay extends BaseFieldDisplay {
-	
-	@Override
-	public String log(ObjectInfo info)
-	{
-		StringBuilder builder = new StringBuilder();
+public interface ConstructorGenerator {
 
-		if (!info.isInitalObject())
-		{
-			// check if configured to ignore a field for setter method generation
-			if (!info.isSetterIgnoreType())
-			{
-				boolean literal = !info.isSimpleType();
-				
-				// same as BaseFieldDisplay.generateSetter() except don't have new line here
-				
-				builder.append(info.getContainingClassFieldName());
-				builder.append(getLineBuilder().createSetterLine(info.getFieldName(), info.getFullFieldName(), literal));
-				builder.append(FormatConstants.newLine);
-			}
-		}
-		return builder.toString();
-	}
+	/**
+	 * Generate the constructor line for an object. The test code generated should be able to be used to
+	 * instantiate the object.
+	 * 
+	 * @param builder
+	 * @param info
+	 */
+	public void generateConstructor(StringBuilder builder, ObjectInfo info);
+	
+	/**
+	 * Add a comment for the constructor line.
+	 * 
+	 * @param builder
+	 * @param info
+	 */
+	public void addConstructorComment(StringBuilder builder, ObjectInfo info);
 }

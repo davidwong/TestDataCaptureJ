@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,36 +16,30 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.constructor;
+package au.com.dw.testdatacapturej.log.java;
 
-import au.com.dw.testdatacapturej.builder.LineBuilder;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Base class for implementations of ConstructorGenerator.
+ * Display for a map field.
+ *
+ * NOTE: currently same as CollectionFieldDisplay
  * 
  * @author David Wong
  *
  */
-public abstract class BaseConstructorGenerator implements ConstructorGenerator {
+public class MapFieldGenerator extends BaseFieldGenerator {
 
-	private LineBuilder lineBuilder = new LineBuilder();
-
-	/* (non-Javadoc)
-	 * @see au.com.dw.testdatacapturej.log.constructor.ConstructorGenerator#generateConstructor(java.lang.StringBuilder, au.com.dw.testdatacapturej.meta.ObjectInfo)
-	 */
-	public abstract void generateConstructor(StringBuilder builder, ObjectInfo info);
-	
-	/* (non-Javadoc)
-	 * @see au.com.dw.testdatacapturej.log.constructor.ConstructorGenerator#addConstructorComment(java.lang.StringBuilder, au.com.dw.testdatacapturej.meta.ObjectInfo)
-	 */
-	public void addConstructorComment(StringBuilder builder, ObjectInfo info)
-	{
-		// Default do-nothing adaptor method.
+	@Override
+	public String log(ObjectInfo info) {
+		StringBuilder builder = new StringBuilder();
+		
+		// check if configured to ignore a field for setter method generation
+		if (!info.isSetterIgnoreType())
+		{
+			generateSetter(builder, info);
+		}
+       	
+		return builder.toString();
 	}
-
-	public LineBuilder getLineBuilder() {
-		return lineBuilder;
-	}
-
 }

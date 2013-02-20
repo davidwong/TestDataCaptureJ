@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -21,21 +21,11 @@ package au.com.dw.testdatacapturej.log;
 import java.util.List;
 
 import au.com.dw.testdatacapturej.builder.FieldNameIndex;
-import au.com.dw.testdatacapturej.log.display.AddedElementDisplay;
-import au.com.dw.testdatacapturej.log.display.ArrayElementDisplay;
-import au.com.dw.testdatacapturej.log.display.ArrayFieldDisplay;
-import au.com.dw.testdatacapturej.log.display.ClassFieldDisplay;
-import au.com.dw.testdatacapturej.log.display.CollectionFieldDisplay;
-import au.com.dw.testdatacapturej.log.display.ElementDisplay;
-import au.com.dw.testdatacapturej.log.display.FieldDisplay;
-import au.com.dw.testdatacapturej.log.display.MapEntryDisplay;
-import au.com.dw.testdatacapturej.log.display.MapFieldDisplay;
-import au.com.dw.testdatacapturej.log.display.ParameterDisplay;
-import au.com.dw.testdatacapturej.log.display.SimpleFieldDisplay;
+import au.com.dw.testdatacapturej.log.java.JavaOutputGeneratorFactory;
+import au.com.dw.testdatacapturej.log.java.ParameterGenerator;
 import au.com.dw.testdatacapturej.meta.ContainmentType;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.meta.ObjectType;
-
 
 /**
  * Logging for the test code generation. Note that the actually logging itself is delegated to FieldDisplay
@@ -48,6 +38,13 @@ public class ObjectLogger {
 
 	/** The generation of the numerical index is delegated to the FieldNameIndex */
 	private final FieldNameIndex nameIndex = new FieldNameIndex();
+	
+	private OutputGeneratorFactory outputGeneratorFactory;
+	
+	public ObjectLogger()
+	{
+		outputGeneratorFactory = new JavaOutputGeneratorFactory();
+	}
 	
 	/**
 	 * Log an object that is passed as a parameter to a method, can also be used to log return values. This doesn't
@@ -73,7 +70,7 @@ public class ObjectLogger {
 		if (!info.isAlreadyLogged())
 		{
 			// get the appropriate FieldDisplay for the type of object
-			FieldDisplay fieldDisplay = getFieldDisplayForType(info.getType(), info.getContainmentType());
+			FieldGenerator fieldDisplay = getFieldDisplayForType(info.getType(), info.getContainmentType());
 	
 			// maps require different handling to process both the key and the value in the correct order, the
 			// presence of the keyInfo field indicates that the object is a map entry
@@ -125,7 +122,7 @@ public class ObjectLogger {
 		List<String> paramFieldNames = info.getConstructorInfo().getConstructorParamFieldNames();
 		if (!paramFieldNames.isEmpty())
 		{
-			FieldDisplay fieldDisplay = new ParameterDisplay();
+			FieldGenerator fieldDisplay = new ParameterGenerator();
 			
 			for (String paramFieldName : paramFieldNames)
 			{
@@ -183,9 +180,9 @@ public class ObjectLogger {
 	 * @param containmentType The ContainmentType enum, if the object is an element in an array or collection, etc
 	 * @return
 	 */
-	private FieldDisplay getFieldDisplayForType(ObjectType type, ContainmentType containmentType)
+	private FieldGenerator getFieldDisplayForType(ObjectType type, ContainmentType containmentType)
 	{
-		FieldDisplay fieldDisplay;
+		FieldGenerator fieldDisplay;
 		
 		// need to check whether the object is an element in a container or just a field
 		
@@ -194,24 +191,24 @@ public class ObjectLogger {
 			switch (type)
 			{
 				case ARRAY:
-					fieldDisplay = new ArrayFieldDisplay();
+					fieldDisplay = outputGeneratorFactory.getArrayFieldGenerator();
 					break;
 					
 				case COLLECTION:
-					fieldDisplay = new CollectionFieldDisplay();
+					fieldDisplay = outputGeneratorFactory.getCollectionFieldGenerator();
 					break;
 		
 				case MAP:
-					fieldDisplay = new MapFieldDisplay();
+					fieldDisplay = outputGeneratorFactory.getMapFieldGenerator();
 					break;
 	
 				case SIMPLE:
-					fieldDisplay = new SimpleFieldDisplay();
+					fieldDisplay = outputGeneratorFactory.getSimpleFieldGenerator();
 					break;
 				
 				case OBJECT:
 				default:
-					fieldDisplay = new ClassFieldDisplay();
+					fieldDisplay = outputGeneratorFactory.getClassFieldGenerator();
 					break;
 			}
 		}
@@ -220,24 +217,24 @@ public class ObjectLogger {
 			switch (containmentType)
 			{
 				case COLLECTION_ELEMENT:
-					fieldDisplay = new ElementDisplay();
+					fieldDisplay = outputGeneratorFactory.getCollectionElementGenerator();
 					break;
 	
 				case ARRAY_ELEMENT:
-					fieldDisplay = new ArrayElementDisplay();
+					fieldDisplay = outputGeneratorFactory.getArrayElementGenerator();
 					break;
 	
 				case MAP_ENTRY:
-					fieldDisplay = new MapEntryDisplay();
+					fieldDisplay = outputGeneratorFactory.getMapEntryGenerator();
 					break;
 
 				case ADDED_COLLECTION_ELEMENT:
-					fieldDisplay = new AddedElementDisplay();
+					fieldDisplay = outputGeneratorFactory.getAddedElementGenerator();
 					break;
 
 				default:
 					// shouldn't fall through here
-					fieldDisplay = new ClassFieldDisplay();
+					fieldDisplay = outputGeneratorFactory.getClassFieldGenerator();
 					break;
 			}
 		}

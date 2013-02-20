@@ -24,12 +24,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
-import au.com.dw.testdatacapturej.log.display.AddedElementDisplay;
-import au.com.dw.testdatacapturej.log.display.ArrayElementDisplay;
-import au.com.dw.testdatacapturej.log.display.ElementDisplay;
-import au.com.dw.testdatacapturej.log.display.FieldDisplay;
-import au.com.dw.testdatacapturej.log.display.MapEntryDisplay;
-import au.com.dw.testdatacapturej.log.display.SimpleFieldDisplay;
+import au.com.dw.testdatacapturej.log.java.AddedElementGenerator;
+import au.com.dw.testdatacapturej.log.java.ArrayElementGenerator;
+import au.com.dw.testdatacapturej.log.java.CollectionElementGenerator;
+import au.com.dw.testdatacapturej.log.java.MapEntryGenerator;
+import au.com.dw.testdatacapturej.log.java.SimpleFieldGenerator;
 import au.com.dw.testdatacapturej.meta.ContainmentType;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.meta.ObjectType;
@@ -37,7 +36,7 @@ import au.com.dw.testdatacapturej.meta.ObjectType;
 
 /**
  * Tests for the log() implementations of FieldDisplay.
- * @see au.com.dw.testdatacapturej.log.display.FieldDisplay
+ * @see au.com.dw.testdatacapturej.log.FieldGenerator
  * 
  * @author David Wong
  *
@@ -108,7 +107,7 @@ public class CollectionAdderTest {
 		return info;
 	}
 
-	private String generateLog(FieldDisplay display, ObjectInfo info, Object value, ObjectInfo keyInfo)
+	private String generateLog(FieldGenerator display, ObjectInfo info, Object value, ObjectInfo keyInfo)
 	{
 		info.setValue(value);
 		info.setKeyInfo(keyInfo);
@@ -118,7 +117,7 @@ public class CollectionAdderTest {
 		return result;
 	}
 
-	private String generateLog(FieldDisplay display, ObjectInfo info, Object value)
+	private String generateLog(FieldGenerator display, ObjectInfo info, Object value)
 	{
 		return generateLog(display, info, value, null);
 	}
@@ -129,12 +128,12 @@ public class CollectionAdderTest {
 	 * Output should be in the format:
 	 * parentFieldName.addElement(..);
 	 * 
-	 * @see au.com.dw.testdatacapturej.log.display.ElementDisplay
+	 * @see au.com.dw.testdatacapturej.log.java.CollectionElementGenerator
 	 */
 	@Test
 	public void testCollectionElementField()
 	{
-		FieldDisplay display = new AddedElementDisplay();
+		FieldGenerator display = new AddedElementGenerator();
 		ObjectInfo info = createObjectInfo(ObjectType.SIMPLE, ContainmentType.ADDED_COLLECTION_ELEMENT);
 		
 		String result = generateLog(display, info, stringValue);

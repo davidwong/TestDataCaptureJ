@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,54 +16,41 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.display;
+package au.com.dw.testdatacapturej.log.java;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
+import au.com.dw.testdatacapturej.meta.SetterGenerationType;
 
 /**
- * Display a collection element for a collection that is accessed through adder methods in the class
- * containing the collection
- * e.g. parentField.addElement(value);
+ * Display for a simple field, i.e. not a array or collection but a primitive value or wrapper.
+ * e.g. String, int, Integer, etc
  * 
  * @author David Wong
  *
  */
-public class AddedElementDisplay extends BaseFieldDisplay {
+public class SimpleFieldGenerator extends BaseFieldGenerator {
 
 	@Override
 	public String log(ObjectInfo info)
 	{
 		StringBuilder builder = new StringBuilder();
-		ObjectInfo parentInfo = info.getParentInfo();
+
+		boolean literal = !info.isSimpleType();
 		
-		if (parentInfo != null)
+		if (info.isInitalObject())
 		{
-			if (parentInfo.getSetterAdderInfo().isUsesAdder())
-			{		
-				boolean literal = true;
-				String classFieldName = parentInfo.getContainingClassFieldName();
-				String adderMethodName = parentInfo.getSetterAdderInfo().getAdderMethodName();
-				
-				if (info.isSimpleType())
-				{
-					literal = false;
-					builder.append(getLineBuilder().createCollectionEnclosingAdderLine(classFieldName, adderMethodName, info.getValue(), literal));
-				}
-				else
-				{
-					builder.append(getLineBuilder().createCollectionEnclosingAdderLine(classFieldName, adderMethodName, info.getFullFieldName(), literal));
-				}
-				builder.append(FormatConstants.newLine);
-			}
-			else
-			{
-				// log error
-			}
+			getLineBuilder().interpretValue(builder, info.getValue(), literal);
 		}
 		else
 		{
-			// log error
+			// check if configured to ignore a field for setter method generation
+			if (info.getSetterAdderInfo().getSetterGenerationType() != SetterGenerationType.IGNORE)
+			{
+				builder.append(info.getContainingClassFieldName());
+				builder.append(getLineBuilder().createSetterLine(info.getFieldName(), info.getValue(), literal));
+				builder.append(FormatConstants.newLine);
+			}
 		}
 		
 		return builder.toString();

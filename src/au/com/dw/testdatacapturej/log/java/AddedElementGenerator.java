@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,37 +16,55 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.display;
+package au.com.dw.testdatacapturej.log.java;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Display a collection element.
- * e.g. field.add(value);
+ * Display a collection element for a collection that is accessed through adder methods in the class
+ * containing the collection
+ * e.g. parentField.addElement(value);
  * 
  * @author David Wong
  *
  */
-public class ElementDisplay extends BaseFieldDisplay {
+public class AddedElementGenerator extends BaseFieldGenerator {
 
 	@Override
 	public String log(ObjectInfo info)
 	{
 		StringBuilder builder = new StringBuilder();
-
-		boolean literal = true;
+		ObjectInfo parentInfo = info.getParentInfo();
 		
-		if (info.isSimpleType())
+		if (parentInfo != null)
 		{
-			literal = false;
-			builder.append(getLineBuilder().createCollectionAddLine(info.getContainingClassFieldName(), info.getValue(), literal));
+			if (parentInfo.getSetterAdderInfo().isUsesAdder())
+			{		
+				boolean literal = true;
+				String classFieldName = parentInfo.getContainingClassFieldName();
+				String adderMethodName = parentInfo.getSetterAdderInfo().getAdderMethodName();
+				
+				if (info.isSimpleType())
+				{
+					literal = false;
+					builder.append(getLineBuilder().createCollectionEnclosingAdderLine(classFieldName, adderMethodName, info.getValue(), literal));
+				}
+				else
+				{
+					builder.append(getLineBuilder().createCollectionEnclosingAdderLine(classFieldName, adderMethodName, info.getFullFieldName(), literal));
+				}
+				builder.append(FormatConstants.newLine);
+			}
+			else
+			{
+				// log error
+			}
 		}
 		else
 		{
-			builder.append(getLineBuilder().createCollectionAddLine(info.getContainingClassFieldName(), info.getFullFieldName(), literal));
+			// log error
 		}
-		builder.append(FormatConstants.newLine);
 		
 		return builder.toString();
 	}

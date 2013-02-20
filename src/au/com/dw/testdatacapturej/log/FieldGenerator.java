@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.display;
+package au.com.dw.testdatacapturej.log;
 
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
@@ -27,7 +27,7 @@ import au.com.dw.testdatacapturej.meta.ObjectInfo;
  * @author David Wong
  *
  */
-public interface FieldDisplay {
+public interface FieldGenerator {
 
 	/**
 	 * Pre-requisite logging before the child objects of the object are logged.

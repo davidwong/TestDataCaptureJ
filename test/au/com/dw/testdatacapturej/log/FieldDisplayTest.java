@@ -24,11 +24,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
-import au.com.dw.testdatacapturej.log.display.ArrayElementDisplay;
-import au.com.dw.testdatacapturej.log.display.ElementDisplay;
-import au.com.dw.testdatacapturej.log.display.FieldDisplay;
-import au.com.dw.testdatacapturej.log.display.MapEntryDisplay;
-import au.com.dw.testdatacapturej.log.display.SimpleFieldDisplay;
+import au.com.dw.testdatacapturej.log.java.ArrayElementGenerator;
+import au.com.dw.testdatacapturej.log.java.CollectionElementGenerator;
+import au.com.dw.testdatacapturej.log.java.MapEntryGenerator;
+import au.com.dw.testdatacapturej.log.java.SimpleFieldGenerator;
 import au.com.dw.testdatacapturej.meta.ContainmentType;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.meta.ObjectType;
@@ -36,7 +35,7 @@ import au.com.dw.testdatacapturej.meta.ObjectType;
 
 /**
  * Tests for the log() implementations of FieldDisplay.
- * @see au.com.dw.testdatacapturej.log.display.FieldDisplay
+ * @see au.com.dw.testdatacapturej.log.FieldGenerator
  * 
  * @author David Wong
  *
@@ -93,7 +92,7 @@ public class FieldDisplayTest {
 		return info;
 	}
 
-	private String generateLog(FieldDisplay display, ObjectInfo info, Object value, ObjectInfo keyInfo)
+	private String generateLog(FieldGenerator display, ObjectInfo info, Object value, ObjectInfo keyInfo)
 	{
 		info.setValue(value);
 		info.setKeyInfo(keyInfo);
@@ -103,7 +102,7 @@ public class FieldDisplayTest {
 		return result;
 	}
 
-	private String generateLog(FieldDisplay display, ObjectInfo info, Object value)
+	private String generateLog(FieldGenerator display, ObjectInfo info, Object value)
 	{
 		return generateLog(display, info, value, null);
 	}
@@ -116,12 +115,12 @@ public class FieldDisplayTest {
 	 * For ease of comparison, newLine's are removed from the result string since we're not
 	 * interested in formatting at this low level au.com.dw.testing.
 	 * 
-	 * @see au.com.dw.testdatacapturej.log.display.SimpleFieldDisplay
+	 * @see au.com.dw.testdatacapturej.log.java.SimpleFieldGenerator
 	 */
 	@Test
 	public void testSimpleField()
 	{
-		FieldDisplay display = new SimpleFieldDisplay();	
+		FieldGenerator display = new SimpleFieldGenerator();	
 		ObjectInfo info = createObjectInfo(ObjectType.SIMPLE, ContainmentType.FIELD);
 		
 		String result = generateLog(display, info, stringValue);
@@ -185,12 +184,12 @@ public class FieldDisplayTest {
 	 * Output should be in the format:
 	 * classFieldName[index] = ..;
 	 * 
-	 * @see au.com.dw.testdatacapturej.log.display.ArrayElementDisplay
+	 * @see au.com.dw.testdatacapturej.log.java.ArrayElementGenerator
 	 */
 	@Test
 	public void testArrayElementField()
 	{
-		FieldDisplay display = new ArrayElementDisplay();
+		FieldGenerator display = new ArrayElementGenerator();
 		ObjectInfo info = createObjectInfo(ObjectType.SIMPLE, ContainmentType.ARRAY_ELEMENT);
 		
 		String result = generateLog(display, info, stringValue);
@@ -255,12 +254,12 @@ public class FieldDisplayTest {
 	 * Output should be in the format:
 	 * fieldName.add(..);
 	 * 
-	 * @see au.com.dw.testdatacapturej.log.display.ElementDisplay
+	 * @see au.com.dw.testdatacapturej.log.java.CollectionElementGenerator
 	 */
 	@Test
 	public void testCollectionElementField()
 	{
-		FieldDisplay display = new ElementDisplay();
+		FieldGenerator display = new CollectionElementGenerator();
 		ObjectInfo info = createObjectInfo(ObjectType.SIMPLE, ContainmentType.COLLECTION_ELEMENT);
 		
 		String result = generateLog(display, info, stringValue);
@@ -324,12 +323,12 @@ public class FieldDisplayTest {
 	 * Output should be in the format:
 	 * dummy.classField.put(.., ..);
 	 * 
-	 * @see au.com.dw.testdatacapturej.log.display.MapEntryDisplay
+	 * @see au.com.dw.testdatacapturej.log.java.MapEntryGenerator
 	 */
 	@Test
 	public void testMapEntryField()
 	{
-		FieldDisplay display = new MapEntryDisplay();
+		FieldGenerator display = new MapEntryGenerator();
 		ObjectInfo info = createObjectInfo(ObjectType.SIMPLE, ContainmentType.MAP_ENTRY);
 		
 		ObjectInfo keyInfo = createKeyObjectInfo(ObjectType.SIMPLE, ContainmentType.FIELD);

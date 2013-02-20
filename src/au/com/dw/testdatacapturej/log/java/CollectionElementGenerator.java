@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,28 +16,38 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.display;
+package au.com.dw.testdatacapturej.log.java;
 
+import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Display for an array field.
+ * Display a collection element.
+ * e.g. field.add(value);
  * 
  * @author David Wong
  *
  */
-public class ArrayFieldDisplay extends BaseFieldDisplay {
+public class CollectionElementGenerator extends BaseFieldGenerator {
 
 	@Override
-	public String log(ObjectInfo info) {
+	public String log(ObjectInfo info)
+	{
 		StringBuilder builder = new StringBuilder();
-				
-		// check if configured to ignore a field for setter method generation
-		if (!info.isSetterIgnoreType())
+
+		boolean literal = true;
+		
+		if (info.isSimpleType())
 		{
-			generateSetter(builder, info);
+			literal = false;
+			builder.append(getLineBuilder().createCollectionAddLine(info.getContainingClassFieldName(), info.getValue(), literal));
 		}
-       	
+		else
+		{
+			builder.append(getLineBuilder().createCollectionAddLine(info.getContainingClassFieldName(), info.getFullFieldName(), literal));
+		}
+		builder.append(FormatConstants.newLine);
+		
 		return builder.toString();
 	}
 }

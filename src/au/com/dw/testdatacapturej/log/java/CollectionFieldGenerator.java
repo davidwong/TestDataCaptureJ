@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,32 +16,31 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.constructor;
+package au.com.dw.testdatacapturej.log.java;
 
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Interface for classes that generate test code for a constructor.
+ * Display for an collection field.
  * 
  * @author David Wong
  *
  */
-public interface ConstructorGenerator {
+public class CollectionFieldGenerator extends BaseFieldGenerator {
 
-	/**
-	 * Generate the constructor line for an object. The test code generated should be able to be used to
-	 * instantiate the object.
-	 * 
-	 * @param builder
-	 * @param info
-	 */
-	public void generateConstructor(StringBuilder builder, ObjectInfo info);
-	
-	/**
-	 * Add a comment for the constructor line.
-	 * 
-	 * @param builder
-	 * @param info
-	 */
-	public void addConstructorComment(StringBuilder builder, ObjectInfo info);
+	@Override
+	public String log(ObjectInfo info) {
+		StringBuilder builder = new StringBuilder();
+		
+		// check if configured to ignore a field for setter method generation or if
+		// the collection fields uses an adder method in it's containing class instead
+		// of a setter to add elements
+		if (!info.isSetterIgnoreType() && !info.getSetterAdderInfo().isUsesAdder())
+		{
+			generateSetter(builder, info);
+		}
+       	
+		return builder.toString();
+	}
+
 }

@@ -16,31 +16,33 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.display;
+package au.com.dw.testdatacapturej.log.java;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Display for a map entry.
- * e.g. field.put(key, value);
+ * Generate a constructor line with parameters.
  * 
  * @author David Wong
  *
  */
-public class MapEntryDisplay extends BaseFieldDisplay {
+public class ParameterizedConstructorGenerator extends BaseConstructorGenerator {
 
 	@Override
-	public String log(ObjectInfo info) 
-	{
-		StringBuilder builder = new StringBuilder();
-
-		boolean literal = !info.isSimpleType();
-		boolean keyLiteral = !info.getKeyInfo().isSimpleType();
-		
-		builder.append(getLineBuilder().createMapPutLine(info.getContainingClassFieldName(), info.getKeyInfo().getFullFieldName(), info.getFullFieldName(), info.getKeyInfo().getValue(), info.getValue(), keyLiteral, literal));
+	public void generateConstructor(StringBuilder builder, ObjectInfo info) {
 		builder.append(FormatConstants.newLine);
-       	
-		return builder.toString();
+
+		// create the constructor line
+		String constructorLine = getLineBuilder().createParameterizedConstructorLine(info);
+		builder.append(constructorLine);
+		
+		// pass the newly created class field name to child objects
+		for (ObjectInfo fieldInfo : info.getFieldList())
+		{
+			fieldInfo.setContainingClassFieldName(info.getFullFieldName());
+		}
+		
+		builder.append(FormatConstants.newLine);
 	}
 }

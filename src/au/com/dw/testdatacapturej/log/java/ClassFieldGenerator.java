@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,33 +16,39 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.constructor;
+package au.com.dw.testdatacapturej.log.java;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Generate a constructor line with parameters.
+ * Display for an object field.
+ * e.g. class.setField(value);
  * 
  * @author David Wong
  *
  */
-public class ParameterizedConstructorGenerator extends BaseConstructorGenerator {
-
+public class ClassFieldGenerator extends BaseFieldGenerator {
+	
 	@Override
-	public void generateConstructor(StringBuilder builder, ObjectInfo info) {
-		builder.append(FormatConstants.newLine);
+	public String log(ObjectInfo info)
+	{
+		StringBuilder builder = new StringBuilder();
 
-		// create the constructor line
-		String constructorLine = getLineBuilder().createParameterizedConstructorLine(info);
-		builder.append(constructorLine);
-		
-		// pass the newly created class field name to child objects
-		for (ObjectInfo fieldInfo : info.getFieldList())
+		if (!info.isInitalObject())
 		{
-			fieldInfo.setContainingClassFieldName(info.getFullFieldName());
+			// check if configured to ignore a field for setter method generation
+			if (!info.isSetterIgnoreType())
+			{
+				boolean literal = !info.isSimpleType();
+				
+				// same as BaseFieldDisplay.generateSetter() except don't have new line here
+				
+				builder.append(info.getContainingClassFieldName());
+				builder.append(getLineBuilder().createSetterLine(info.getFieldName(), info.getFullFieldName(), literal));
+				builder.append(FormatConstants.newLine);
+			}
 		}
-		
-		builder.append(FormatConstants.newLine);
+		return builder.toString();
 	}
 }

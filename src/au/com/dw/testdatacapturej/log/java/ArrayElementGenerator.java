@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,35 +16,37 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.constructor;
+package au.com.dw.testdatacapturej.log.java;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
-
 /**
- * Generate a constructor line for an array.
+ * Display for an array elements.
+ * e.g. field[0] = value
  * 
  * @author David Wong
  *
  */
-public class ArrayConstructorGenerator extends BaseConstructorGenerator {
+public class ArrayElementGenerator extends BaseFieldGenerator {
 
 	@Override
-	public void generateConstructor(StringBuilder builder, ObjectInfo info) {
-		builder.append(FormatConstants.newLine);
+	public String log(ObjectInfo info) {
+		StringBuilder builder = new StringBuilder();
 		
-		// create the constructor line
-		String constructorLine = getLineBuilder().createArrayConstructorLine(info);
-		builder.append(constructorLine);
+		boolean literal = true;
 		
-		// pass the newly created class field name to child objects
-		for (ObjectInfo fieldInfo : info.getFieldList())
+		if (info.isSimpleType())
 		{
-			fieldInfo.setContainingClassFieldName(info.getFullFieldName());
+			literal = false;
+			builder.append(getLineBuilder().createArrayAssignLine(info.getContainingClassFieldName(), info.getIndex(), info.getValue(), literal));
 		}
-		
+		else
+		{
+			builder.append(getLineBuilder().createArrayAssignLine(info.getContainingClassFieldName(), info.getIndex(), info.getFullFieldName(), literal));
+		}
 		builder.append(FormatConstants.newLine);
+       	
+		return builder.toString();
 	}
-
 }

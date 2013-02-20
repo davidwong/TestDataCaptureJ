@@ -16,43 +16,35 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.display;
+package au.com.dw.testdatacapturej.log.java;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
-import au.com.dw.testdatacapturej.meta.SetterGenerationType;
+
 
 /**
- * Display for a simple field, i.e. not a array or collection but a primitive value or wrapper.
- * e.g. String, int, Integer, etc
+ * Generate a constructor line for an array.
  * 
  * @author David Wong
  *
  */
-public class SimpleFieldDisplay extends BaseFieldDisplay {
+public class ArrayConstructorGenerator extends BaseConstructorGenerator {
 
 	@Override
-	public String log(ObjectInfo info)
-	{
-		StringBuilder builder = new StringBuilder();
-
-		boolean literal = !info.isSimpleType();
+	public void generateConstructor(StringBuilder builder, ObjectInfo info) {
+		builder.append(FormatConstants.newLine);
 		
-		if (info.isInitalObject())
+		// create the constructor line
+		String constructorLine = getLineBuilder().createArrayConstructorLine(info);
+		builder.append(constructorLine);
+		
+		// pass the newly created class field name to child objects
+		for (ObjectInfo fieldInfo : info.getFieldList())
 		{
-			getLineBuilder().interpretValue(builder, info.getValue(), literal);
-		}
-		else
-		{
-			// check if configured to ignore a field for setter method generation
-			if (info.getSetterAdderInfo().getSetterGenerationType() != SetterGenerationType.IGNORE)
-			{
-				builder.append(info.getContainingClassFieldName());
-				builder.append(getLineBuilder().createSetterLine(info.getFieldName(), info.getValue(), literal));
-				builder.append(FormatConstants.newLine);
-			}
+			fieldInfo.setContainingClassFieldName(info.getFullFieldName());
 		}
 		
-		return builder.toString();
+		builder.append(FormatConstants.newLine);
 	}
+
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,16 +16,13 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log.display;
+package au.com.dw.testdatacapturej.log.java;
 
 import java.util.List;
 
 import au.com.dw.testdatacapturej.builder.LineBuilder;
+import au.com.dw.testdatacapturej.log.FieldGenerator;
 import au.com.dw.testdatacapturej.log.FormatConstants;
-import au.com.dw.testdatacapturej.log.constructor.ArrayConstructorGenerator;
-import au.com.dw.testdatacapturej.log.constructor.ConstructorGenerator;
-import au.com.dw.testdatacapturej.log.constructor.DefaultConstructorGenerator;
-import au.com.dw.testdatacapturej.log.constructor.ParameterizedConstructorGenerator;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.meta.SetterGenerationType;
 import au.com.dw.testdatacapturej.util.Messages;
@@ -40,7 +37,7 @@ import au.com.dw.testdatacapturej.util.Messages;
  * @author David Wong
  *
  */
-public class BaseFieldDisplay implements FieldDisplay {
+public class BaseFieldGenerator implements FieldGenerator {
 
 	private LineBuilder lineBuilder = new LineBuilder();
 
@@ -77,7 +74,7 @@ public class BaseFieldDisplay implements FieldDisplay {
 	 * @param builder
 	 * @param info
 	 * 
-	 * @see au.com.dw.testdatacapturej.log.constructor.ConstructorGenerator
+	 * @see au.com.dw.testdatacapturej.log.java.ConstructorGenerator
 	 */
 	protected void generateConstructor(StringBuilder builder, ObjectInfo info) {
 		ConstructorGenerator gen = null;
