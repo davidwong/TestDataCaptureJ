@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2012 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -19,9 +19,7 @@
 package au.com.dw.testdatacapturej.config;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.util.Messages;
@@ -176,5 +174,26 @@ public class ConfigUtil {
 		
 		// not found
 		return null;
+	}
+	
+	
+	/**
+	 * Converts a list of objects retrieved from the Configuration to a list of strings.
+	 * 
+	 * @param objList
+	 * @return
+	 */
+	public List<String> toStringList(List<Object> objList)
+	{
+		List<String> stringList = new ArrayList<String>();
+		
+		if (objList != null)
+		{
+			for (Object obj : objList)
+			{
+				stringList.add((String)obj);
+			}
+		}
+		return stringList;
 	}
 }

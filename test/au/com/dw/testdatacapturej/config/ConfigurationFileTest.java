@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2012 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -44,12 +44,17 @@ public class ConfigurationFileTest {
 	private XMLConfiguration xmlSetterConfig;
 	private XMLConfiguration xmlCollectionConfig;
 	
+	private ConfigUtil configUtil;
+	
 	@Before
 	public void setUp() throws Exception {	
 		try {
 			xmlConstructorConfig = new XMLConfiguration("test-constructor-config.xml");
 			xmlSetterConfig = new XMLConfiguration("test-setter-config.xml");
 			xmlCollectionConfig = new XMLConfiguration("test-collection-config.xml");
+			
+			configUtil = new ConfigUtil();
+			
 		} catch (ConfigurationException cex) {
 			cex.printStackTrace();
 		}
@@ -95,7 +100,7 @@ public class ConfigurationFileTest {
 				String className = sub.getString("[@class]");
 				System.out.println(className);
 				
-				List<String> paramFieldNames = (List<String>)sub.getList("argument.field-name");
+				List<String> paramFieldNames = configUtil.toStringList(sub.getList("argument.field-name"));
 				assertNotNull(paramFieldNames);
 				assertFalse(paramFieldNames.isEmpty());
 				
@@ -130,7 +135,7 @@ public class ConfigurationFileTest {
 				String className = sub.getString("[@class]");
 				System.out.println(className);
 				
-				List<String> fieldNames = (List<String>)sub.getList("field.field-name");
+				List<String> fieldNames = configUtil.toStringList(sub.getList("field.field-name"));
 				assertNotNull(fieldNames);
 				assertFalse(fieldNames.isEmpty());
 				
@@ -165,7 +170,7 @@ public class ConfigurationFileTest {
 				String className = sub.getString("[@class]");
 				System.out.println(className);
 				
-				List<String> fieldNames = (List<String>)sub.getList("argument.field-name");
+				List<String> fieldNames = configUtil.toStringList(sub.getList("argument.field-name"));
 				assertNotNull(fieldNames);
 				assertFalse(fieldNames.isEmpty());
 				
@@ -175,7 +180,7 @@ public class ConfigurationFileTest {
 			    	assertNotNull(fieldName);
 			    }
 
-				List<String> adderMethodNames = (List<String>)sub.getList("argument.adder-method");
+				List<String> adderMethodNames = configUtil.toStringList(sub.getList("argument.adder-method"));
 				assertNotNull(adderMethodNames);
 				assertFalse(adderMethodNames.isEmpty());
 				

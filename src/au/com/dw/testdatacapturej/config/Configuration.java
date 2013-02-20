@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2012 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -112,6 +112,9 @@ public class Configuration {
 	 * field, and the inner map contains the collection field name and adder method name.
 	 */
 	private Map<String, List<CollectionAdderConfig>> adderCollections;
+	
+	/** Configuration utility methods */
+	private ConfigUtil configUtil = new ConfigUtil();
 
 	private Configuration()
 	{
@@ -131,7 +134,7 @@ public class Configuration {
 		    
 		    adderCollections = new HashMap<String, List<CollectionAdderConfig>>();
 			String[] collectionConfigFiles = propConfig.getStringArray("collection.config.files");
-		    readCollectionConfigFile(collectionConfigFiles);		    
+		    readCollectionConfigFile(collectionConfigFiles);		
 		    
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
@@ -185,7 +188,7 @@ public class Configuration {
 						
 						String className = sub.getString("[@class]");
 						
-						List<String> paramFieldNames = (List<String>)sub.getList("argument.field-name");
+						List<String> paramFieldNames = configUtil.toStringList(sub.getList("argument.field-name"));
 						
 						if (paramFieldNames != null && !paramFieldNames.isEmpty())
 						{
@@ -242,7 +245,7 @@ public class Configuration {
 						
 						String className = sub.getString("[@class]");
 						
-						List<String> paramFieldNames = (List<String>)sub.getList("field.field-name");
+						List<String> paramFieldNames = configUtil.toStringList(sub.getList("field.field-name"));
 						
 						if (paramFieldNames != null && !paramFieldNames.isEmpty())
 						{				
@@ -294,9 +297,9 @@ public class Configuration {
 						
 						String className = sub.getString("[@class]");
 						
-						List<String> collectionFieldNames = (List<String>)sub.getList("argument.field-name");
+						List<String> collectionFieldNames = configUtil.toStringList(sub.getList("argument.field-name"));
 						// not sure if this is the best way to handle multiple sub elements
-						List<String> adderMethodNames = (List<String>)sub.getList("argument.adder-method");
+						List<String> adderMethodNames = configUtil.toStringList(sub.getList("argument.adder-method"));
 						
 						// TODO need more error checking here in case of incorrect configuration
 						if (collectionFieldNames != null && !collectionFieldNames.isEmpty() && adderMethodNames != null && !adderMethodNames.isEmpty())
@@ -385,4 +388,5 @@ public class Configuration {
 			return collectionConfigs;
 		}
 	}
+
 }
