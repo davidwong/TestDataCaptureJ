@@ -29,8 +29,8 @@ import au.com.dw.testdatacapturej.builder.MethodBuilder;
 import au.com.dw.testdatacapturej.log.FormatConstants;
 import au.com.dw.testdatacapturej.log.LogHolder;
 import au.com.dw.testdatacapturej.log.ObjectLogger;
-import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
 import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
+import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
 
 /**
  * Base aspect for tracing, similar to many other aspectj tracing modules available.

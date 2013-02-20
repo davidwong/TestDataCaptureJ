@@ -18,11 +18,12 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.aspect;
 
-import au.com.dw.testdatacapturej.log.LogHolder;
-import au.com.dw.testdatacapturej.log.LoggingConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+
+import au.com.dw.testdatacapturej.log.LogHolder;
+import au.com.dw.testdatacapturej.log.LoggingConstants;
 
 /**
  * Adaptor for the Trace aspect to leave only the pointcut as abstract so that it can be defined in aop.xml.
