@@ -18,12 +18,13 @@
  *******************************************************************************/
 package au.com.dw.testing;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.SystemUtils;
 import org.junit.Assert;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Additional asserts for use with JUnit.
