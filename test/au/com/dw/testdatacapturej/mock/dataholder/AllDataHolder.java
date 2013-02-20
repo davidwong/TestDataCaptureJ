@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -52,15 +52,15 @@ public class AllDataHolder {
 	private static Object staticObject;
 
 	// complex fields
-	private Collection collection;
-	private List list;
-	private ArrayList arrayList;
+	private Collection<?> collection;
+	private List<?> list;
+	private ArrayList<?> arrayList;
 	private String[] array;
 	private int[] primitiveArray;
 	private Object[] objectArray;
-	private Map map;
-	private Map objectMap;
-	private HashMap hashMap;
+	private Map<?, ?> map;
+	private Map<?, ?> objectMap;
+	private HashMap<?, ?> hashMap;
 
 	public String getText() {
 		return text;
@@ -134,22 +134,22 @@ public class AllDataHolder {
 	public static void setStaticObject(Object staticObject) {
 		AllDataHolder.staticObject = staticObject;
 	}
-	public Collection getCollection() {
+	public Collection<?> getCollection() {
 		return collection;
 	}
-	public void setCollection(Collection collection) {
+	public void setCollection(Collection<?> collection) {
 		this.collection = collection;
 	}
-	public List getList() {
+	public List<?> getList() {
 		return list;
 	}
-	public void setList(List list) {
+	public void setList(List<?> list) {
 		this.list = list;
 	}
-	public ArrayList getArrayList() {
+	public ArrayList<?> getArrayList() {
 		return arrayList;
 	}
-	public void setArrayList(ArrayList arrayList) {
+	public void setArrayList(ArrayList<?> arrayList) {
 		this.arrayList = arrayList;
 	}
 	public String[] getArray() {
@@ -171,22 +171,22 @@ public class AllDataHolder {
 	public void setObjectArray(Object[] objectArray) {
 		this.objectArray = objectArray;
 	}
-	public Map getMap() {
+	public Map<?, ?> getMap() {
 		return map;
 	}
-	public void setMap(Map map) {
+	public void setMap(Map<?, ?> map) {
 		this.map = map;
 	}
-	public Map getObjectMap() {
+	public Map<?, ?> getObjectMap() {
 		return objectMap;
 	}
-	public void setObjectMap(Map objectMap) {
+	public void setObjectMap(Map<?, ?> objectMap) {
 		this.objectMap = objectMap;
 	}
-	public HashMap getHashMap() {
+	public HashMap<?, ?> getHashMap() {
 		return hashMap;
 	}
-	public void setHashMap(HashMap hashMap) {
+	public void setHashMap(HashMap<?, ?> hashMap) {
 		this.hashMap = hashMap;
 	}
 	public AllDataHolder() {
@@ -198,7 +198,7 @@ public class AllDataHolder {
 		int result = 1;
 		result = prime * result + Arrays.hashCode(array);
 
-		Collection arrayListAsCollection = arrayList;
+		Collection<?> arrayListAsCollection = arrayList;
 		//result = prime * result + ((arrayList == null) ? 0 : arrayList.hashCode());
 		result = prime * result + ((arrayListAsCollection == null) ? 0 : arrayListAsCollection.hashCode());
 		
@@ -208,7 +208,7 @@ public class AllDataHolder {
 				+ ((collection == null) ? 0 : collection.hashCode());
 		result = prime * result
 				+ ((fraction == null) ? 0 : fraction.hashCode());
-		Map hashMapAsMap = hashMap;
+		Map<?, ?> hashMapAsMap = hashMap;
 		//result = prime * result + ((hashMap == null) ? 0 : hashMap.hashCode());
 		result = prime * result + ((hashMapAsMap == null) ? 0 : hashMapAsMap.hashCode());
 		
@@ -244,8 +244,8 @@ public class AllDataHolder {
 			if (other.arrayList != null)
 				return false;
 		} else {
-			Collection arrayListAsCollection = arrayList;
-			Collection otherArrayListAsCollection = other.arrayList;
+			Collection<?> arrayListAsCollection = arrayList;
+			Collection<?> otherArrayListAsCollection = other.arrayList;
 			if (!arrayListAsCollection.equals(otherArrayListAsCollection))	
 			return false;
 		}
@@ -267,8 +267,8 @@ public class AllDataHolder {
 			if (other.hashMap != null)
 				return false;
 		} else { 
-			Map hashMapAsMap = hashMap;
-			Map otherHashMapAsMap = other.hashMap;
+			Map<?, ?> hashMapAsMap = hashMap;
+			Map<?, ?> otherHashMapAsMap = other.hashMap;
 			if (!hashMapAsMap.equals(otherHashMapAsMap))
 			return false;
 		}
