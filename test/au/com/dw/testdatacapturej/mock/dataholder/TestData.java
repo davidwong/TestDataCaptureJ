@@ -339,7 +339,7 @@ public class TestData {
 	{
 		Object[] innerArray = new Object[1];
 		
-		Collection collection = new TreeSet();
+		Collection collection = new HashSet();
 		collection.add(innerArray);
 		
 		return collection;
@@ -402,7 +402,7 @@ public class TestData {
 	public Collection createNestedCollectionOfCollectionNull()
 	{
 		
-		TreeSet innerCollection = new TreeSet();
+		HashSet innerCollection = new HashSet();
 		innerCollection.add(null);
 		
 		Collection collection = new HashSet();
@@ -542,7 +542,7 @@ public class TestData {
 	public Object[] createNestedArrayOfCollectionNull()
 	{
 		
-		TreeSet innerCollection = new TreeSet();
+		HashSet innerCollection = new HashSet();
 		innerCollection.add(null);
 		
 		Object[] outerArray = new Object[1];
@@ -692,7 +692,7 @@ public class TestData {
 	public Map createNestedMapOfCollectionNull()
 	{
 		
-		TreeSet innerCollection = new TreeSet();
+		HashSet innerCollection = new HashSet();
 		innerCollection.add(null);
 		
 		TreeMap map = new TreeMap();

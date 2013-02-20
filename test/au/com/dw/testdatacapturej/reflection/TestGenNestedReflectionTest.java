@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2012 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -65,10 +65,10 @@ public class TestGenNestedReflectionTest {
 			logger.logObject(builder, handler.handle(data));
 			String result = builder.toString();
 			
-			String expected = "java.util.TreeSet treeSet0 = new java.util.TreeSet();" +
+			String expected = "java.util.HashSet hashSet0 = new java.util.HashSet();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"objectArray0[0] = null;" +
-			"treeSet0.add(objectArray0);";
+			"hashSet0.add(objectArray0);";
 			
 			System.out.println(result);
 			assertEqualsWithoutFormatting(expected, result);
@@ -233,9 +233,9 @@ public class TestGenNestedReflectionTest {
 			String result = builder.toString();
 			
 			String expected = "java.util.HashSet hashSet0 = new java.util.HashSet();" +
-			"java.util.TreeSet treeSet0 = new java.util.TreeSet();" +
-			"treeSet0.add(null);" +
-			"hashSet0.add(treeSet0);";
+			"java.util.HashSet hashSet1 = new java.util.HashSet();" +
+			"hashSet1.add(null);" +
+			"hashSet0.add(hashSet1);";
 			
 			System.out.println(result);
 			assertEqualsWithoutFormatting(expected, result);
@@ -581,9 +581,9 @@ public class TestGenNestedReflectionTest {
 			String result = builder.toString();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
-			"java.util.TreeSet treeSet0 = new java.util.TreeSet();" +
-			"treeSet0.add(null);" +
-			"objectArray0[0] = treeSet0;";
+			"java.util.HashSet hashSet0 = new java.util.HashSet();" +
+			"hashSet0.add(null);" +
+			"objectArray0[0] = hashSet0;";
 			
 			System.out.println(result);
 			assertEqualsWithoutFormatting(expected, result);
@@ -955,9 +955,9 @@ public class TestGenNestedReflectionTest {
 			String result = builder.toString();
 			
 			String expected = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
-			"java.util.TreeSet treeSet0 = new java.util.TreeSet();" +
-			"treeSet0.add(null);" +
-			"treeMap0.put(\"key1\", treeSet0);";
+			"java.util.HashSet hashSet0 = new java.util.HashSet();" +
+			"hashSet0.add(null);" +
+			"treeMap0.put(\"key1\", hashSet0);";
 			
 			System.out.println(result);
 			assertEqualsWithoutFormatting(expected, result);
