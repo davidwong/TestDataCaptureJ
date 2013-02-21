@@ -21,8 +21,8 @@ package au.com.dw.testdatacapturej.log;
 import java.util.List;
 
 import au.com.dw.testdatacapturej.builder.FieldNameIndex;
-import au.com.dw.testdatacapturej.log.java.JavaOutputGeneratorFactory;
-import au.com.dw.testdatacapturej.log.java.ParameterGenerator;
+import au.com.dw.testdatacapturej.log.gen.JavaOutputGeneratorFactory;
+import au.com.dw.testdatacapturej.log.gen.ParameterGenerator;
 import au.com.dw.testdatacapturej.meta.ContainmentType;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.meta.ObjectType;

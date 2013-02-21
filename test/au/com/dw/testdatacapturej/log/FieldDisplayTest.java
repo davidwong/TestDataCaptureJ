@@ -24,10 +24,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
-import au.com.dw.testdatacapturej.log.java.ArrayElementGenerator;
-import au.com.dw.testdatacapturej.log.java.CollectionElementGenerator;
-import au.com.dw.testdatacapturej.log.java.MapEntryGenerator;
-import au.com.dw.testdatacapturej.log.java.SimpleFieldGenerator;
+import au.com.dw.testdatacapturej.log.gen.ArrayElementGenerator;
+import au.com.dw.testdatacapturej.log.gen.CollectionElementGenerator;
+import au.com.dw.testdatacapturej.log.gen.MapEntryGenerator;
+import au.com.dw.testdatacapturej.log.gen.SimpleFieldGenerator;
 import au.com.dw.testdatacapturej.meta.ContainmentType;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.meta.ObjectType;
@@ -115,7 +115,7 @@ public class FieldDisplayTest {
 	 * For ease of comparison, newLine's are removed from the result string since we're not
 	 * interested in formatting at this low level au.com.dw.testing.
 	 * 
-	 * @see au.com.dw.testdatacapturej.log.java.SimpleFieldGenerator
+	 * @see au.com.dw.testdatacapturej.log.gen.SimpleFieldGenerator
 	 */
 	@Test
 	public void testSimpleField()
@@ -184,7 +184,7 @@ public class FieldDisplayTest {
 	 * Output should be in the format:
 	 * classFieldName[index] = ..;
 	 * 
-	 * @see au.com.dw.testdatacapturej.log.java.ArrayElementGenerator
+	 * @see au.com.dw.testdatacapturej.log.gen.ArrayElementGenerator
 	 */
 	@Test
 	public void testArrayElementField()
@@ -254,7 +254,7 @@ public class FieldDisplayTest {
 	 * Output should be in the format:
 	 * fieldName.add(..);
 	 * 
-	 * @see au.com.dw.testdatacapturej.log.java.CollectionElementGenerator
+	 * @see au.com.dw.testdatacapturej.log.gen.CollectionElementGenerator
 	 */
 	@Test
 	public void testCollectionElementField()
@@ -323,7 +323,7 @@ public class FieldDisplayTest {
 	 * Output should be in the format:
 	 * dummy.classField.put(.., ..);
 	 * 
-	 * @see au.com.dw.testdatacapturej.log.java.MapEntryGenerator
+	 * @see au.com.dw.testdatacapturej.log.gen.MapEntryGenerator
 	 */
 	@Test
 	public void testMapEntryField()

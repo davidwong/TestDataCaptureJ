@@ -24,11 +24,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
-import au.com.dw.testdatacapturej.log.java.AddedElementGenerator;
-import au.com.dw.testdatacapturej.log.java.ArrayElementGenerator;
-import au.com.dw.testdatacapturej.log.java.CollectionElementGenerator;
-import au.com.dw.testdatacapturej.log.java.MapEntryGenerator;
-import au.com.dw.testdatacapturej.log.java.SimpleFieldGenerator;
+import au.com.dw.testdatacapturej.log.gen.AddedElementGenerator;
+import au.com.dw.testdatacapturej.log.gen.ArrayElementGenerator;
+import au.com.dw.testdatacapturej.log.gen.CollectionElementGenerator;
+import au.com.dw.testdatacapturej.log.gen.MapEntryGenerator;
+import au.com.dw.testdatacapturej.log.gen.SimpleFieldGenerator;
 import au.com.dw.testdatacapturej.meta.ContainmentType;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.meta.ObjectType;
@@ -128,7 +128,7 @@ public class CollectionAdderTest {
 	 * Output should be in the format:
 	 * parentFieldName.addElement(..);
 	 * 
-	 * @see au.com.dw.testdatacapturej.log.java.CollectionElementGenerator
+	 * @see au.com.dw.testdatacapturej.log.gen.CollectionElementGenerator
 	 */
 	@Test
 	public void testCollectionElementField()
