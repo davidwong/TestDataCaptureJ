@@ -29,7 +29,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.ObjectLogger;
+import au.com.dw.testdatacapturej.log.RawLogBuilder;
 import au.com.dw.testdatacapturej.mock.dataholder.CollectionClassHolder;
 import au.com.dw.testdatacapturej.mock.dataholder.CollectionHolder;
 import au.com.dw.testdatacapturej.util.Messages;
@@ -47,13 +49,13 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 	
 	@Before
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 	}
 
 	// Testing for the Collection interface, both as the logged object and as a field of a logged object.
@@ -66,7 +68,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(collection));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "java.util.HashSet hashSet0 = new java.util.HashSet();";
 	
@@ -85,7 +87,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(collection));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -114,7 +116,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(collection));
-			String result = builder.toString();
+			String result = builder.getLog();
 
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -155,7 +157,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(collection));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -193,7 +195,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "au.com.dw.testdatacapturej.mock.dataholder.CollectionHolder collectionHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.CollectionHolder();" +
 			constructorComment +
@@ -218,7 +220,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -256,7 +258,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -306,7 +308,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -350,7 +352,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(arrayList));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "java.util.ArrayList arrayList0 = new java.util.ArrayList();";
 	
@@ -369,7 +371,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(arrayList));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -398,7 +400,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(arrayList));
-			String result = builder.toString();
+			String result = builder.getLog();
 
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -439,7 +441,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(arrayList));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -477,7 +479,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "au.com.dw.testdatacapturej.mock.dataholder.CollectionClassHolder collectionClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.CollectionClassHolder();" +
 			constructorComment +
@@ -502,7 +504,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -540,7 +542,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -590,7 +592,7 @@ public class TestGenCollectionTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			

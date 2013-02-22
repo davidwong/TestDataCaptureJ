@@ -49,7 +49,7 @@ public class ConstructorParamNestedTest extends BaseReflectionTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 	
 	private Holder holder;
 	
@@ -57,7 +57,7 @@ public class ConstructorParamNestedTest extends BaseReflectionTest {
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 		holder = new Holder();
 	}
  
@@ -72,7 +72,7 @@ public class ConstructorParamNestedTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(new NDCNS_Object(booleanFloatFieldObject)));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat nDCNS_BooleanFloat0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat(true, 10.1f);" +
 			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object nDCNS_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object(nDCNS_BooleanFloat0);";
@@ -100,7 +100,7 @@ public class ConstructorParamNestedTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(new NDCNS_UnconfiguredObject(booleanFloatFieldObject)));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject nDCNS_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject();" +
 			constructorComment +
@@ -130,7 +130,7 @@ public class ConstructorParamNestedTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(new NDCNS_Object(intFieldObject)));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int nDCNS_Int0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int();" +
 			constructorComment +
@@ -160,7 +160,7 @@ public class ConstructorParamNestedTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(new NDCNS_UnconfiguredObject(intFieldObject)));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject nDCNS_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject();" +
 			constructorComment +

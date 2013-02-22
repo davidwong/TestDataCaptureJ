@@ -31,7 +31,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.ObjectLogger;
+import au.com.dw.testdatacapturej.log.RawLogBuilder;
 import au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder;
 import au.com.dw.testdatacapturej.mock.dataholder.MapHolder;
 import au.com.dw.testdatacapturej.util.Messages;
@@ -50,13 +52,13 @@ public class TestGenMapTest extends BaseReflectionTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 	
 	@Before
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 	}
 
 	// Testing for the Map interface, both as the logged object and as a field of a logged object.
@@ -69,7 +71,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(map));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "java.util.TreeMap treeMap0 = new java.util.TreeMap();";
 
@@ -88,7 +90,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(map));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -117,7 +119,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(map));
-			String result = builder.toString();
+			String result = builder.getLog();
 
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -170,7 +172,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(map));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -208,7 +210,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "au.com.dw.testdatacapturej.mock.dataholder.MapHolder mapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapHolder();" +
 			constructorComment +
@@ -233,7 +235,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 
 	   	try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -271,7 +273,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -333,7 +335,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -377,7 +379,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(hashMap));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "java.util.HashMap hashMap0 = new java.util.HashMap();";
 
@@ -396,7 +398,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(hashMap));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -425,7 +427,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(hashMap));
-			String result = builder.toString();
+			String result = builder.getLog();
 
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -478,7 +480,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(hashMap));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -516,7 +518,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder mapClassHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.MapClassHolder();" +
 			constructorComment +
@@ -541,7 +543,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -579,7 +581,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -641,7 +643,7 @@ public class TestGenMapTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			Collection<String> expectedValues = new ArrayList<String>();
 			

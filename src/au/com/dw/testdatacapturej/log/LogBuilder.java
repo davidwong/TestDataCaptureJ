@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,22 +16,41 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.config;
+package au.com.dw.testdatacapturej.log;
 
+/**
+ * Builder for object logging, allows pre- and post- processing of log elements.
+ *  
+ * @author David Wong
+ *
+ */
+public interface LogBuilder {
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+	/** Add a raw element to the logging.
+	 * 
+	 * @param str
+	 */
+	public void append(String str);
+	
+	/** Add an element to the logging with some processing.
+	 * 
+	 * @param str
+	 */
+	public void process(String str);
 
-import au.com.dw.testdatacapturej.log.FieldGeneratorTest;
-
-
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
-	ConfigurationUtilTest.class,
-	ConfigurationFileTest.class,
-	DateConfigTest.class
-})
-
-public class AllTests {
-		//just an empty class for make file compile with annotation
+	/**
+	 * Get the object logging.
+	 * 
+	 * @return
+	 */
+	public String getLog();
+	
+	/**
+	 * Get any logging that is required before the log of the actual objects.
+	 * 
+	 * @return
+	 */
+	public String getPreLog();
+	
+	//public String getPostLog();
 }

@@ -21,7 +21,6 @@ package au.com.dw.testdatacapturej.log;
 import static au.com.dw.testing.AssertUtil.assertEqualsWithoutFormatting;
 import static org.junit.Assert.fail;
 
-import org.apache.commons.lang.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,13 +45,13 @@ public class ConstructorParamNullTest extends BaseReflectionTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 	
 	@Before
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 	}
  
     /**
@@ -63,7 +62,7 @@ public class ConstructorParamNullTest extends BaseReflectionTest {
     {
 		try {
 			logger.logObject(builder, handler.handle(new NDCNS_String(null)));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.NDCNS_String nDCNS_String0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_String(null);";
 			
@@ -83,7 +82,7 @@ public class ConstructorParamNullTest extends BaseReflectionTest {
     {
 		try {
 			logger.logObject(builder, handler.handle(new NDCNS_Object(null)));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object nDCNS_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object(null);";
 			
@@ -105,7 +104,7 @@ public class ConstructorParamNullTest extends BaseReflectionTest {
     	
     	try {
 			logger.logObject(builder, handler.handle(new NDCNS_Object(nullObjectField)));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.NDCNS_String nDCNS_String0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_String(null);" +
 			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object nDCNS_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Object(nDCNS_String0);";
@@ -130,7 +129,7 @@ public class ConstructorParamNullTest extends BaseReflectionTest {
     	
     	try {
 			logger.logObject(builder, handler.handle(new NDCNS_Object(nullObjectField)));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject nDCNS_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_UnconfiguredObject();" +
 			constructorComment +

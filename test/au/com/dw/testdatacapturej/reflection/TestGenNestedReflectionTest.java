@@ -27,7 +27,9 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.ObjectLogger;
+import au.com.dw.testdatacapturej.log.RawLogBuilder;
 import au.com.dw.testdatacapturej.mock.dataholder.TestData;
 
 /**
@@ -40,13 +42,13 @@ public class TestGenNestedReflectionTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 	
 	@Before
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 	}
     
 	// Tests for collection of array
@@ -63,7 +65,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.HashSet hashSet0 = new java.util.HashSet();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
@@ -89,7 +91,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.HashSet hashSet0 = new java.util.HashSet();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[0];" +
@@ -114,7 +116,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
 			"int[] intArray0 = new int[1];" +
@@ -140,7 +142,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder[] innerDataHolderArray0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder[1];" +
@@ -169,7 +171,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder[] innerDataHolderArray0 = new au.com.dw.testdatacapturej.mock.dataholder.InnerDataHolder[2];" +
@@ -205,7 +207,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedList linkedList0 = new java.util.LinkedList();" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
@@ -230,7 +232,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.HashSet hashSet0 = new java.util.HashSet();" +
 			"java.util.HashSet hashSet1 = new java.util.HashSet();" +
@@ -256,7 +258,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
@@ -285,7 +287,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
@@ -321,7 +323,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedList linkedList0 = new java.util.LinkedList();" +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
@@ -346,7 +348,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.HashSet hashSet0 = new java.util.HashSet();" +
 			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
@@ -372,7 +374,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
 			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
@@ -401,7 +403,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedHashSet linkedHashSet0 = new java.util.LinkedHashSet();" +
 			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
@@ -437,7 +439,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.lang.Object[] objectArray1 = new java.lang.Object[1];" +
@@ -463,7 +465,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.lang.Object[] objectArray1 = new java.lang.Object[0];" +
@@ -488,7 +490,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.lang.Object[] objectArray1 = new java.lang.Object[1];" +
@@ -517,7 +519,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.lang.Object[] objectArray1 = new java.lang.Object[2];" +
@@ -553,7 +555,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
@@ -578,7 +580,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.HashSet hashSet0 = new java.util.HashSet();" +
@@ -604,7 +606,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
@@ -633,7 +635,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
@@ -669,7 +671,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
@@ -694,7 +696,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
@@ -720,7 +722,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
@@ -749,7 +751,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
 			"java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
@@ -785,7 +787,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.HashMap hashMap0 = new java.util.HashMap();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
@@ -811,7 +813,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[0];" +
@@ -836,7 +838,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"int[] intArray0 = new int[1];" +
@@ -862,7 +864,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
@@ -891,7 +893,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[2];" +
@@ -927,7 +929,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.HashMap hashMap0 = new java.util.HashMap();" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
@@ -952,7 +954,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
 			"java.util.HashSet hashSet0 = new java.util.HashSet();" +
@@ -978,7 +980,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"java.util.LinkedList linkedList0 = new java.util.LinkedList();" +
@@ -1007,7 +1009,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"java.util.LinkedList linkedList0 = new java.util.LinkedList();" +
@@ -1043,7 +1045,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.HashMap hashMap0 = new java.util.HashMap();" +
 			"java.util.HashMap hashMap1 = new java.util.HashMap();" +
@@ -1068,7 +1070,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.TreeMap treeMap0 = new java.util.TreeMap();" +
 			"java.util.TreeMap treeMap1 = new java.util.TreeMap();" +
@@ -1094,7 +1096,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"java.util.LinkedHashMap linkedHashMap1 = new java.util.LinkedHashMap();" +
@@ -1123,7 +1125,7 @@ public class TestGenNestedReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "java.util.LinkedHashMap linkedHashMap0 = new java.util.LinkedHashMap();" +
 			"java.util.LinkedHashMap linkedHashMap1 = new java.util.LinkedHashMap();" +

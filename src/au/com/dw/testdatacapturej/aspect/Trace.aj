@@ -27,6 +27,8 @@ import org.aspectj.lang.Signature;
 import au.com.dw.testdatacapturej.builder.FileNameKeyBuilder;
 import au.com.dw.testdatacapturej.builder.MethodBuilder;
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
+import au.com.dw.testdatacapturej.log.LogBuilderFactory;
 import au.com.dw.testdatacapturej.log.LogHolder;
 import au.com.dw.testdatacapturej.log.ObjectLogger;
 import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
@@ -154,7 +156,7 @@ public abstract aspect Trace {
 		
 		if (arguments.length == 0)
 		{
-			StringBuilder logBuilder = new StringBuilder();
+			LogBuilder logBuilder = LogBuilderFactory.createLogBuilder();
 			
 			// this shouldn't happen if the pointcut is correct, but do a sanity check in case
 			logBuilder.append(FormatConstants.commentLinePrefix + "No parameters for " + methodName);
@@ -172,13 +174,13 @@ public abstract aspect Trace {
 			for (int length = arguments.length, i = 0; i < length; ++i) {
 				Object argument = arguments[i];
 				int paramNum = i+1;
-				StringBuilder logBuilder = new StringBuilder();
+				LogBuilder logBuilder = LogBuilderFactory.createLogBuilder();
 				
 				// add a comment to track the method name and parameter number
 				logBuilder.append(FormatConstants.commentLinePrefix);
 				logBuilder.append(methodName);
 				logBuilder.append(":Parameter");
-				logBuilder.append(paramNum);
+				logBuilder.append(String.valueOf(paramNum));
 				logBuilder.append(FormatConstants.newLine);
 				
 				if (argument != null)
@@ -204,7 +206,7 @@ public abstract aspect Trace {
 				}
 
 
-				LogHolder log = new LogHolder(fileKey, logBuilder.toString());
+				LogHolder log = new LogHolder(fileKey, logBuilder.getLog());
 				logs.add(log);				
 			}
 		}
@@ -215,7 +217,7 @@ public abstract aspect Trace {
 	 * Format the trace message for method return value.
 	 */
 	protected LogHolder createReturnMessage(JoinPoint joinPoint, String methodName, Object returnValue) {
-		StringBuilder logBuilder = new StringBuilder();
+		LogBuilder logBuilder = LogBuilderFactory.createLogBuilder();
 		FileNameKeyBuilder keyBuilder = new FileNameKeyBuilder();
 		String fileKey = null;
 		
@@ -251,7 +253,7 @@ public abstract aspect Trace {
 			fileKey = keyBuilder.createReturnFileKey(methodName, "Null", true);
 		}
 			
-		LogHolder log = new LogHolder(fileKey, logBuilder.toString());
+		LogHolder log = new LogHolder(fileKey, logBuilder.getLog());
 		return log;
 	}
 	
@@ -261,9 +263,9 @@ public abstract aspect Trace {
 	 * @param message
 	 * @param object
 	 */
-	protected void logObject(StringBuilder message, String methodName, Object object) {
+	protected void logObject(LogBuilder logBuilder, String methodName, Object object) {
 		try {
-			getObjectLogger().logObject(message, getReflectionHandler().handle(object));
+			getObjectLogger().logObject(logBuilder, getReflectionHandler().handle(object));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

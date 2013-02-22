@@ -27,7 +27,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.ObjectLogger;
+import au.com.dw.testdatacapturej.log.RawLogBuilder;
 import au.com.dw.testdatacapturej.mock.dataholder.TestData;
 import au.com.dw.testdatacapturej.mock.type.reflection.NoMethodContainer;
 import au.com.dw.testdatacapturej.mock.type.reflection.NoMethodDataHolder;
@@ -45,13 +47,13 @@ public class TestGenNegativeReflectionTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 	
 	@Before
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 	}
  
     /**
@@ -70,7 +72,7 @@ public class TestGenNegativeReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(container));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.type.reflection.NoMethodContainer noMethodContainer0 = new au.com.dw.testdatacapturej.mock.type.reflection.NoMethodContainer();" +
 			constructorComment +
@@ -99,7 +101,7 @@ public class TestGenNegativeReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(data));
-			String result = builder.toString();
+			String result = builder.getLog();
 
 			String expected = "java.util.HashSet hashSet0 = new java.util.HashSet();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +

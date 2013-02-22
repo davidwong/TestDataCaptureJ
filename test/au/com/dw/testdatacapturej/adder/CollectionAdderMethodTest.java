@@ -24,7 +24,9 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.ObjectLogger;
+import au.com.dw.testdatacapturej.log.RawLogBuilder;
 import au.com.dw.testdatacapturej.mock.adder.CollectionClassHolder;
 import au.com.dw.testdatacapturej.mock.adder.CollectionHolder;
 import au.com.dw.testdatacapturej.mock.adder.CollectionHolderWithSetter;
@@ -48,13 +50,13 @@ public class CollectionAdderMethodTest extends BaseReflectionTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 		
 	@Before
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 	}
  
     /**
@@ -73,7 +75,7 @@ public class CollectionAdderMethodTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.adder.CollectionHolder collectionHolder0 = new au.com.dw.testdatacapturej.mock.adder.CollectionHolder();" +
 			"collectionHolder0.addCollectionElement(\"test1\");";
@@ -103,7 +105,7 @@ public class CollectionAdderMethodTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.adder.CollectionHolder collectionHolder0 = new au.com.dw.testdatacapturej.mock.adder.CollectionHolder();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
@@ -136,7 +138,7 @@ public class CollectionAdderMethodTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.adder.CollectionHolder collectionHolder0 = new au.com.dw.testdatacapturej.mock.adder.CollectionHolder();";
 			
@@ -170,7 +172,7 @@ public class CollectionAdderMethodTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.adder.CollectionClassHolder collectionClassHolder0 = new au.com.dw.testdatacapturej.mock.adder.CollectionClassHolder();" +
 			"collectionClassHolder0.addCollectionElementToClass(\"test1\");";
@@ -202,7 +204,7 @@ public class CollectionAdderMethodTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.adder.CollectionHolderWithSetter collectionHolderWithSetter0 = new au.com.dw.testdatacapturej.mock.adder.CollectionHolderWithSetter();" +
 			"collectionHolderWithSetter0.addCollectionElementInsteadOfSetter(\"test1\");";
@@ -228,7 +230,7 @@ public class CollectionAdderMethodTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.adder.CollectionHolder_Unconfigured collectionHolder_Unconfigured0 = new au.com.dw.testdatacapturej.mock.adder.CollectionHolder_Unconfigured();" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +

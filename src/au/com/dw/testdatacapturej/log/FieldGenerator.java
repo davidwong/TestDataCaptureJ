@@ -37,16 +37,16 @@ public interface FieldGenerator {
 	 * - Simple types don't need to be constructed.
 	 * - Arrays use a different constructor format than other objects.
 	 * 
+	 * @param builder
 	 * @param info
-	 * @return
 	 */
-	public String preLog(ObjectInfo info);
+	public void preLog(LogBuilder builder, ObjectInfo info);
 	
 	/**
 	 * Logging the object after the child objects are logged.
 	 * 
+	 * @param builder
 	 * @param info
-	 * @return
 	 */
-	public String log(ObjectInfo info);
+	public void log(LogBuilder builder, ObjectInfo info);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,22 +16,39 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.config;
+package au.com.dw.testdatacapturej.log;
 
+/**
+ * The default implementation of LogBuilder which is a wrapper around the StringBuilder that holds the logging.
+ * 
+ * This does not do any processing of the log, but just passes the strings to the StringBuilder.
+ * 
+ * @author David Wong
+ *
+ */
+public class RawLogBuilder implements LogBuilder {
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+	private final StringBuilder builder;
 
-import au.com.dw.testdatacapturej.log.FieldGeneratorTest;
+	public RawLogBuilder() {
+		builder = new StringBuilder();
+	}
 
+	public void append(String str) {
+		builder.append(str);
+	}
+	
+	public void process(String str) {
+		builder.append(str);
+	}
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
-	ConfigurationUtilTest.class,
-	ConfigurationFileTest.class,
-	DateConfigTest.class
-})
+	public String getPreLog() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-public class AllTests {
-		//just an empty class for make file compile with annotation
+	public String getLog() {
+		return builder.toString();
+	}
+
 }

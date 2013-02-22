@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2009, 2011, 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -344,52 +344,52 @@ public class LineBuilder {
    	 * 
    	 * Values that don't require formatting (e.g. int) should display the value unchanged.
    	 * 
-     * @param builder
+   	 * @param stringBuilder
      * @param value The value to be formatted
      */
-    public void appendClassDetail(StringBuilder builder, Object value) {
+    public void appendClassDetail(StringBuilder stringBuilder, Object value) {
     	
     	// add prefixes, if required
     	if (value instanceof String)
     	{
-    		builder.append("\"");
+    		stringBuilder.append("\"");
     	}
     	else if (value instanceof Character)
     	{
-    		builder.append("'");
+    		stringBuilder.append("'");
     	}
     		
     	// the actual value
     	if (value instanceof String)
     	{
-    		builder.append(escapeString((String)value));
+    		stringBuilder.append(escapeString((String)value));
     	}
     	else
     	{
-    		builder.append(value);
+    		stringBuilder.append(value);
     	}
     	
     	// add suffixes, if required
     	if (value instanceof String)
     	{
-    		builder.append("\"");
+    		stringBuilder.append("\"");
     	}        
     	else if (value instanceof Character)
     	{
-    		builder.append("'");
+    		stringBuilder.append("'");
     	}    
     	else if (value instanceof Long)
     	{
-    		builder.append("L");
+    		stringBuilder.append("L");
     	}    
     	else if (value instanceof Float)
     	{
-    		builder.append("f");
+    		stringBuilder.append("f");
     	}    
     	else if (value instanceof Double)
     	{
-    		builder.append("d");
-    	}    
+    		stringBuilder.append("d");
+    	}   
     }
 
     /**
@@ -417,20 +417,20 @@ public class LineBuilder {
 	 * Float's need to have 'f' appended.
 	 * etc ...
 	 * 
-	 * @param builder
+	 * @param stringBuilder
 	 * @param fieldValue
 	 * @param literal Flag whether to do any additional formatting or just use the field value as is.
 	 */
-	public void interpretValue(StringBuilder builder, Object fieldValue, boolean literal)
+	public void interpretValue(StringBuilder stringBuilder, Object fieldValue, boolean literal)
 	{
     	if (literal)
     	{
     		// just use the literal value of the object, should be a string representing the class field name
-    		builder.append(fieldValue); 
+    		stringBuilder.append(fieldValue);
     	}
     	else
     	{
-    		appendClassDetail(builder, fieldValue);
+    		appendClassDetail(stringBuilder, fieldValue);
     	}
 	}
 

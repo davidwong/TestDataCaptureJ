@@ -61,7 +61,7 @@ public class ConstructorParamTest extends BaseReflectionTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 	
 	private Holder holder;
 	
@@ -69,7 +69,7 @@ public class ConstructorParamTest extends BaseReflectionTest {
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 		holder = new Holder();
 	}
  
@@ -83,7 +83,7 @@ public class ConstructorParamTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_String nDCNS_String0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_String(\"test\");" +
@@ -107,7 +107,7 @@ public class ConstructorParamTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat nDCNS_BooleanFloat0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_BooleanFloat(true, 10.1f);" +
@@ -134,7 +134,7 @@ public class ConstructorParamTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int nDCNS_Int0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Int();" +
@@ -162,7 +162,7 @@ public class ConstructorParamTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_LongChar nDCNS_LongChar0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_LongChar(7L);" +
@@ -190,7 +190,7 @@ public class ConstructorParamTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Double nDCNS_Double0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Double();" +
@@ -219,7 +219,7 @@ public class ConstructorParamTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Integer nDCNS_Integer0 = new au.com.dw.testdatacapturej.mock.classcheck.NDCNS_Integer();" +
@@ -246,7 +246,7 @@ public class ConstructorParamTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
@@ -286,7 +286,7 @@ public class ConstructorParamTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"java.util.HashSet hashSet0 = new java.util.HashSet();" +
@@ -331,7 +331,7 @@ public class ConstructorParamTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
@@ -376,7 +376,7 @@ public class ConstructorParamTest extends BaseReflectionTest {
     	
     	try {
     		logger.logObject(builder, handler.handle(holder));
-    		String result = builder.toString();
+    		String result = builder.getLog();
     		
     		Collection<String> expectedValues = new ArrayList<String>();
     		

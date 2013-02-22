@@ -26,7 +26,9 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.ObjectLogger;
+import au.com.dw.testdatacapturej.log.RawLogBuilder;
 import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
 import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
 
@@ -64,7 +66,7 @@ public class DateConfigTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 	
 	private long dateTime = 1234567890L;
 	
@@ -72,7 +74,7 @@ public class DateConfigTest {
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 	}
 
 	/**
@@ -84,7 +86,7 @@ public class DateConfigTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(new Date(dateTime)));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "java.util.Date date0 = new java.util.Date(" + dateTime + "L);";
 			

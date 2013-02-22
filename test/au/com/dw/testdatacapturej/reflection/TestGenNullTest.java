@@ -25,7 +25,9 @@ import org.apache.commons.lang.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.ObjectLogger;
+import au.com.dw.testdatacapturej.log.RawLogBuilder;
 import au.com.dw.testdatacapturej.mock.dataholder.NullArrayElementHolder;
 import au.com.dw.testdatacapturej.mock.dataholder.NullArrayHolder;
 import au.com.dw.testdatacapturej.mock.dataholder.NullCollectionElementHolder;
@@ -34,8 +36,6 @@ import au.com.dw.testdatacapturej.mock.dataholder.NullMapEntryHolder;
 import au.com.dw.testdatacapturej.mock.dataholder.NullMapHolder;
 import au.com.dw.testdatacapturej.mock.dataholder.NullObjectHolder;
 import au.com.dw.testdatacapturej.mock.dataholder.NullStringHolder;
-import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
-import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
 
 
 
@@ -51,13 +51,13 @@ public class TestGenNullTest extends BaseReflectionTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 	
 	@Before
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 	}
  
     /**
@@ -68,7 +68,7 @@ public class TestGenNullTest extends BaseReflectionTest {
     {
 		try {
 			logger.logObject(builder, handler.handle(new NullObjectHolder()));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.NullObjectHolder nullObjectHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.NullObjectHolder();" +
@@ -92,7 +92,7 @@ public class TestGenNullTest extends BaseReflectionTest {
     {
 		try {
 			logger.logObject(builder, handler.handle(new NullStringHolder()));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.NullStringHolder nullStringHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.NullStringHolder();" +
@@ -116,7 +116,7 @@ public class TestGenNullTest extends BaseReflectionTest {
     {
 		try {
 			logger.logObject(builder, handler.handle(new NullCollectionHolder()));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.NullCollectionHolder nullCollectionHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.NullCollectionHolder();" +
@@ -142,7 +142,7 @@ public class TestGenNullTest extends BaseReflectionTest {
     {
 		try {
 			logger.logObject(builder, handler.handle(new NullArrayHolder()));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.NullArrayHolder nullArrayHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.NullArrayHolder();" +
@@ -168,7 +168,7 @@ public class TestGenNullTest extends BaseReflectionTest {
     {
 		try {
 			logger.logObject(builder, handler.handle(new NullMapHolder()));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.NullMapHolder nullMapHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.NullMapHolder();" +
@@ -194,7 +194,7 @@ public class TestGenNullTest extends BaseReflectionTest {
     {
 		try {
 			logger.logObject(builder, handler.handle(new NullCollectionElementHolder()));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.NullCollectionElementHolder nullCollectionElementHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.NullCollectionElementHolder();" +
@@ -232,7 +232,7 @@ public class TestGenNullTest extends BaseReflectionTest {
     {
 		try {
 			logger.logObject(builder, handler.handle(new NullArrayElementHolder()));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.NullArrayElementHolder nullArrayElementHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.NullArrayElementHolder();" +
@@ -264,7 +264,7 @@ public class TestGenNullTest extends BaseReflectionTest {
     {
 		try {
 			logger.logObject(builder, handler.handle(new NullMapEntryHolder()));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.NullMapEntryHolder nullMapEntryHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.NullMapEntryHolder();" +

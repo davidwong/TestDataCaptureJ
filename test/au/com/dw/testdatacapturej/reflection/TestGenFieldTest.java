@@ -25,11 +25,11 @@ import org.apache.commons.lang.SystemUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.ObjectLogger;
+import au.com.dw.testdatacapturej.log.RawLogBuilder;
 import au.com.dw.testdatacapturej.mock.dataholder.FieldObjectHolder;
 import au.com.dw.testdatacapturej.mock.dataholder.FieldPrimitiveHolder;
-import au.com.dw.testdatacapturej.reflection.MetadataGenerationHandler;
-import au.com.dw.testdatacapturej.reflection.ReflectionHandler;
 
 
 
@@ -44,13 +44,13 @@ public class TestGenFieldTest extends BaseReflectionTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 	
 	@Before
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 	}
 
 	// Testing for primitive fields
@@ -62,7 +62,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createByte()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "1";
 			
@@ -79,7 +79,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createInt()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "2";
 			
@@ -96,7 +96,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createLong()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "3L";
 			
@@ -113,7 +113,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createFloat()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "10.1f";
 			
@@ -130,7 +130,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createDouble()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "20.1d";
 			
@@ -147,7 +147,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createChar()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "'a'";
 			
@@ -164,7 +164,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createBoolean()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "true";
 			
@@ -190,7 +190,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.FieldPrimitiveHolder fieldPrimitiveHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.FieldPrimitiveHolder();" +
@@ -226,7 +226,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createByteObject()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "5";
 			
@@ -243,7 +243,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createInteger()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "6";
 			
@@ -260,7 +260,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createLongObject()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "7L";
 			
@@ -277,7 +277,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createFloatObject()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "50.1f";
 			
@@ -294,7 +294,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createDoubleObject()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "60.1d";
 			
@@ -311,7 +311,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createCharacter()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "'b'";
 			
@@ -328,7 +328,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createBooleanObject()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "false";
 			
@@ -345,7 +345,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 	{
 		try {
 			logger.logObject(builder, handler.handle(createString()));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = "\"test\"";
 			
@@ -372,7 +372,7 @@ public class TestGenFieldTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 		
 			String expected = SystemUtils.LINE_SEPARATOR +
 			"au.com.dw.testdatacapturej.mock.dataholder.FieldObjectHolder fieldObjectHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.FieldObjectHolder();" +

@@ -52,11 +52,11 @@ public class ObjectLogger {
 	 * 
 	 * The actual logging is done by a FieldDisplay implementation in this basic structure:
 	 * 
-	 * 1. FieldDisplay.preLog()
+	 * 1. FieldGenerator.preLog()
 	 * 
 	 * 2. recursively call logObject() on all child objects
 	 * 
-	 * 3. FieldDisplay.Log()
+	 * 3. FieldGenerator.Log()
 	 * 
 	 * NOTE:
 	 * May need to call resetNameCounters() after this method has run from the caller of logObject(). Shouldn't
@@ -65,12 +65,12 @@ public class ObjectLogger {
 	 * @param builder StringBuilder to hold the log.
 	 * @param info The Object metadata to use for the logging.
 	 */
-	public void logObject(StringBuilder builder, ObjectInfo info)
+	public void logObject(LogBuilder builder, ObjectInfo info)
 	{
 		if (!info.isAlreadyLogged())
 		{
 			// get the appropriate FieldDisplay for the type of object
-			FieldGenerator fieldDisplay = getFieldDisplayForType(info.getType(), info.getContainmentType());
+			FieldGenerator fieldGen = getFieldGeneratorForType(info.getType(), info.getContainmentType());
 	
 			// maps require different handling to process both the key and the value in the correct order, the
 			// presence of the keyInfo field indicates that the object is a map entry
@@ -85,7 +85,7 @@ public class ObjectLogger {
 				logParameters(builder, keyInfo);
 				
 				setClassNameIndex(keyInfo);
-				builder.append(fieldDisplay.preLog(keyInfo));
+				fieldGen.preLog(builder, keyInfo);
 				
 				for (ObjectInfo fieldInfo : keyInfo.getFieldList())
 				{
@@ -98,7 +98,7 @@ public class ObjectLogger {
 			// get the appropriate numerical suffix for creating the class field name(s)
 			setClassNameIndex(info);
 			// log the object or map value
-			builder.append(fieldDisplay.preLog(info));
+			fieldGen.preLog(builder, info);
 			
 			// log child objects, e.g. fields, contained elements, etc
 			for (ObjectInfo fieldInfo : info.getFieldList())
@@ -106,7 +106,7 @@ public class ObjectLogger {
 				logObject(builder, fieldInfo);
 			}
 			
-			builder.append(fieldDisplay.log(info));
+			fieldGen.log(builder, info);
 		}
 	}
 
@@ -117,12 +117,12 @@ public class ObjectLogger {
 	 * @param builder StringBuilder to hold the log.
 	 * @param info The Object metadata to use for the logging.
 	 */
-	private void logParameters(StringBuilder builder, ObjectInfo info)
+	private void logParameters(LogBuilder builder, ObjectInfo info)
 	{
 		List<String> paramFieldNames = info.getConstructorInfo().getConstructorParamFieldNames();
 		if (!paramFieldNames.isEmpty())
 		{
-			FieldGenerator fieldDisplay = new ParameterGenerator();
+			FieldGenerator fieldGen = new ParameterGenerator();
 			
 			for (String paramFieldName : paramFieldNames)
 			{
@@ -134,14 +134,14 @@ public class ObjectLogger {
 				logParameters(builder, paramFieldInfo);
 				
 				setClassNameIndex(paramFieldInfo);
-				builder.append(fieldDisplay.preLog(paramFieldInfo));
+				fieldGen.preLog(builder, paramFieldInfo);
 				
 				for (ObjectInfo fieldInfo : paramFieldInfo.getFieldList())
 				{
 					logObject(builder, fieldInfo);
 				}
 				
-				builder.append(fieldDisplay.log(paramFieldInfo));
+				fieldGen.log(builder, paramFieldInfo);
 				
 				// mark the object as already logged
 				paramFieldInfo.setAlreadyLogged(true);
@@ -180,9 +180,9 @@ public class ObjectLogger {
 	 * @param containmentType The ContainmentType enum, if the object is an element in an array or collection, etc
 	 * @return
 	 */
-	private FieldGenerator getFieldDisplayForType(ObjectType type, ContainmentType containmentType)
+	private FieldGenerator getFieldGeneratorForType(ObjectType type, ContainmentType containmentType)
 	{
-		FieldGenerator fieldDisplay;
+		FieldGenerator fieldGen;
 		
 		// need to check whether the object is an element in a container or just a field
 		
@@ -191,24 +191,24 @@ public class ObjectLogger {
 			switch (type)
 			{
 				case ARRAY:
-					fieldDisplay = outputGeneratorFactory.getArrayFieldGenerator();
+					fieldGen = outputGeneratorFactory.getArrayFieldGenerator();
 					break;
 					
 				case COLLECTION:
-					fieldDisplay = outputGeneratorFactory.getCollectionFieldGenerator();
+					fieldGen = outputGeneratorFactory.getCollectionFieldGenerator();
 					break;
 		
 				case MAP:
-					fieldDisplay = outputGeneratorFactory.getMapFieldGenerator();
+					fieldGen = outputGeneratorFactory.getMapFieldGenerator();
 					break;
 	
 				case SIMPLE:
-					fieldDisplay = outputGeneratorFactory.getSimpleFieldGenerator();
+					fieldGen = outputGeneratorFactory.getSimpleFieldGenerator();
 					break;
 				
 				case OBJECT:
 				default:
-					fieldDisplay = outputGeneratorFactory.getClassFieldGenerator();
+					fieldGen = outputGeneratorFactory.getClassFieldGenerator();
 					break;
 			}
 		}
@@ -217,29 +217,29 @@ public class ObjectLogger {
 			switch (containmentType)
 			{
 				case COLLECTION_ELEMENT:
-					fieldDisplay = outputGeneratorFactory.getCollectionElementGenerator();
+					fieldGen = outputGeneratorFactory.getCollectionElementGenerator();
 					break;
 	
 				case ARRAY_ELEMENT:
-					fieldDisplay = outputGeneratorFactory.getArrayElementGenerator();
+					fieldGen = outputGeneratorFactory.getArrayElementGenerator();
 					break;
 	
 				case MAP_ENTRY:
-					fieldDisplay = outputGeneratorFactory.getMapEntryGenerator();
+					fieldGen = outputGeneratorFactory.getMapEntryGenerator();
 					break;
 
 				case ADDED_COLLECTION_ELEMENT:
-					fieldDisplay = outputGeneratorFactory.getAddedElementGenerator();
+					fieldGen = outputGeneratorFactory.getAddedElementGenerator();
 					break;
 
 				default:
 					// shouldn't fall through here
-					fieldDisplay = outputGeneratorFactory.getClassFieldGenerator();
+					fieldGen = outputGeneratorFactory.getClassFieldGenerator();
 					break;
 			}
 		}
 		
-		return fieldDisplay;
+		return fieldGen;
 	}
 
 	/**

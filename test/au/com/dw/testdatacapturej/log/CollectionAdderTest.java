@@ -107,11 +107,13 @@ public class CollectionAdderTest {
 		return info;
 	}
 
-	private String generateLog(FieldGenerator display, ObjectInfo info, Object value, ObjectInfo keyInfo)
+	private String generateLog(FieldGenerator fieldGen, ObjectInfo info, Object value, ObjectInfo keyInfo)
 	{
 		info.setValue(value);
 		info.setKeyInfo(keyInfo);
-		String result = display.log(info);
+		LogBuilder builder = new RawLogBuilder();
+		fieldGen.log(builder, info);
+		String result = builder.getLog();
 		result = result.replaceAll(FormatConstants.newLine, "");
 		
 		return result;

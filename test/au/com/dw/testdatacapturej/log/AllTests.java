@@ -24,7 +24,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	FieldDisplayTest.class,
+	FieldGeneratorTest.class,
 	ConstructorParamTest.class,
 	ConstructorParamNestedTest.class,
 	ConstructorParamNullTest.class,

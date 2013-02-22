@@ -52,7 +52,7 @@ public class SetterMethodNestedTest extends BaseReflectionTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 	
 	private Holder holder;
 	
@@ -60,7 +60,7 @@ public class SetterMethodNestedTest extends BaseReflectionTest {
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 		holder = new Holder();
 	}
  
@@ -83,7 +83,7 @@ public class SetterMethodNestedTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(unconfigured));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject setter_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Object setter_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Object();" +
@@ -115,7 +115,7 @@ public class SetterMethodNestedTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(configured));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Setter_Object setter_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Object();";
 			
@@ -149,7 +149,7 @@ public class SetterMethodNestedTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(collectionField));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredCollection setter_UnconfiguredCollection0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredCollection();" +
 			"java.util.ArrayList arrayList0 = new java.util.ArrayList();" +
@@ -188,7 +188,7 @@ public class SetterMethodNestedTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(array));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObjectArray setter_UnconfiguredObjectArray0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObjectArray();" +
 			"java.lang.Object[] objectArray0 = new java.lang.Object[1];" +
@@ -227,7 +227,7 @@ public class SetterMethodNestedTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(map));
-			String result = builder.toString();
+			String result = builder.getLog();
 
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredMap setter_UnconfiguredMap0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredMap();" +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +
@@ -265,7 +265,7 @@ public class SetterMethodNestedTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(map));
-			String result = builder.toString();
+			String result = builder.getLog();
 
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredMap setter_UnconfiguredMap0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredMap();" +
 			"java.util.HashMap hashMap0 = new java.util.HashMap();" +

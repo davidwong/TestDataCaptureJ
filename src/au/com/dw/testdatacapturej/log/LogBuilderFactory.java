@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright () 2009, 2011 David Wong
+ * Copyright () 2013 David Wong
  *
  * This file is part of TestDataCaptureJ.
  *
@@ -16,22 +16,18 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.config;
+package au.com.dw.testdatacapturej.log;
 
+/**
+ * Factory that implements the factory method pattern to create LogBuilders of various types.
+ * 
+ * @author David Wong
+ *
+ */
+public class LogBuilderFactory {
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-
-import au.com.dw.testdatacapturej.log.FieldGeneratorTest;
-
-
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
-	ConfigurationUtilTest.class,
-	ConfigurationFileTest.class,
-	DateConfigTest.class
-})
-
-public class AllTests {
-		//just an empty class for make file compile with annotation
+	public static LogBuilder createLogBuilder()
+	{
+		return new RawLogBuilder();
+	}
 }

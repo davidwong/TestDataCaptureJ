@@ -57,7 +57,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 
 	private ReflectionHandler handler;
 	private ObjectLogger logger;
-	private StringBuilder builder;
+	private LogBuilder builder;
 	
 	private Holder holder;
 	
@@ -65,7 +65,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new StringBuilder();
+		builder = new RawLogBuilder();
 		holder = new Holder();
 	}
  
@@ -83,7 +83,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Simple setter_Simple0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Simple();" +
@@ -111,7 +111,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredSimple setter_UnconfiguredSimple0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredSimple();" +
@@ -142,7 +142,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Object setter_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Object();" +
@@ -172,7 +172,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject setter_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject();" +
@@ -210,7 +210,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Collection setter_Collection0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Collection();" +
@@ -240,7 +240,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredCollection setter_UnconfiguredCollection0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredCollection();" +
@@ -273,7 +273,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Array setter_Array0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Array();" +
@@ -303,7 +303,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredArray setter_UnconfiguredArray0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredArray();" +
@@ -336,7 +336,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Map setter_Map0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Map();" +
@@ -366,7 +366,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.toString();
+			String result = builder.getLog();
 
 			Collection<String> expectedValues = new ArrayList<String>();
 			
@@ -410,7 +410,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(objectField));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Setter_Object setter_Object0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Object();";
 			
@@ -436,7 +436,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 		
 		try {
 			logger.logObject(builder, handler.handle(objectField));
-			String result = builder.toString();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject setter_UnconfiguredObject0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_UnconfiguredObject();" +
 			"au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder simpleDataHolder0 = new au.com.dw.testdatacapturej.mock.dataholder.SimpleDataHolder();" +
