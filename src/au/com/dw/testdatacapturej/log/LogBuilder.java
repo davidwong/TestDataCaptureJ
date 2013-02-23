@@ -64,5 +64,17 @@ public interface LogBuilder {
 	 */
 	public String getPreLog();
 	
-	//public String getPostLog();
+	/**
+	 * Get any logging that is required after the log of the actual objects.
+	 * 
+	 * @return
+	 */
+	public String getPostLog();
+	
+	/**
+	 * Get all of the logging.
+	 * 
+	 * @return
+	 */
+	public String getFullLog();
 }

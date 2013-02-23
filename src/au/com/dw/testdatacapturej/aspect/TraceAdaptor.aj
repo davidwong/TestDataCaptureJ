@@ -58,17 +58,19 @@ public abstract aspect TraceAdaptor extends Trace {
 	private Logger logger = LoggerFactory.getLogger(LoggingConstants.TRACE_LOGGER);
 
 	@Override
-	protected void preLog(LogHolder log)
+	protected void preLog(LogHolder logHolder)
 	{
 		// add a unique MDC value to be used by a sifting appender so that each logged object will
 		// be logged to a separate log file
 		
-		String key = log.getFileKey();
+		String key = logHolder.getFileKey();
 		MDC.put(LoggingConstants.LOGGER_MDC_KEY, key);
+		
+		doLog(logHolder.getPreLog());
 	}
 	
 	@Override
-	protected void postLog(LogHolder log)
+	protected void postLog(LogHolder logHolder)
 	{
 		// clean up MDC after logging each logged object
 		

@@ -51,12 +51,18 @@ public class RawLogBuilder implements LogBuilder {
 	}
 
 	public String getPreLog() {
-		// TODO Auto-generated method stub
-		return null;
+		return FormatConstants.EMPTY_STRING;
 	}
 
+	public String getPostLog() {
+		return FormatConstants.EMPTY_STRING;
+	}
+	
 	public String getLog() {
 		return builder.toString();
 	}
 
+	public String getFullLog() {
+		return getLog();
+	}
 }

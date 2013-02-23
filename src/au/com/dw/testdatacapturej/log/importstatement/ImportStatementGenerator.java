@@ -25,19 +25,12 @@ package au.com.dw.testdatacapturej.log.importstatement;
  * @author David Wong
  *
  */
-public abstract class ImportStatementGenerator {
+public interface ImportStatementGenerator {
 
-	/** Hold the class names internally in a set to de-duplicate */
-	private ClassNameHolder classNameHolder;
-	
-	public ImportStatementGenerator(ClassNameHolder classNameHolder) {
-		this.classNameHolder = classNameHolder;
-	}
-	
 	/**
 	 * Generate the import statements.
 	 * 
 	 * @return The import statements in the required syntax
 	 */
-	public abstract String generateImports();
+	public abstract String generateImports(ClassNameHolder classNameHolder);
 }

@@ -19,43 +19,20 @@
 package au.com.dw.testdatacapturej.log.importstatement;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
-import au.com.dw.testdatacapturej.log.RawLogBuilder;
-import au.com.dw.testdatacapturej.reflection.util.ReflectionUtil;
 
-public class ImportStatementLogBuilder extends RawLogBuilder {
+public class ImportStatementGeneratorImpl implements ImportStatementGenerator {
 
-	private final ClassNameHolder classNameHolder;
-	
-	private ImportStatementGenerator importsGen;
-	
-	public ImportStatementLogBuilder() {
-		super();
-		
-		classNameHolder = new ClassNameHolder();
-		importsGen = new ImportStatementGeneratorImpl();
-	}
-
-	public void process(String str) {
-		// save the fully qualified class name and just 
-		getClassNameHolder().addClassName(str);
-		append(ReflectionUtil.getShortClassName(str));
-	}
-	
-	public String getPreLog() {
-		return importsGen.generateImports(getClassNameHolder());
-	}
-
-	protected ClassNameHolder getClassNameHolder() {
-		return classNameHolder;
-	}
-	
-	public String getFullLog() {
+	public String generateImports(ClassNameHolder classNameHolder) {
 		StringBuilder stringBuilder = new StringBuilder();
 		
-		stringBuilder.append(getPreLog());
-		//stringBuilder.append(FormatConstants.newLine);
-		stringBuilder.append(getLog());
-		
+		for (String className : classNameHolder.getClassNames())
+		{
+			stringBuilder.append("import ");
+			stringBuilder.append(className);
+			stringBuilder.append(";");
+			stringBuilder.append(FormatConstants.newLine);
+		}
 		return stringBuilder.toString();
 	}
+
 }

@@ -18,6 +18,7 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.log.importstatement;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ import java.util.Set;
 public class ClassNameHolder {
 
 	/** Holds the class names internally in a set to de-duplicate */
-	private Set<String> classNames;
+	private final Set<String> classNames;
 	
 	public ClassNameHolder() {
 		classNames = new HashSet<String>();
@@ -44,6 +45,10 @@ public class ClassNameHolder {
 	public void addClassName(String className)
 	{
 		classNames.add(className);
+	}
+
+	public Set<String> getClassNames() {
+		return Collections.unmodifiableSet(classNames);
 	}
 
 }
