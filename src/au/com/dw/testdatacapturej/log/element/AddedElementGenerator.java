@@ -19,6 +19,7 @@
 package au.com.dw.testdatacapturej.log.element;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.field.BaseFieldGenerator;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
@@ -33,9 +34,8 @@ import au.com.dw.testdatacapturej.meta.ObjectInfo;
 public class AddedElementGenerator extends BaseFieldGenerator {
 
 	@Override
-	public String log(ObjectInfo info)
+	public void log(LogBuilder builder, ObjectInfo info)
 	{
-		StringBuilder builder = new StringBuilder();
 		ObjectInfo parentInfo = info.getParentInfo();
 
 		if (parentInfo != null)
@@ -49,11 +49,11 @@ public class AddedElementGenerator extends BaseFieldGenerator {
 				if (info.isSimpleType())
 				{
 					literal = false;
-					builder.append(getLineBuilder().createCollectionEnclosingAdderLine(classFieldName, adderMethodName, info.getValue(), literal));
+					getLineBuilder().createCollectionEnclosingAdderLine(builder, classFieldName, adderMethodName, info.getValue(), literal);
 				}
 				else
 				{
-					builder.append(getLineBuilder().createCollectionEnclosingAdderLine(classFieldName, adderMethodName, info.getFullFieldName(), literal));
+					getLineBuilder().createCollectionEnclosingAdderLine(builder, classFieldName, adderMethodName, info.getFullFieldName(), literal);
 				}
 				builder.append(FormatConstants.newLine);
 			}
@@ -66,7 +66,5 @@ public class AddedElementGenerator extends BaseFieldGenerator {
 		{
 			// log error
 		}
-
-		return builder.toString();
 	}
 }

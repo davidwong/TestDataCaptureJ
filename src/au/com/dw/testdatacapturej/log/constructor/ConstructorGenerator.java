@@ -18,6 +18,7 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.log.constructor;
 
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
@@ -35,7 +36,7 @@ public interface ConstructorGenerator {
 	 * @param builder
 	 * @param info
 	 */
-	public void generateConstructor(StringBuilder builder, ObjectInfo info);
+	public void generateConstructor(LogBuilder builder, ObjectInfo info);
 	
 	/**
 	 * Add a comment for the constructor line.
@@ -43,5 +44,5 @@ public interface ConstructorGenerator {
 	 * @param builder
 	 * @param info
 	 */
-	public void addConstructorComment(StringBuilder builder, ObjectInfo info);
+	public void addConstructorComment(LogBuilder builder, ObjectInfo info);
 }

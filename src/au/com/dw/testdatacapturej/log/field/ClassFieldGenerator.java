@@ -19,10 +19,11 @@
 package au.com.dw.testdatacapturej.log.field;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Display for an object field.
+ * Generator for an object field.
  * e.g. class.setField(value);
  * 
  * @author David Wong
@@ -31,10 +32,8 @@ import au.com.dw.testdatacapturej.meta.ObjectInfo;
 public class ClassFieldGenerator extends BaseFieldGenerator {
 	
 	@Override
-	public String log(ObjectInfo info)
+	public void log(LogBuilder builder, ObjectInfo info)
 	{
-		StringBuilder builder = new StringBuilder();
-
 		if (!info.isInitalObject())
 		{
 			// check if configured to ignore a field for setter method generation
@@ -45,10 +44,9 @@ public class ClassFieldGenerator extends BaseFieldGenerator {
 				// same as BaseFieldDisplay.generateSetter() except don't have new line here
 				
 				builder.append(info.getContainingClassFieldName());
-				builder.append(getLineBuilder().createSetterLine(info.getFieldName(), info.getFullFieldName(), literal));
+				getLineBuilder().createSetterLine(builder, info.getFieldName(), info.getFullFieldName(), literal);
 				builder.append(FormatConstants.newLine);
 			}
 		}
-		return builder.toString();
 	}
 }

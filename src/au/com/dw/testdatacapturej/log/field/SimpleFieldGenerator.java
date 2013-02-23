@@ -19,11 +19,12 @@
 package au.com.dw.testdatacapturej.log.field;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.meta.SetterGenerationType;
 
 /**
- * Display for a simple field, i.e. not a array or collection but a primitive value or wrapper.
+ * Generator for a simple field, i.e. not a array or collection but a primitive value or wrapper.
  * e.g. String, int, Integer, etc
  * 
  * @author David Wong
@@ -32,15 +33,13 @@ import au.com.dw.testdatacapturej.meta.SetterGenerationType;
 public class SimpleFieldGenerator extends BaseFieldGenerator {
 
 	@Override
-	public String log(ObjectInfo info)
+	public void log(LogBuilder builder, ObjectInfo info)
 	{
-		StringBuilder builder = new StringBuilder();
-
 		boolean literal = !info.isSimpleType();
 		
 		if (info.isInitalObject())
 		{
-			getLineBuilder().interpretValue(builder, info.getValue(), literal);
+			builder.append(getLineBuilder().getInterpretedValue(info.getValue(), literal));
 		}
 		else
 		{
@@ -48,11 +47,9 @@ public class SimpleFieldGenerator extends BaseFieldGenerator {
 			if (info.getSetterAdderInfo().getSetterGenerationType() != SetterGenerationType.IGNORE)
 			{
 				builder.append(info.getContainingClassFieldName());
-				builder.append(getLineBuilder().createSetterLine(info.getFieldName(), info.getValue(), literal));
+				getLineBuilder().createSetterLine(builder, info.getFieldName(), info.getValue(), literal);
 				builder.append(FormatConstants.newLine);
 			}
 		}
-		
-		return builder.toString();
 	}
 }

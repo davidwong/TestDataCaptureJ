@@ -19,6 +19,7 @@
 package au.com.dw.testdatacapturej.log.constructor;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
@@ -30,12 +31,11 @@ import au.com.dw.testdatacapturej.meta.ObjectInfo;
 public class ParameterizedConstructorGenerator extends BaseConstructorGenerator {
 
 	@Override
-	public void generateConstructor(StringBuilder builder, ObjectInfo info) {
+	public void generateConstructor(LogBuilder builder, ObjectInfo info) {
 		builder.append(FormatConstants.newLine);
 
-		// create the constructor line
-		String constructorLine = getLineBuilder().createParameterizedConstructorLine(info);
-		builder.append(constructorLine);
+		// get the constructor line
+		getLineBuilder().createParameterizedConstructorLine(builder, info);
 		
 		// pass the newly created class field name to child objects
 		for (ObjectInfo fieldInfo : info.getFieldList())

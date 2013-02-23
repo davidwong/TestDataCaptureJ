@@ -18,10 +18,11 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.log.field;
 
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Display for an array field.
+ * Generator for an array field.
  * 
  * @author David Wong
  *
@@ -29,15 +30,11 @@ import au.com.dw.testdatacapturej.meta.ObjectInfo;
 public class ArrayFieldGenerator extends BaseFieldGenerator {
 
 	@Override
-	public String log(ObjectInfo info) {
-		StringBuilder builder = new StringBuilder();
-				
+	public void log(LogBuilder builder, ObjectInfo info) {
 		// check if configured to ignore a field for setter method generation
 		if (!info.isSetterIgnoreType())
 		{
 			generateSetter(builder, info);
 		}
-       	
-		return builder.toString();
-	}
+ 	}
 }

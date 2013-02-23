@@ -19,6 +19,7 @@
 package au.com.dw.testdatacapturej.log.constructor;
 
 import au.com.dw.testdatacapturej.builder.LineBuilder;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
@@ -31,15 +32,9 @@ public abstract class BaseConstructorGenerator implements ConstructorGenerator {
 
 	private LineBuilder lineBuilder = new LineBuilder();
 
-	/* (non-Javadoc)
-	 * @see au.com.dw.testdatacapturej.log.constructor.ConstructorGenerator#generateConstructor(java.lang.StringBuilder, au.com.dw.testdatacapturej.meta.ObjectInfo)
-	 */
-	public abstract void generateConstructor(StringBuilder builder, ObjectInfo info);
+	public abstract void generateConstructor(LogBuilder builder, ObjectInfo info);
 	
-	/* (non-Javadoc)
-	 * @see au.com.dw.testdatacapturej.log.constructor.ConstructorGenerator#addConstructorComment(java.lang.StringBuilder, au.com.dw.testdatacapturej.meta.ObjectInfo)
-	 */
-	public void addConstructorComment(StringBuilder builder, ObjectInfo info)
+	public void addConstructorComment(LogBuilder builder, ObjectInfo info)
 	{
 		// Default do-nothing adaptor method.
 	}

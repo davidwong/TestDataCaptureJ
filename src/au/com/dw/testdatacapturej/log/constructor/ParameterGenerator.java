@@ -19,11 +19,12 @@
 package au.com.dw.testdatacapturej.log.constructor;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.field.BaseFieldGenerator;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Display for a constructor parameter.
+ * Generator for a constructor parameter.
  * 
  * @author David Wong
  *
@@ -31,28 +32,25 @@ import au.com.dw.testdatacapturej.meta.ObjectInfo;
 public class ParameterGenerator extends BaseFieldGenerator {
 	
 	@Override
-	public String log(ObjectInfo info)
+	public void log(LogBuilder builder, ObjectInfo info)
 	{
-		StringBuilder builder = new StringBuilder();
-
 		if (!info.isInitalObject())
 		{
+			
+			String param = FormatConstants.EMPTY_STRING;
 			if (info.isSimpleType())
 			{
-				getLineBuilder().interpretValue(builder, info.getValue(), false);
+				param = getLineBuilder().getInterpretedValue(info.getValue(), false);
 			}
 			else
 			{
-				builder.append(info.getFullFieldName());
+				param = info.getFullFieldName();
 			}
 			
 			// store the value in the parent class for use in generating a parameterized
 			// constructor line
 			ObjectInfo parentInfo = info.getParentInfo();
-			parentInfo.getConstructorInfo().addConstructorParameter(builder.toString());
+			parentInfo.getConstructorInfo().addConstructorParameter(param);
 		}
-		
-		// don't actually log anything
-		return FormatConstants.EMPTY_STRING;
 	}
 }

@@ -66,7 +66,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new ImportStatementLogBuilder();
+		builder = new RawLogBuilder();
 		holder = new Holder();
 	}
  
@@ -84,7 +84,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.getFullLog();
+			String result = builder.getLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Simple setter_Simple0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Simple();" +

@@ -19,6 +19,7 @@
 package au.com.dw.testdatacapturej.log.constructor;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.util.Messages;
 
@@ -31,15 +32,14 @@ import au.com.dw.testdatacapturej.util.Messages;
 public class DefaultConstructorGenerator extends BaseConstructorGenerator {
 
 	@Override
-	public void generateConstructor(StringBuilder builder, ObjectInfo info) {
+	public void generateConstructor(LogBuilder builder, ObjectInfo info) {
 		// no need to construct a collection is it is only accessed through adder method
 		if (!info.getSetterAdderInfo().isUsesAdder())
 		{
 			builder.append(FormatConstants.newLine);
 	
-			// create the constructor line
-			String constructorLine = getLineBuilder().createConstructorLine(info);
-			builder.append(constructorLine);
+			// get the constructor line
+			getLineBuilder().createConstructorLine(builder, info);
 			
 			// pass the newly created class field name to child objects
 			for (ObjectInfo fieldInfo : info.getFieldList())
@@ -52,7 +52,7 @@ public class DefaultConstructorGenerator extends BaseConstructorGenerator {
 	}
 
 	@Override
-	public void addConstructorComment(StringBuilder builder, ObjectInfo info) {
+	public void addConstructorComment(LogBuilder builder, ObjectInfo info) {
 		// should be output when a default constructor line is generated for a class that does not have
 		// a no-argument default constructor
 		builder.append(FormatConstants.commentLinePrefix);

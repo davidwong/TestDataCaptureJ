@@ -19,11 +19,12 @@
 package au.com.dw.testdatacapturej.log.element;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.field.BaseFieldGenerator;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Display a collection element.
+ * Generate a collection element.
  * e.g. field.add(value);
  * 
  * @author David Wong
@@ -32,23 +33,19 @@ import au.com.dw.testdatacapturej.meta.ObjectInfo;
 public class CollectionElementGenerator extends BaseFieldGenerator {
 
 	@Override
-	public String log(ObjectInfo info)
+	public void log(LogBuilder builder, ObjectInfo info)
 	{
-		StringBuilder builder = new StringBuilder();
-
 		boolean literal = true;
 		
 		if (info.isSimpleType())
 		{
 			literal = false;
-			builder.append(getLineBuilder().createCollectionAddLine(info.getContainingClassFieldName(), info.getValue(), literal));
+			getLineBuilder().createCollectionAddLine(builder, info.getContainingClassFieldName(), info.getValue(), literal);
 		}
 		else
 		{
-			builder.append(getLineBuilder().createCollectionAddLine(info.getContainingClassFieldName(), info.getFullFieldName(), literal));
+			getLineBuilder().createCollectionAddLine(builder, info.getContainingClassFieldName(), info.getFullFieldName(), literal);
 		}
 		builder.append(FormatConstants.newLine);
-		
-		return builder.toString();
 	}
 }

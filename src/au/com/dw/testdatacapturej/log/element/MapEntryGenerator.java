@@ -19,11 +19,12 @@
 package au.com.dw.testdatacapturej.log.element;
 
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.field.BaseFieldGenerator;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Display for a map entry.
+ * Generate a map entry.
  * e.g. field.put(key, value);
  * 
  * @author David Wong
@@ -32,16 +33,12 @@ import au.com.dw.testdatacapturej.meta.ObjectInfo;
 public class MapEntryGenerator extends BaseFieldGenerator {
 
 	@Override
-	public String log(ObjectInfo info) 
+	public void log(LogBuilder builder, ObjectInfo info) 
 	{
-		StringBuilder builder = new StringBuilder();
-
 		boolean literal = !info.isSimpleType();
 		boolean keyLiteral = !info.getKeyInfo().isSimpleType();
 		
-		builder.append(getLineBuilder().createMapPutLine(info.getContainingClassFieldName(), info.getKeyInfo().getFullFieldName(), info.getFullFieldName(), info.getKeyInfo().getValue(), info.getValue(), keyLiteral, literal));
+		getLineBuilder().createMapPutLine(builder, info.getContainingClassFieldName(), info.getKeyInfo().getFullFieldName(), info.getFullFieldName(), info.getKeyInfo().getValue(), info.getValue(), keyLiteral, literal);
 		builder.append(FormatConstants.newLine);
-       	
-		return builder.toString();
-	}
+  	}
 }

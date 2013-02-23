@@ -23,6 +23,7 @@ import java.util.List;
 import au.com.dw.testdatacapturej.builder.LineBuilder;
 import au.com.dw.testdatacapturej.log.FieldGenerator;
 import au.com.dw.testdatacapturej.log.FormatConstants;
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.log.constructor.ArrayConstructorGenerator;
 import au.com.dw.testdatacapturej.log.constructor.ConstructorGenerator;
 import au.com.dw.testdatacapturej.log.constructor.DefaultConstructorGenerator;
@@ -45,12 +46,7 @@ public class BaseFieldGenerator implements FieldGenerator {
 
 	private LineBuilder lineBuilder = new LineBuilder();
 
-	/* (non-Javadoc)
-	 * @see au.com.dw.testdatacapturej.log.display.FieldDisplay#preLog(au.com.dw.testdatacapturej.meta.ObjectInfo)
-	 */
-	public String preLog(ObjectInfo info) {
-		StringBuilder builder = new StringBuilder();
-		
+	public void preLog(LogBuilder builder, ObjectInfo info) {
 		if (!info.isSimpleType())
 		{
 			// check if configured to ignore a field for setter method generation
@@ -59,17 +55,11 @@ public class BaseFieldGenerator implements FieldGenerator {
 				generateConstructor(builder, info);
 			}
 		}
-		
-		return builder.toString();
 	}
 
-	/* (non-Javadoc)
-	 * @see au.com.dw.testdatacapturej.log.display.FieldDisplay#log(au.com.dw.testdatacapturej.meta.ObjectInfo)
-	 */
-	public String log(ObjectInfo info)
+	public void log(LogBuilder builder, ObjectInfo info)
 	{
 		// default do-nothing log
-		return FormatConstants.EMPTY_STRING;
 	}
 
 	/**
@@ -80,7 +70,7 @@ public class BaseFieldGenerator implements FieldGenerator {
 	 * 
 	 * @see au.com.dw.testdatacapturej.log.constructor.ConstructorGenerator
 	 */
-	protected void generateConstructor(StringBuilder builder, ObjectInfo info) {
+	protected void generateConstructor(LogBuilder builder, ObjectInfo info) {
 		ConstructorGenerator gen = null;
 		boolean doNoDefaultConstructorComment = false;
 		
@@ -132,14 +122,14 @@ public class BaseFieldGenerator implements FieldGenerator {
 	 * @param builder
 	 * @param info
 	 */
-	protected void generateSetter(StringBuilder builder, ObjectInfo info) {
+	protected void generateSetter(LogBuilder builder, ObjectInfo info) {
 		if (!info.isInitalObject())
 		{
 			boolean literal = !info.isSimpleType();
 			
 			builder.append(FormatConstants.newLine);
 			builder.append(info.getContainingClassFieldName());
-			builder.append(getLineBuilder().createSetterLine(info.getFieldName(), info.getFullFieldName(), literal));
+			getLineBuilder().createSetterLine(builder, info.getFieldName(), info.getFullFieldName(), literal);
 			builder.append(FormatConstants.newLine);
 		}
 	}
@@ -149,10 +139,6 @@ public class BaseFieldGenerator implements FieldGenerator {
 	
 	public LineBuilder getLineBuilder() {
 		return lineBuilder;
-	}
-	
-	public void setLineBuilder(LineBuilder lineBuilder) {
-		this.lineBuilder = lineBuilder;
 	}
 }
 

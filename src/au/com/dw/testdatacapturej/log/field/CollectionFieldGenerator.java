@@ -18,10 +18,11 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.log.field;
 
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 
 /**
- * Display for an collection field.
+ * Generator for an collection field.
  * 
  * @author David Wong
  *
@@ -29,8 +30,7 @@ import au.com.dw.testdatacapturej.meta.ObjectInfo;
 public class CollectionFieldGenerator extends BaseFieldGenerator {
 
 	@Override
-	public String log(ObjectInfo info) {
-		StringBuilder builder = new StringBuilder();
+	public void log(LogBuilder builder, ObjectInfo info) {
 		
 		// check if configured to ignore a field for setter method generation or if
 		// the collection fields uses an adder method in it's containing class instead
@@ -39,8 +39,6 @@ public class CollectionFieldGenerator extends BaseFieldGenerator {
 		{
 			generateSetter(builder, info);
 		}
-       	
-		return builder.toString();
 	}
 
 }
