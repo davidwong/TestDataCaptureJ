@@ -34,17 +34,25 @@ public class LogHolder {
 	/** Key value to be store for use by the logging framework, i.e. as part of file name */
 	private final String fileKey;
 	
+	/** Any additional logging that comes before the log contents */
+	private final String preLog;
+	
 	/** The actual log contents that were generated */
 	private final String log;
 
-	public LogHolder(String fileKey, String log) {
+	public LogHolder(String fileKey, String preLog, String log) {
 		super();
 		this.fileKey = fileKey;
-		this.log = log;
+		this.preLog = preLog == null ? FormatConstants.EMPTY_STRING : preLog;
+		this.log = log == null ? FormatConstants.EMPTY_STRING : log;
 	}
 
 	public String getFileKey() {
 		return fileKey;
+	}
+
+	public String getPreLog() {
+		return preLog;
 	}
 
 	public String getLog() {

@@ -16,65 +16,39 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log;
+package au.com.dw.testdatacapturej.log.importstatement;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Builder for object logging, allows pre- and post- processing of log elements.
+ * Holds class names to use to generate import statements.
  *  
  * @author David Wong
  *
  */
-public interface LogBuilder {
+public class ClassNameHolder {
 
-	/** Add a raw element to the logging.
-	 * 
-	 * @param str
-	 */
-	public void append(String str);
+	/** Holds the class names internally in a set to de-duplicate */
+	private final Set<String> classNames;
 	
-	/** Add a number to the logging.
-	 * 
-	 * @param integer
-	 */
-	public void append(Integer integer);
-	
-	/** Add an object to the logging.
-	 * 
-	 * @param integer
-	 */
-	public void append(Object object);
-	
-	/** Add an element to the logging with some processing.
-	 * 
-	 * @param str
-	 */
-	public void process(String str);
+	public ClassNameHolder() {
+		classNames = new HashSet<String>();
+	}
 
 	/**
-	 * Get the object logging.
+	 * Add a class name for an object.
 	 * 
-	 * @return
+	 * @param className
 	 */
-	public String getLog();
-	
-	/**
-	 * Get any logging that is required before the log of the actual objects.
-	 * 
-	 * @return
-	 */
-	public String getPreLog();
-	
-	/**
-	 * Get any logging that is required after the log of the actual objects.
-	 * 
-	 * @return
-	 */
-	public String getPostLog();
-	
-	/**
-	 * Get all of the logging.
-	 * 
-	 * @return
-	 */
-	public String getFullLog();
+	public void addClassName(String className)
+	{
+		classNames.add(className);
+	}
+
+	public Set<String> getClassNames() {
+		return Collections.unmodifiableSet(classNames);
+	}
+
 }

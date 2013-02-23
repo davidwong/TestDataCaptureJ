@@ -32,22 +32,22 @@ import au.com.dw.testdatacapturej.log.FormatConstants;
 
 /**
  * Utility methods for using reflection to determine the fields and methods of the object to be logged.
- * 
+ *
  * @author David Wong
  *
  */
 public class ReflectionUtil {
-	
+
 	// default field names for arguments for which we don't know the field name, note that to make
 	// the field names unique, should add some prefix or suffix (e.g. an index number)
 	public static final String ARGUMENT_OBJECT_FIELD_NAME = "argumentObject";
-	public static final String ARGUMENT_ARRAY_FIELD_NAME = "argumentArray";	
+	public static final String ARGUMENT_ARRAY_FIELD_NAME = "argumentArray";
 	public static final String ARGUMENT_COLLECTION_FIELD_NAME = "argumentCollection";
 	public static final String ARGUMENT_MAP_FIELD_NAME = "argumentMap";
-	
+
 	/**
 	 * Check if the class of an object has a default no parameter constructor.
-	 * 
+	 *
 	 * @param object
 	 * @return
 	 */
@@ -55,17 +55,17 @@ public class ReflectionUtil {
 	{
 		return hasDefaultConstructor(object.getClass());
 	}
-	
+
 	/**
 	 * Check if a class has a default no parameter constructor.
-	 * 
+	 *
 	 * @param clazz
 	 * @return
 	 */
 	public static boolean hasDefaultConstructor(Class<?> clazz)
 	{
 		boolean hasDefaultConstructor = false;
-		
+
 		try {
 			Constructor<?> constructor = clazz.getDeclaredConstructor();
 			if (constructor != null)
@@ -77,13 +77,13 @@ public class ReflectionUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return hasDefaultConstructor;
 	}
 
 	/**
 	 * Check if the class of an object has a default no parameter constructor.
-	 * 
+	 *
 	 * @param object
 	 * @return
 	 */
@@ -91,17 +91,17 @@ public class ReflectionUtil {
 	{
 		return hasParameterizedConstructor(object.getClass(), parameterTypes);
 	}
-	
+
 	/**
 	 * Check if a class has a default no parameter constructor.
-	 * 
+	 *
 	 * @param clazz
 	 * @return
 	 */
 	public static boolean hasParameterizedConstructor(Class<?> clazz, Class<?>[] parameterTypes)
 	{
 		boolean hasParameterizedConstructor = false;
-		
+
 		try {
 			Constructor<?> constructor = clazz.getDeclaredConstructor(parameterTypes);
 			if (constructor != null)
@@ -113,13 +113,13 @@ public class ReflectionUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return hasParameterizedConstructor;
 	}
-	
+
 	/**
 	 * Check if an object has a setter method.
-	 * 
+	 *
 	 * @param object
 	 * @param fieldName
 	 * @param parameter
@@ -128,7 +128,7 @@ public class ReflectionUtil {
 	public static boolean hasSetterMethod(Object object, String fieldName, Object parameter)
 	{
 		boolean hasSetterMethod = false;
-		
+
 		if (object != null && parameter != null)
 		{
 			hasSetterMethod = hasSetterMethod(object.getClass(), fieldName, parameter);
@@ -139,7 +139,7 @@ public class ReflectionUtil {
 	/**
 	 * Check if a class has a default setter method for a field. Will also try the superclasses and implemented interfaces for the
 	 * setter method parameter signature.
-	 * 
+	 *
 	 * @param clazz
 	 * @param fieldName
 	 * @param parameter
@@ -148,33 +148,33 @@ public class ReflectionUtil {
 	public static boolean hasSetterMethod(Class<?> clazz, String fieldName, Object parameter)
 	{
 		boolean hasSetterMethod = false;
-		
+
 		LineBuilder styleUtil = new LineBuilder();
 		Class<?> parameterClass = parameter.getClass();
 		String methodName = styleUtil.getSetterMethodName(fieldName);
-		
+
 		// try to find the setter with the specific parameter class
 		hasSetterMethod = hasSetterMethodForParameterClass(clazz, methodName, parameterClass);
-		
+
 		// try to find setter that has superclass of the parameter, going through the inheritance chain
 		if (!hasSetterMethod)
 		{
 			hasSetterMethod = hasSetterMethodForSuperClass(clazz, methodName, parameterClass);
 		}
-		
+
 		// try to find setter that implemented interface of the parameter
 		if (!hasSetterMethod)
 		{
 		    hasSetterMethod = hasSetterMethodForInterfaces(clazz, methodName, parameterClass);
 		}
-		
+
 		return hasSetterMethod;
 	}
 
 	/**
 	 * Check if a class has a setter method with the parameter signature for the interface that may be implemented by a field.
 	 * e.g. instead of 'class.setField(class type)', would look for 'class.setField(interface)'
-	 * 
+	 *
 	 * @param clazz
 	 * @param methodName
 	 * @param implementationClass
@@ -182,7 +182,7 @@ public class ReflectionUtil {
 	 */
 	private static boolean hasSetterMethodForInterfaces(Class<?> clazz, String methodName, Class<?> implementationClass) {
 		boolean hasSetterMethodForInterfaces = false;
-		
+
 		Class<?>[] theInterfaces = implementationClass.getInterfaces();
 		for (int i = 0; i < theInterfaces.length; i++) {
 		  hasSetterMethodForInterfaces = hasSetterMethodForParameterClass(clazz, methodName, theInterfaces[i]);
@@ -206,7 +206,7 @@ public class ReflectionUtil {
 
 	/**
 	 * Check if a class has a setter method with parameter signature for the superclass for a field.
-	 * 
+	 *
 	 * @param clazz
 	 * @param methodName
 	 * @param subclass
@@ -214,19 +214,19 @@ public class ReflectionUtil {
 	 */
 	private static boolean hasSetterMethodForSuperClass(Class<?> clazz, String methodName, Class<?> subclass) {
 		boolean hasSetterMethodForSuperClass = false;
-		
+
 		Class<?> superclass = subclass.getSuperclass();
 		while (superclass != null) {
 			hasSetterMethodForSuperClass = hasSetterMethodForParameterClass(clazz, methodName, superclass);
 		  if (hasSetterMethodForSuperClass)
 			  break;
-		  
+
 		  // handle next superclass in chain or super interfaces
 		  if (superclass.isInterface()){
 			  hasSetterMethodForSuperClass = hasSetterMethodForInterfaces(clazz, methodName, superclass);
 
 			  // need to break out of the loop
-			  superclass = null;			  
+			  superclass = null;
 		  }
 		  else
 		  {
@@ -249,10 +249,10 @@ public class ReflectionUtil {
 	/**
 	 * Check if a class has a default setter method for a field, using the specific class of the field only.
 	 * i.e. no superclasses or interfaces.
-	 * 
+	 *
 	 * Since we may want to invoke the setter method, abstract methods are not included (i.e. will return
 	 * false).
-	 *  
+	 *
 	 * @param clazz
 	 * @param parameterClass
 	 * @param setterMethodName
@@ -260,8 +260,8 @@ public class ReflectionUtil {
 	 */
 	private static boolean hasSetterMethodForParameterClass(Class<?> clazz, String setterMethodName, Class<?> parameterClass) {
 		boolean hasSetterMethodForParameterClass = false;
-		
-		try {		
+
+		try {
 			Method method = clazz.getDeclaredMethod(setterMethodName, parameterClass);
 			if (method != null)
 			{
@@ -279,25 +279,25 @@ public class ReflectionUtil {
 		}
 		return hasSetterMethodForParameterClass;
 	}
-    
+
     /**
      * Using reflection to get the class name will not work properly on arrays, it will return something like:
-     * 
+     *
      * Array of String's
      * [Ljava.lang.String;
-     * 
+     *
      * Array of primitive int's
      * [I
-     * 
+     *
      * Array of Object's
      * [Ljava.lang.Object;
-     * 
+     *
      * Some we need to do some special handling to get it into the format we want for test data generation:
-     * 
+     *
      * java.lang.String[]
      * int[]
      * java.lang.Object[]
-     * 
+     *
      * @param array Should be an array
      * @return
      */
@@ -308,7 +308,7 @@ public class ReflectionUtil {
     	{
     		Class<?> clazz = array.getClass();
     		Class<?> stringArrayComponentType = clazz.getComponentType();
-    				
+
     		return stringArrayComponentType.getName() + FormatConstants.arraySuffix;
     	}
     	else
@@ -317,10 +317,10 @@ public class ReflectionUtil {
     		return array.getClass().getName();
     	}
     }
-    
+
     /**
      * Get the class name from a reflection Field, used when object isn't available, e.g. null value.
-     * 
+     *
      * @param field
      * @return
      */
@@ -328,49 +328,72 @@ public class ReflectionUtil {
     {
     	return field.getType().getName();
     }
-    
+
 	/**
 	 * Generate a field name fragment for the class of an object by extracting the non-qualified
 	 * class name of the object.
-	 * 
+	 *
 	 * If the object's class is:
 	 *   com.test.TestClass
 	 * Then the field name fragment would be:
 	 *   testClass
-	 *   
+	 *
 	 * This fragment is meant to be used as the basis for building the full field name.
-	 * 
+	 *
 	 * @param object
 	 * @return
 	 */
 	public static String getObjectFieldName(Object object)
 	{
 		String className = object.getClass().getName();
-		String fieldName = WordUtils.uncapitalize(className.substring(className.lastIndexOf(".")+1));	
-		
+		String fieldName = WordUtils.uncapitalize(className.substring(className.lastIndexOf(".")+1));
+
 		return fieldName;
 	}
-	
+
 	/**
 	 * Generate a field name fragment for the class of an object by extracting the non-qualified
 	 * class name.
-	 * 
+	 *
 	 * If the class is:
 	 *   com.test.TestClass
 	 * Then the field name fragment would be:
 	 *   testClass
-	 *   
+	 *
 	 * This fragment is meant to be used as the basis for building the full field name.
-	 * 
+	 *
 	 * @param clazz
 	 * @return
 	 */
 	public static String getObjectFieldName(Class<?> clazz)
 	{
 		String className = clazz.getName();
-		String fieldName = WordUtils.uncapitalize(className.substring(className.lastIndexOf(".")+1));	
-		
+		String fieldName = WordUtils.uncapitalize(className.substring(className.lastIndexOf(".")+1));
+
 		return fieldName;
 	}
+
+	  /** The char used in separating package names */
+	  private static final String PACKAGE_NAME_SEPARATOR = ".";
+	  
+	  /**
+	   * Get the short name of a class by striping off the qualified package name(s).
+	   *
+	   * @param className Fully qualified class name.
+	   * @return Short class name.
+	   */
+	  public static String getShortClassName(final String className)
+	  {
+	    int lastIndex = className.lastIndexOf(PACKAGE_NAME_SEPARATOR);
+	
+	    if (lastIndex != -1)
+	    {
+	    	return className.substring(lastIndex + 1, className.length());
+	    }
+	    else
+	    {
+	    	return className;
+	    }
+	  }
 
 }

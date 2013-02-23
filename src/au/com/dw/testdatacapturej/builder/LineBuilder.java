@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.apache.commons.lang.WordUtils;
 
+import au.com.dw.testdatacapturej.log.LogBuilder;
 import au.com.dw.testdatacapturej.meta.ObjectInfo;
 import au.com.dw.testdatacapturej.util.StringEscapeUtil;
 
@@ -44,23 +45,19 @@ public class LineBuilder {
 	 * 
 	 * This should be used for classes that have a no-argument constructor.
 	 * 
+	 * @param builder
 	 * @param info The ObjectInfo for the object that requires the constructor line to be generated
-	 * @return The generated constructor line
 	 */
-	public String createConstructorLine(ObjectInfo info) {
-		StringBuilder constructorLineBuilder = new StringBuilder();
-		
-		constructorLineBuilder.append(info.getClassName());
-		constructorLineBuilder.append(" ");
+	public void createConstructorLine(LogBuilder builder, ObjectInfo info) {
+		builder.process(info.getClassName());
+		builder.append(" ");
 
-		constructorLineBuilder.append(info.getClassFieldName());
-		constructorLineBuilder.append(info.getClassFieldNameIndex());
+		builder.append(info.getClassFieldName());
+		builder.append(info.getClassFieldNameIndex());
 		
-		constructorLineBuilder.append(" = new ");
-		constructorLineBuilder.append(info.getClassName());
-		constructorLineBuilder.append("();");
-		
-		return constructorLineBuilder.toString();
+		builder.append(" = new ");
+		builder.process(info.getClassName());
+		builder.append("();");
 	}
 
 	/**
@@ -74,38 +71,35 @@ public class LineBuilder {
 	 * Then should generate:
 	 *   com.test.TestClass testClass = new com.test.TestClass("test", fieldObject1, 1000L);
 	 * 
+	 * @param builder
 	 * @param info The ObjectInfo for the object that requires the constructor line to be generated
 	 * @return The generated constructor line
 	 */
-	public String createParameterizedConstructorLine(ObjectInfo info) {
+	public void createParameterizedConstructorLine(LogBuilder builder, ObjectInfo info) {
 		
 		List<String> params = info.getConstructorInfo().getConstructorParameters();
 
-		StringBuilder constructorLineBuilder = new StringBuilder();
+		builder.append(info.getClassName());
+		builder.append(" ");
 
-		constructorLineBuilder.append(info.getClassName());
-		constructorLineBuilder.append(" ");
-
-		constructorLineBuilder.append(info.getClassFieldName());
-		constructorLineBuilder.append(info.getClassFieldNameIndex());
+		builder.append(info.getClassFieldName());
+		builder.append(info.getClassFieldNameIndex());
 		
-		constructorLineBuilder.append(" = new ");
-		constructorLineBuilder.append(info.getClassName());
-		constructorLineBuilder.append("(");
+		builder.append(" = new ");
+		builder.process(info.getClassName());
+		builder.append("(");
 		
 		// log the parameters
 		int size = params.size();
 		for (int i = 0; i < size; i++)
 		{
-			constructorLineBuilder.append(params.get(i));
+			builder.append(params.get(i));
 			if (i < size-1)
 			{
-				constructorLineBuilder.append(", ");
+				builder.append(", ");
 			}
 		}
-		constructorLineBuilder.append(");");
-		
-		return constructorLineBuilder.toString();
+		builder.append(");");
 	}
 	
 	/**
@@ -115,49 +109,45 @@ public class LineBuilder {
 	 *   Object[]
 	 * Then should generate:
 	 *   Object[] objectArray = new Object[10];
-	 *   
+	 *  
+	 * @param builder
 	 * @param info The ObjectInfo for the object that requires the constructor line to be generated
-	 * @return The generated constructor line
 	 */
-	public String createArrayConstructorLine(ObjectInfo info) {
+	public void createArrayConstructorLine(LogBuilder builder, ObjectInfo info) {
 		// extra info required for an array constructor as opposed to an object constructor
 		Object array = info.getValue();
 		String arrayType = array.getClass().getComponentType().getName();
 		int initialSize = Array.getLength(array);
 		
-		StringBuilder constructorLineBuilder = new StringBuilder();
+		//StringBuilder constructorLineBuilder = new StringBuilder();
 		
-		constructorLineBuilder.append(arrayType);
-		constructorLineBuilder.append("[] ");
+		builder.process(arrayType);
+		builder.append("[] ");
 
-		constructorLineBuilder.append(info.getClassFieldName());
-		constructorLineBuilder.append(info.getClassFieldNameIndex());
+		builder.append(info.getClassFieldName());
+		builder.append(info.getClassFieldNameIndex());
 		
-		constructorLineBuilder.append(" = new ");
-		constructorLineBuilder.append(arrayType);
-		constructorLineBuilder.append("[");
+		builder.append(" = new ");
+		builder.process(arrayType);
+		builder.append("[");
 		if (initialSize >= 0)
 		{
-			constructorLineBuilder.append(initialSize);
+			builder.append(initialSize);
 		}
-		constructorLineBuilder.append("];");
-		
-		return constructorLineBuilder.toString();
+		builder.append("];");
 	}
 	
     /**
      * Generate a line for the default setter method name for a field.
      * e.g. if the field name is 'someField', will generate 'setSomeField();'.
      * 
+     * @param builder
      * @param fieldName
      * @param fieldValue
      * @param literal Flag whether to use the fieldValue as is, or need to format it first
-     * @return
      */
-    public String createSetterLine(String fieldName, Object fieldValue, boolean literal) {
-    	StringBuilder builder = new StringBuilder();
-    	
-    	builder.append(".");
+    public void createSetterLine(LogBuilder builder, String fieldName, Object fieldValue, boolean literal) {
+     	builder.append(".");
     	builder.append(getSetterMethodName(fieldName));
     	builder.append("(");
     	if (literal)
@@ -167,11 +157,9 @@ public class LineBuilder {
     	}
     	else
     	{
-    		appendClassDetail(builder, fieldValue);
+    		builder.append(getAppendedClassDetail(fieldValue));
     	}
         builder.append(");");
-        
-        return builder.toString();
     }
 
     /**
@@ -195,23 +183,19 @@ public class LineBuilder {
 	 * Then should generate:
 	 *   arrayList0.add("test");
      * 
+     * @param builder
      * @param classFieldName
      * @param fieldValue
      * @param literal
-     * @return
      */
-    public String createCollectionAddLine(String classFieldName, Object fieldValue, boolean literal)
+    public void createCollectionAddLine(LogBuilder builder, String classFieldName, Object fieldValue, boolean literal)
     {
-       	StringBuilder builder = new StringBuilder();
-       	
 		builder.append(classFieldName);
     	builder.append(".");
        	builder.append("add");
-       	builder.append("(");
-       	interpretValue(builder, fieldValue, literal);       
-       	builder.append(");");
-       	
-       	return builder.toString();
+       	builder.append("(");    
+ 		builder.append(getInterpretedValue(fieldValue, literal)); 		      
+      	builder.append(");");
     }
 
     /**
@@ -230,25 +214,21 @@ public class LineBuilder {
 	 * Then should generate:
 	 *   test0.addItem("test");
      * 
+     * @param builder
      * @param enclosingClassName Class name for the class that contains the collection field
      * @param adderMethodName Name for the adder method, needed since there is no standard convention unlike for getters and setters
      * @param fieldValue
      * @param literal
-     * @return
      */
-    public String createCollectionEnclosingAdderLine(String enclosingClassName, String adderMethodName, Object fieldValue, boolean literal)
+    public void createCollectionEnclosingAdderLine(LogBuilder builder, String enclosingClassName, String adderMethodName, Object fieldValue, boolean literal)
     {
-       	StringBuilder builder = new StringBuilder();
-       	
-		builder.append(enclosingClassName);
+ 		builder.append(enclosingClassName);
     	builder.append(".");
        	builder.append(adderMethodName);
        	builder.append("(");
-       	interpretValue(builder, fieldValue, literal);       
+  		builder.append(getInterpretedValue(fieldValue, literal)); 		      
        	builder.append(");");
-       	
-       	return builder.toString();
-    }
+     }
     
     /**
 	 * Generate a line for assigning an element to an array.
@@ -260,25 +240,21 @@ public class LineBuilder {
 	 * Then should generate:
 	 *   stringArray0[0] = "test";
      * 
+     * @param builder
      * @param classFieldName
      * @param index
      * @param fieldValue
      * @param literal
-     * @return
      */
-    public String createArrayAssignLine(String classFieldName, int index, Object fieldValue, boolean literal)
+    public void createArrayAssignLine(LogBuilder builder, String classFieldName, int index, Object fieldValue, boolean literal)
     {
-       	StringBuilder builder = new StringBuilder();
-
-		builder.append(classFieldName);
+ 		builder.append(classFieldName);
     	builder.append("[");
        	builder.append(index);
        	builder.append("]");
        	builder.append(" = ");
-       	interpretValue(builder, fieldValue, literal);       
-       	builder.append(";");
-
-       	return builder.toString();
+  		builder.append(getInterpretedValue(fieldValue, literal)); 		
+   		builder.append(";");
     }
 
     /**
@@ -293,6 +269,7 @@ public class LineBuilder {
 	 * Then should generate:
 	 *   hashMap0.put("key", "test");
      * 
+     * @param builder
      * @param classFieldName
      * @param keyName
      * @param fieldName
@@ -300,14 +277,11 @@ public class LineBuilder {
      * @param fieldValue
      * @param keyLiteral
      * @param literal
-     * @return
      */
-    public String createMapPutLine(String classFieldName, String keyName, String fieldName, Object keyValue, Object fieldValue,
+    public void createMapPutLine(LogBuilder builder, String classFieldName, String keyName, String fieldName, Object keyValue, Object fieldValue,
 			boolean keyLiteral, boolean literal)
     {
-       	StringBuilder builder = new StringBuilder();
-       	
-		builder.append(classFieldName);
+ 		builder.append(classFieldName);
     	builder.append(".");
        	builder.append("put");
        	builder.append("(");
@@ -317,7 +291,7 @@ public class LineBuilder {
        	}
        	else
        	{
-       		interpretValue(builder, keyValue, keyLiteral);
+       		builder.append(getInterpretedValue(keyValue, keyLiteral));
        	}
        	builder.append(", ");
        	if (literal)
@@ -326,13 +300,24 @@ public class LineBuilder {
        	}
        	else
        	{
-       		interpretValue(builder, fieldValue, literal);       
+       		builder.append(getInterpretedValue(fieldValue, literal));
        	}      	
        	builder.append(");");
-       	
-       	return builder.toString();
     }
 
+    /**
+     * Utility method for appendClassDetail() to get String value.
+     * 
+     * @param value
+     * @return
+     */
+    public String getAppendedClassDetail(Object value)
+    {
+   		StringBuilder stringBuilder = new StringBuilder();
+   		appendClassDetail(stringBuilder, value);
+   		return stringBuilder.toString();   	
+    }
+    
     /**
      * Format a simple value based on it's type, so that it can be used in test code generation.
      * e.g. 
@@ -409,6 +394,20 @@ public class LineBuilder {
 	    return escapedQuotes;
     }
 
+    /**
+     * Utility method for interpretValue() to get String value.
+     * 
+     * @param fieldValue
+     * @param literal
+     * @return
+     */
+    public String getInterpretedValue(Object fieldValue, boolean literal)
+    {
+   		StringBuilder stringBuilder = new StringBuilder();
+   		interpretValue(stringBuilder, fieldValue, literal); 
+   		return stringBuilder.toString();
+    }
+    
 	/**
 	 * Adds any additional text formatting to the field value so that it can be interpreted as java
 	 * code for the particular field type.

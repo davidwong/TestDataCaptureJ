@@ -74,7 +74,7 @@ public abstract aspect Trace {
 	 * 
 	 * @param log
 	 */
-	protected void preLog(LogHolder log)
+	protected void preLog(LogHolder logHolder)
 	{
 		// default do-nothing implementation
 	}
@@ -84,7 +84,7 @@ public abstract aspect Trace {
 	 * 
 	 * @param log
 	 */
-	protected void postLog(LogHolder log)
+	protected void postLog(LogHolder logHolder)
 	{
 		// default do-nothing implementation
 	}
@@ -95,11 +95,11 @@ public abstract aspect Trace {
 	 * 
 	 * @param log
 	 */
-	private void log(LogHolder log)
+	private void log(LogHolder logHolder)
 	{
-		preLog(log);
-		doLog(log.getLog());
-		postLog(log);
+		preLog(logHolder);
+		doLog(logHolder.getLog());
+		postLog(logHolder);
 	}
 	
 	/**
@@ -163,7 +163,7 @@ public abstract aspect Trace {
 			
 			fileKey = keyBuilder.createParameterFileKey(methodName, 0, "None", true);
 			
-			LogHolder log = new LogHolder(fileKey, logBuilder.toString());
+			LogHolder log = new LogHolder(fileKey, logBuilder.getPreLog(), logBuilder.getLog());
 			logs.add(log);
 		}
 		else
@@ -206,7 +206,7 @@ public abstract aspect Trace {
 				}
 
 
-				LogHolder log = new LogHolder(fileKey, logBuilder.getLog());
+				LogHolder log = new LogHolder(fileKey, logBuilder.getPreLog(), logBuilder.getLog());
 				logs.add(log);				
 			}
 		}
@@ -253,7 +253,7 @@ public abstract aspect Trace {
 			fileKey = keyBuilder.createReturnFileKey(methodName, "Null", true);
 		}
 			
-		LogHolder log = new LogHolder(fileKey, logBuilder.getLog());
+		LogHolder log = new LogHolder(fileKey, logBuilder.getPreLog(), logBuilder.getLog());
 		return log;
 	}
 	

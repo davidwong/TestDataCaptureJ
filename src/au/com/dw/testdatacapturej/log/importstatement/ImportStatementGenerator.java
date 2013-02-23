@@ -16,21 +16,21 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log;
+package au.com.dw.testdatacapturej.log.importstatement;
 
-import au.com.dw.testdatacapturej.log.importstatement.ImportStatementLogBuilder;
 
 /**
- * Factory that implements the factory method pattern to create LogBuilders of various types.
+ * Generates import statements in the required language syntax.
  * 
  * @author David Wong
  *
  */
-public class LogBuilderFactory {
+public interface ImportStatementGenerator {
 
-	public static LogBuilder createLogBuilder()
-	{
-		//return new RawLogBuilder();
-		return new ImportStatementLogBuilder();
-	}
+	/**
+	 * Generate the import statements.
+	 * 
+	 * @return The import statements in the required syntax
+	 */
+	public abstract String generateImports(ClassNameHolder classNameHolder);
 }

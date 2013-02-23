@@ -28,6 +28,7 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
+import au.com.dw.testdatacapturej.log.importstatement.ImportStatementLogBuilder;
 import au.com.dw.testdatacapturej.mock.classcheck.Holder;
 import au.com.dw.testdatacapturej.mock.classcheck.Setter_Array;
 import au.com.dw.testdatacapturej.mock.classcheck.Setter_Collection;
@@ -65,7 +66,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 	public void setUp() throws Exception {
 		handler = new MetadataGenerationHandler();
 		logger = new ObjectLogger();
-		builder = new RawLogBuilder();
+		builder = new ImportStatementLogBuilder();
 		holder = new Holder();
 	}
  
@@ -83,7 +84,7 @@ public class SetterMethodTest extends BaseReflectionTest {
 
 		try {
 			logger.logObject(builder, handler.handle(holder));
-			String result = builder.getLog();
+			String result = builder.getFullLog();
 			
 			String expected = "au.com.dw.testdatacapturej.mock.classcheck.Holder holder0 = new au.com.dw.testdatacapturej.mock.classcheck.Holder();" +
 			"au.com.dw.testdatacapturej.mock.classcheck.Setter_Simple setter_Simple0 = new au.com.dw.testdatacapturej.mock.classcheck.Setter_Simple();" +
