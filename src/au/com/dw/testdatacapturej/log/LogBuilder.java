@@ -32,6 +32,18 @@ public interface LogBuilder {
 	 */
 	public void append(String str);
 	
+	/** Add a number to the logging.
+	 * 
+	 * @param integer
+	 */
+	public void append(Integer integer);
+	
+	/** Add an object to the logging.
+	 * 
+	 * @param integer
+	 */
+	public void append(Object object);
+	
 	/** Add an element to the logging with some processing.
 	 * 
 	 * @param str

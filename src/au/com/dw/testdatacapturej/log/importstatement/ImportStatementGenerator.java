@@ -16,47 +16,28 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log;
+package au.com.dw.testdatacapturej.log.importstatement;
+
 
 /**
- * The default implementation of LogBuilder which is a wrapper around the StringBuilder that holds the logging.
- * 
- * This does not do any processing of the log, but just passes the strings to the StringBuilder.
+ * Generates import statements in the required language syntax.
  * 
  * @author David Wong
  *
  */
-public class RawLogBuilder implements LogBuilder {
+public abstract class ImportStatementGenerator {
 
-	private final StringBuilder builder;
-
-	public RawLogBuilder() {
-		builder = new StringBuilder();
-	}
-
-	public void append(String str) {
-		builder.append(str);
+	/** Hold the class names internally in a set to de-duplicate */
+	private ClassNameHolder classNameHolder;
+	
+	public ImportStatementGenerator(ClassNameHolder classNameHolder) {
+		this.classNameHolder = classNameHolder;
 	}
 	
-	public void append(Integer integer) {
-		builder.append(integer);
-	}
-	
-	public void append(Object object) {
-		builder.append(object);
-	}
-	
-	public void process(String str) {
-		builder.append(str);
-	}
-
-	public String getPreLog() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getLog() {
-		return builder.toString();
-	}
-
+	/**
+	 * Generate the import statements.
+	 * 
+	 * @return The import statements in the required syntax
+	 */
+	public abstract String generateImports();
 }

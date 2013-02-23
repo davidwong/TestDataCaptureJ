@@ -16,47 +16,34 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log;
+package au.com.dw.testdatacapturej.log.importstatement;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * The default implementation of LogBuilder which is a wrapper around the StringBuilder that holds the logging.
- * 
- * This does not do any processing of the log, but just passes the strings to the StringBuilder.
- * 
+ * Holds class names to use to generate import statements.
+ *  
  * @author David Wong
  *
  */
-public class RawLogBuilder implements LogBuilder {
+public class ClassNameHolder {
 
-	private final StringBuilder builder;
-
-	public RawLogBuilder() {
-		builder = new StringBuilder();
-	}
-
-	public void append(String str) {
-		builder.append(str);
-	}
+	/** Holds the class names internally in a set to de-duplicate */
+	private Set<String> classNames;
 	
-	public void append(Integer integer) {
-		builder.append(integer);
-	}
-	
-	public void append(Object object) {
-		builder.append(object);
-	}
-	
-	public void process(String str) {
-		builder.append(str);
+	public ClassNameHolder() {
+		classNames = new HashSet<String>();
 	}
 
-	public String getPreLog() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getLog() {
-		return builder.toString();
+	/**
+	 * Add a class name for an object.
+	 * 
+	 * @param className
+	 */
+	public void addClassName(String className)
+	{
+		classNames.add(className);
 	}
 
 }

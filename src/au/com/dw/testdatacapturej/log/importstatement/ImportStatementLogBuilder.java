@@ -16,47 +16,35 @@
  * You should have received a copy of the GNU Afferro General Public License
  * along with TestDataCaptureJ.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package au.com.dw.testdatacapturej.log;
+package au.com.dw.testdatacapturej.log.importstatement;
 
-/**
- * The default implementation of LogBuilder which is a wrapper around the StringBuilder that holds the logging.
- * 
- * This does not do any processing of the log, but just passes the strings to the StringBuilder.
- * 
- * @author David Wong
- *
- */
-public class RawLogBuilder implements LogBuilder {
+import au.com.dw.testdatacapturej.log.RawLogBuilder;
+import au.com.dw.testdatacapturej.reflection.util.ReflectionUtil;
 
-	private final StringBuilder builder;
+public class ImportStatementLogBuilder extends RawLogBuilder {
 
-	public RawLogBuilder() {
-		builder = new StringBuilder();
-	}
-
-	public void append(String str) {
-		builder.append(str);
-	}
+	private final ClassNameHolder classNameHolder;
 	
-	public void append(Integer integer) {
-		builder.append(integer);
+	public ImportStatementLogBuilder() {
+		super();
+		
+		classNameHolder = new ClassNameHolder();
 	}
-	
-	public void append(Object object) {
-		builder.append(object);
-	}
-	
+
 	public void process(String str) {
-		builder.append(str);
+		// save the fully qualified class name and just 
+		getClassNameHolder().addClassName(str);
+		append(ReflectionUtil.getShortClassName(str));
 	}
-
+	
 	public String getPreLog() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public String getLog() {
-		return builder.toString();
+	public ClassNameHolder getClassNameHolder() {
+		return classNameHolder;
 	}
 
+	
 }
