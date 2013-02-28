@@ -18,7 +18,6 @@
  *******************************************************************************/
 package au.com.dw.testdatacapturej.log;
 
-import au.com.dw.testdatacapturej.log.importstatement.ImportStatementLogBuilder;
 
 /**
  * Factory that implements the factory method pattern to create LogBuilders of various types.
@@ -30,7 +29,6 @@ public class LogBuilderFactory {
 
 	public static LogBuilder createLogBuilder()
 	{
-		//return new RawLogBuilder();
-		return new ImportStatementLogBuilder();
+		return new RawLogBuilder();
 	}
 }
