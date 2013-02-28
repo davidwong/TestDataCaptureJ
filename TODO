@@ -1,7 +1,16 @@
 TODO list
 
+Build:
+------
+
+Implement external build script, e.g. Ant or Gradle
+
+
 Codebase:
 ---------
+
+- separate the walking of the object graph with the logging
+i.e. create the object graph first and then do the logging as another process
 
 - how to handle logging fields without setters, or setters that don't follow javabean naming convention
 options:

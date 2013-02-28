@@ -36,13 +36,19 @@ developer@davidwong.com.au
 Change Log:
 -----------
 
-Version 1.0
+* Version 0.9
+
+This is the initial working release version.
+
+* Version 1.0
+
+This version is an update to use the lastest version of Java and tools. Also some refactoring and tidying up of the code in preparation for an internal re-write to make it more flexible.
 
 - update to latest version of development tools and libraries (except where dependencies required old version):
   * Java 1.7
   * Eclipse Java IDE Juno 4.2
   * AJDT 2.2.1 (includes AspectJ 1.7.2)
-  * jars in the lib directory
+  * 3rd party dependency jars in the lib directory
   
 - refactor the classes that generate the text output in Java syntax (more meaningful file and package names, classes now created from a factory).
 

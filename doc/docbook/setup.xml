@@ -366,7 +366,8 @@ set JAVA_OPTS=%JAVA_OPTS% %ASPECTJ_WEAVING%
           <itemizedlist>
             <listitem>
               <para>The dependency jars need to be in the classpath of the application that you are
-                testing. There are several ways of doing this in Tomcat:<itemizedlist>
+                testing. They are located in the 'lib' directory of the Eclipse project. There are
+                several ways of doing this in Tomcat:<itemizedlist>
                   <listitem>
                     <para>When a web application in war file format is first run in the
                       {TOMCAT_HOME}/webapps directory, it will be expanded into a new directory.
@@ -379,24 +380,31 @@ set JAVA_OPTS=%JAVA_OPTS% %ASPECTJ_WEAVING%
                       directory at {TOMCAT_HOME}/shared/lib and configure it to be used as a shared
                       library directory. Note however this means the jar files there will be shared
                       by the other web applications as well.</para>
-                    <remark>See the Tomcat documentation about setting up shared library directories.</remark>
+                    <remark>See the Tomcat documentation about setting up shared library
+                      directories.</remark>
                   </listitem>
                 </itemizedlist></para>
             </listitem>
             <listitem>
-              <para>Copy the dependency jars to the location to be included in the web application
-                classpath. These are:<itemizedlist>
+              <para>Copy the dependency jars to the location to be included in the web application classpath.<itemizedlist>
                   <listitem>
-                    <para>commons-collections-xxx.jar</para>
+                    <para>The Apache commons jars are required.</para>
                   </listitem>
                   <listitem>
-                    <para>commons-configuration-xxx.jar</para>
-                  </listitem>
-                  <listitem>
-                    <para>commons-lang-xxx.jar</para>
-                  </listitem>
-                  <listitem>
-                    <para>commons-logging.jar</para>
+                    <para>Other jars may be optional, depending on your particular
+                    requirements:</para>
+                    <itemizedlist>
+                      <listitem>
+                        <para>if you use another logging library instead of LogBack, then the
+                          LogBack jars can be left out (or if necessary, replaced by the jars of
+                          your choice of logging library)</para>
+                      </listitem>
+                      <listitem>
+                        <para>groovy-all-x.x.jar is only required for the Groovy configuration for
+                          LogBack, if you don't use the Groovy configuration or use another logging
+                          library instead of LogBack, then this can be left out.</para>
+                      </listitem>
+                    </itemizedlist>
                   </listitem>
                 </itemizedlist></para>
             </listitem>
