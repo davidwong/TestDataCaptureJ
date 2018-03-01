@@ -11,9 +11,7 @@ methods in the running application that you want to test. The contents of these 
 a format that can be used to create mock objects that can be used in unit testing (i.e. with JUnit, TestNG, etc).
 
 
-For further documentation, go to 'doc/docbook/index.html'.
-
-The TODO list is currently in the TODO file.
+For further documentation, go to http://davidwong.github.io/TestDataCaptureJ/
 
 
 Copyright and Licensing:
